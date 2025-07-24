@@ -11,9 +11,7 @@ export async function getCurrentWeather(city: string) {
   }
 
   try {
-    console.log('Fetching weather for city:', city);
-    console.log('Using API key:', WEATHER_API_CONFIG.apiKey);
-    console.log('Using base URL:', WEATHER_API_CONFIG.baseUrl);
+    // Fetching weather data
 
     const response = await axios.get(`${WEATHER_API_CONFIG.baseUrl}/weather`, {
       params: {
@@ -23,16 +21,16 @@ export async function getCurrentWeather(city: string) {
       },
     });
 
-    console.log('Weather API response:', response.data);
+    // Weather API response received
     return response.data;
   } catch (error) {
-    console.error('Error fetching current weather:', error);
+    // Error fetching current weather
     if (error && typeof error === 'object' && 'response' in error) {
-      console.error('Error details:', (error as { response?: { data?: unknown } }).response?.data || 'No response data');
+      // Error details available
     }
 
     // Fallback to mock data on error
-    console.log('Falling back to mock weather data for city:', city);
+    // Falling back to mock weather data
     return getMockWeatherData(city);
   }
 }
@@ -41,7 +39,7 @@ export async function getCurrentWeather(city: string) {
 export async function getForecast(city: string) {
   // Use mock data if configured or if in development mode
   if (WEATHER_API_CONFIG.useMockData || WEATHER_API_CONFIG.apiKey === 'YOUR_OPENWEATHERMAP_API_KEY') {
-    console.log('Using mock forecast data for city:', city);
+    // Using mock forecast data
     return getMockForecastData(city);
   }
 
@@ -56,10 +54,9 @@ export async function getForecast(city: string) {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching weather forecast:', error);
+    // Error fetching weather forecast
 
     // Fallback to mock data on error
-    console.log('Falling back to mock forecast data for city:', city);
     return getMockForecastData(city);
   }
 }
@@ -85,10 +82,9 @@ export async function getWeatherByCoordinates(lat: number, lon: number) {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching weather by coordinates:', error);
+    // Error fetching weather by coordinates
 
     // Fallback to mock data on error
-    console.log('Falling back to mock weather data for coordinates');
     return getMockWeatherData('Delhi');
   }
 }

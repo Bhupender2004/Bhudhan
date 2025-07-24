@@ -38,7 +38,7 @@ export default function LoginSimplePage() {
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (error) {
-      console.error('Error logging in:', error);
+      // Error logging in
       alert('Failed to log in. Please try again.');
     } finally {
       setLoading(false);

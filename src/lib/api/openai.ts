@@ -26,7 +26,7 @@ export async function chatCompletion(messages: ChatMessage[]) {
     
     return response.data.choices[0].message.content;
   } catch (error) {
-    console.error('Error with OpenAI chat completion:', error);
+    // Error with OpenAI chat completion
     throw error;
   }
 }

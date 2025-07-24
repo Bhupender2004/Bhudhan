@@ -18,7 +18,7 @@ export async function translateText(text: string, targetLanguage: string) {
     
     return response.data.data.translations[0].translatedText;
   } catch (error) {
-    console.error('Error translating text:', error);
+    // Error translating text
     throw error;
   }
 }

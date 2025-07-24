@@ -263,7 +263,7 @@ export default function SmartIrrigationPage() {
         headStyles: { fillColor: [0, 102, 204] },
       }); }
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      // Error generating PDF
       alert('Failed to generate PDF. Please try again.');
     }
   };

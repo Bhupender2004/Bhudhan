@@ -254,10 +254,10 @@ export async function translateText(text, sourceLang = 'en', targetLang = 'en') 
 
     // For now, just return the original text as we don't have a real-time translation API
     // In a real implementation, you would call an API here
-    console.log(`Translation requested: ${text} from ${sourceLang} to ${targetLang}`);
+    // Translation requested
     return text;
   } catch (error) {
-    console.error('Translation error:', error);
+    // Translation error occurred
     return text;
   }
 }

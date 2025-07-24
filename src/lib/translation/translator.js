@@ -43,11 +43,11 @@ export async function loadTranslations(locale) {
     
     return translations;
   } catch (error) {
-    console.error(`Error loading translations for ${locale}:`, error);
-    
+    // Error loading translations
+
     // Fall back to English if translations can't be loaded
     if (locale !== 'en') {
-      console.log(`Falling back to English translations`);
+      // Falling back to English translations
       return loadTranslations('en');
     }
     
@@ -87,7 +87,7 @@ export function translateText(text, sourceLang = 'en', targetLang = 'hi') {
 
     // Handle process errors (e.g., Python not found)
     pythonProcess.on('error', (err) => {
-      console.error('Failed to start Python process:', err);
+      // Failed to start Python process
       reject(new Error(`Failed to start Python process: ${err.message}`));
 
     // Collect output
@@ -103,8 +103,8 @@ export function translateText(text, sourceLang = 'en', targetLang = 'hi') {
     // Handle process completion
     pythonProcess.on('close', (code) => {
       if (code !== 0) {
-        console.error(`Translation process exited with code ${code}`);
-        console.error(`Error: ${errorOutput}`);
+        // Translation process exited with error code
+        // Error output available
         reject(new Error(`Translation failed: ${errorOutput}`));
         return;
       }

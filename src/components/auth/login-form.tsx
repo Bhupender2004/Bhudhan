@@ -82,7 +82,7 @@ export default function LoginForm() {
       }
       */
     } catch (error) {
-      console.error('Error sending OTP:', error);
+      // Error sending OTP
       toast.error('Failed to send OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -127,7 +127,6 @@ export default function LoginForm() {
       localStorage.setItem('userPhone', formattedPhone);
 
       // Force redirect to dashboard
-      console.log('Redirecting to dashboard...');
       window.location.href = '/dashboard';
 
       /* Real implementation would be:
@@ -146,7 +145,7 @@ export default function LoginForm() {
       router.push('/dashboard');
       */
     } catch (error) {
-      console.error('Error verifying OTP:', error);
+      // Error verifying OTP
       toast.title('Error', {
         description: 'Failed to verify OTP. Please try again.',
         variant: 'destructive',

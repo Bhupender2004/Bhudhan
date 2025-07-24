@@ -27,7 +27,7 @@ export default function UserButton() {
       await signOut();
       // Redirect is handled by Clerk
     } catch (error) {
-      console.error('Error signing out:', error);
+      // Error signing out
       setIsSigningOut(false);
     }
   };

@@ -22,7 +22,7 @@ try {
   app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   auth = getAuth(app);
 } catch (error) {
-  console.error("Firebase initialization error:", error);
+  // Firebase initialization error
   // Create a fallback for demo purposes
   app = null;
   auth = null;
@@ -33,7 +33,7 @@ export const sendOTP = async (phoneNumber: string, recaptchaVerifier: RecaptchaV
   try {
     // For demo mode or if Firebase initialization failed
     if (!auth || !recaptchaVerifier) {
-      console.log('Using demo mode for OTP');
+      // Using demo mode for OTP
       // Simulate a delay to mimic API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       return { verificationId: 'demo-verification-id' };
@@ -43,7 +43,7 @@ export const sendOTP = async (phoneNumber: string, recaptchaVerifier: RecaptchaV
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     return confirmationResult;
   } catch (error) {
-    console.error('Error sending OTP:', error);
+    // Error sending OTP
     // Return a mock confirmation result for demo purposes
     return { verificationId: 'demo-verification-id' };
   }

@@ -82,7 +82,7 @@ export default function DiseaseDetectionTool() {
 
       toast.success('Disease detection completed successfully');
     } catch (error) {
-      console.error('Disease detection error:', error);
+      // Disease detection error occurred
       toast.error('Failed to analyze image. Please try again.');
     } finally {
       setIsAnalyzing(false);
