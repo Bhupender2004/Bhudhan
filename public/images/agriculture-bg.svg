@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6991c7" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#4b6cb7" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="fieldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#81c784" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#4caf50" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="cropGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cddc39" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#8bc34a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="tractorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6991c7" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#a8c0ff" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="1200" height="800" fill="url(#skyGradient)"/>
+  
+  <!-- Sun -->
+  <circle cx="1000" cy="150" r="80" fill="#ffeb3b" opacity="0.8"/>
+  <circle cx="1000" cy="150" r="60" fill="#fff176" opacity="0.6"/>
+  
+  <!-- Clouds -->
+  <g opacity="0.7">
+    <ellipse cx="200" cy="120" rx="70" ry="40" fill="white"/>
+    <ellipse cx="250" cy="100" rx="60" ry="35" fill="white"/>
+    <ellipse cx="300" cy="130" rx="65" ry="30" fill="white"/>
+    <ellipse cx="150" cy="110" rx="50" ry="30" fill="white"/>
+    
+    <ellipse cx="800" cy="180" rx="90" ry="50" fill="white"/>
+    <ellipse cx="850" cy="150" rx="70" ry="40" fill="white"/>
+    <ellipse cx="900" cy="190" rx="80" ry="35" fill="white"/>
+    <ellipse cx="750" cy="160" rx="60" ry="30" fill="white"/>
+  </g>
+  
+  <!-- Fields -->
+  <rect x="0" y="400" width="1200" height="400" fill="url(#fieldGradient)"/>
+  
+  <!-- Crop rows -->
+  <g opacity="0.9">
+    <rect x="50" y="450" width="1100" height="20" fill="url(#cropGradient)"/>
+    <rect x="50" y="500" width="1100" height="20" fill="url(#cropGradient)"/>
+    <rect x="50" y="550" width="1100" height="20" fill="url(#cropGradient)"/>
+    <rect x="50" y="600" width="1100" height="20" fill="url(#cropGradient)"/>
+    <rect x="50" y="650" width="1100" height="20" fill="url(#cropGradient)"/>
+    <rect x="50" y="700" width="1100" height="20" fill="url(#cropGradient)"/>
+  </g>
+  
+  <!-- Tractor -->
+  <g transform="translate(300, 500) scale(0.8)">
+    <!-- Tractor body -->
+    <rect x="100" y="100" width="150" height="60" rx="10" fill="url(#tractorGradient)"/>
+    <!-- Cabin -->
+    <rect x="200" y="40" width="70" height="60" rx="10" fill="url(#tractorGradient)"/>
+    <!-- Wheels -->
+    <circle cx="120" cy="170" r="30" fill="#424242" stroke="#212121" stroke-width="5"/>
+    <circle cx="120" cy="170" r="15" fill="#616161"/>
+    <circle cx="230" cy="170" r="40" fill="#424242" stroke="#212121" stroke-width="5"/>
+    <circle cx="230" cy="170" r="20" fill="#616161"/>
+  </g>
+  
+  <!-- Drone -->
+  <g transform="translate(800, 300) scale(0.5)">
+    <!-- Drone body -->
+    <rect x="90" y="90" width="60" height="60" rx="10" fill="#6991c7"/>
+    <!-- Propellers -->
+    <line x1="60" y1="60" x2="180" y2="180" stroke="#4b6cb7" stroke-width="5"/>
+    <line x1="180" y1="60" x2="60" y2="180" stroke="#4b6cb7" stroke-width="5"/>
+    <circle cx="60" cy="60" r="20" fill="#a8c0ff"/>
+    <circle cx="180" cy="60" r="20" fill="#a8c0ff"/>
+    <circle cx="60" cy="180" r="20" fill="#a8c0ff"/>
+    <circle cx="180" cy="180" r="20" fill="#a8c0ff"/>
+  </g>
+  
+  <!-- Trees -->
+  <g transform="translate(100, 350) scale(0.7)">
+    <rect x="40" y="60" width="20" height="60" fill="#795548"/>
+    <polygon points="50,0 10,60 90,60" fill="#2e7d32"/>
+    <polygon points="50,20 20,70 80,70" fill="#388e3c"/>
+  </g>
+  
+  <g transform="translate(1000, 350) scale(0.7)">
+    <rect x="40" y="60" width="20" height="60" fill="#795548"/>
+    <polygon points="50,0 10,60 90,60" fill="#2e7d32"/>
+    <polygon points="50,20 20,70 80,70" fill="#388e3c"/>
+  </g>
+  
+  <!-- Digital elements -->
+  <g opacity="0.7">
+    <!-- Data points -->
+    <circle cx="400" cy="480" r="5" fill="#4b6cb7"/>
+    <circle cx="600" cy="530" r="5" fill="#4b6cb7"/>
+    <circle cx="800" cy="580" r="5" fill="#4b6cb7"/>
+    <circle cx="500" cy="630" r="5" fill="#4b6cb7"/>
+    <circle cx="700" cy="680" r="5" fill="#4b6cb7"/>
+    
+    <!-- Connection lines -->
+    <line x1="400" y1="480" x2="600" y2="530" stroke="#6991c7" stroke-width="2" stroke-dasharray="5,5"/>
+    <line x1="600" y1="530" x2="800" y2="580" stroke="#6991c7" stroke-width="2" stroke-dasharray="5,5"/>
+    <line x1="800" y1="580" x2="500" y2="630" stroke="#6991c7" stroke-width="2" stroke-dasharray="5,5"/>
+    <line x1="500" y1="630" x2="700" y2="680" stroke="#6991c7" stroke-width="2" stroke-dasharray="5,5"/>
+  </g>
+</svg>
