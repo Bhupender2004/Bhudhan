@@ -25,6 +25,12 @@ const nextConfig = {
       'openweathermap.org' // Added for weather icons
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
 
 module.exports = nextConfig

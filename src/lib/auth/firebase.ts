@@ -21,7 +21,7 @@ let auth: ReturnType<typeof getAuth> | null;
 try {
   app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   auth = getAuth(app);
-} catch (error) {
+} catch {
   // Firebase initialization error
   // Create a fallback for demo purposes
   app = null;
@@ -42,7 +42,7 @@ export const sendOTP = async (phoneNumber: string, recaptchaVerifier: RecaptchaV
     // Real Firebase implementation
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     return confirmationResult;
-  } catch (error) {
+  } catch {
     // Error sending OTP
     // Return a mock confirmation result for demo purposes
     return { verificationId: 'demo-verification-id' };

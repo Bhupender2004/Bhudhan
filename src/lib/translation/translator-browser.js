@@ -256,7 +256,7 @@ export async function translateText(text, sourceLang = 'en', targetLang = 'en') 
     // In a real implementation, you would call an API here
     // Translation requested
     return text;
-  } catch (error) {
+  } catch {
     // Translation error occurred
     return text;
   }

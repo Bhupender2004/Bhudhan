@@ -42,7 +42,7 @@ export async function loadTranslations(locale) {
     translationCache[locale] = translations;
     
     return translations;
-  } catch (error) {
+  } catch {
     // Error loading translations
 
     // Fall back to English if translations can't be loaded

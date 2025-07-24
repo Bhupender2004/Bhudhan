@@ -53,7 +53,7 @@ export async function getForecast(city: string) {
     });
 
     return response.data;
-  } catch (error) {
+  } catch {
     // Error fetching weather forecast
 
     // Fallback to mock data on error
@@ -81,7 +81,7 @@ export async function getWeatherByCoordinates(lat: number, lon: number) {
     });
 
     return response.data;
-  } catch (error) {
+  } catch {
     // Error fetching weather by coordinates
 
     // Fallback to mock data on error
