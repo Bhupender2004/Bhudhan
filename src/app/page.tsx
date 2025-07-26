@@ -23,8 +23,14 @@ export default function Home() {
       {/* Header */}
       <header className="container mx-auto flex items-center justify-between px-4 py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-vibrant animate-glow">
-            <span className="text-lg font-bold text-white">BD</span>
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm animate-glow overflow-hidden">
+            <Image
+              src="/bhudhan url logo.jpg"
+              alt="BhuDhan Logo"
+              width={56}
+              height={56}
+              className="rounded-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-shimmer text-2xl font-bold">BhuDhan</span>
@@ -123,8 +129,14 @@ export default function Home() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600">
-                  <span className="text-sm font-bold text-white">BD</span>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm overflow-hidden">
+                  <Image
+                    src="/bhudhan url logo.jpg"
+                    alt="BhuDhan Logo"
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
+                  />
                 </div>
                 <span className="text-lg font-bold text-green-800 dark:text-green-200">BhuDhan Krishi</span>
               </div>

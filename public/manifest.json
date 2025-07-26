@@ -1,0 +1,26 @@
+{
+  "name": "BhuDhan - Where Intelligence Meets Agriculture",
+  "short_name": "BhuDhan",
+  "description": "A comprehensive platform for Indian farmers with marketplace, expert connect, weather updates, and more",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

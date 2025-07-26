@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   title: "BhuDhan - Where Intelligence Meets Agriculture",
   description: "A comprehensive platform for Indian farmers with marketplace, expert connect, weather updates, and more",
   keywords: ["agriculture", "farming", "bhudhan", "india", "farmers", "digital agriculture"],
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.ico',
+  },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
