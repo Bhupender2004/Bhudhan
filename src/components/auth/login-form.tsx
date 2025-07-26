@@ -81,7 +81,7 @@ export default function LoginForm() {
         toast.success('OTP Sent');
       }
       */
-    } catch (error) {
+    } catch {
       // Error sending OTP
       toast.error('Failed to send OTP. Please try again.');
     } finally {
@@ -144,7 +144,7 @@ export default function LoginForm() {
       toast.success('Login Successful');
       router.push('/dashboard');
       */
-    } catch (error) {
+    } catch {
       // Error verifying OTP
       toast.title('Error', {
         description: 'Failed to verify OTP. Please try again.',

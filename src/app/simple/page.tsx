@@ -38,7 +38,7 @@ export default function SimplePage() {
       
       // Redirect to dashboard
       router.push('/dashboard');
-    } catch (error) {
+    } catch {
       // Error logging in
       toast.error('Failed to log in. Please try again.');
     } finally {
