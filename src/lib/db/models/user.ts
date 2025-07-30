@@ -1,8 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IUser extends Document {
+  clerkId: string;
+  email: string;
   name: string;
-  phone: string;
+  phone?: string;
+  profileImage?: string;
   role: 'farmer' | 'shopkeeper' | 'expert' | 'admin';
   address?: {
     street?: string;
@@ -10,18 +13,28 @@ export interface IUser extends Document {
     state?: string;
     pincode?: string;
   };
+  farmDetails?: {
+    farmSize?: number; // in acres
+    cropTypes?: string[];
+    soilType?: string;
+    irrigationType?: string;
+  };
   preferredLanguage: string;
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const UserSchema: Schema = new Schema(
   {
+    clerkId: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    phone: { type: String, required: true, unique: true },
-    role: { 
-      type: String, 
-      required: true, 
+    phone: { type: String },
+    profileImage: { type: String },
+    role: {
+      type: String,
+      required: true,
       enum: ['farmer', 'shopkeeper', 'expert', 'admin'],
       default: 'farmer'
     },
@@ -31,11 +44,18 @@ const UserSchema: Schema = new Schema(
       state: { type: String },
       pincode: { type: String }
     },
-    preferredLanguage: { 
-      type: String, 
+    farmDetails: {
+      farmSize: { type: Number },
+      cropTypes: [{ type: String }],
+      soilType: { type: String },
+      irrigationType: { type: String }
+    },
+    preferredLanguage: {
+      type: String,
       default: 'en',
       enum: ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'gu', 'kn', 'ml', 'pa', 'or', 'as']
-    }
+    },
+    isVerified: { type: Boolean, default: false }
   },
   { timestamps: true }
 );
