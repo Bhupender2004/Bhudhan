@@ -41,9 +41,9 @@ export default function CropPriceCalculator() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white dark:bg-zinc-900 rounded-xl shadow-md p-6 mt-6 space-y-4 border border-green-200 dark:border-green-900 w-full">
-      <h2 className="text-xl font-semibold text-green-700 dark:text-green-300 flex items-center gap-2 mb-2">Crop Price Calculator <span>💰</span></h2>
-      <div className="space-y-3">
+    <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-none p-2 sm:p-4 space-y-3 border border-green-200 dark:border-green-900 w-full">
+      <h2 className="text-lg sm:text-xl font-semibold text-green-700 dark:text-green-300 flex items-center gap-2 mb-2">Crop Price Calculator <span>💰</span></h2>
+      <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Crop Name <span className="ml-1">🌾</span></label>
         <select
           className="w-full border rounded px-3 py-2 text-sm focus:outline-green-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-zinc-700"
@@ -56,7 +56,7 @@ export default function CropPriceCalculator() {
           ))}
         </select>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Quantity (Quintals) <span>⚖️</span></label>
         <input
           type="number"
@@ -67,7 +67,7 @@ export default function CropPriceCalculator() {
           placeholder="Enter quantity in quintals"
         />
       </div>
-      <div className="space-y-3">
+      <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Mandi Rate (₹/Quintal) <span>💸</span></label>
         <input
           type="number"
@@ -80,14 +80,14 @@ export default function CropPriceCalculator() {
       </div>
       {error && <div className="text-red-600 dark:text-red-400 text-sm font-medium">{error}</div>}
       <button
-        className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white font-semibold text-base py-2 px-4 rounded transition"
+        className="w-full bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white font-semibold text-base py-2 px-4 rounded transition shadow-md mt-2"
         onClick={handleCalculate}
         type="button"
       >
         Calculate
       </button>
       {total !== null && !error && (
-        <div className="mt-4 p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-900 rounded text-base text-green-800 dark:text-green-200 flex items-center gap-2 justify-center">
+        <div className="mt-2 p-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-900 rounded text-base text-green-800 dark:text-green-200 flex items-center gap-2 justify-center shadow-sm">
           <span>Estimated Total Price:</span>
           <span className="font-bold text-lg">₹{total.toLocaleString('en-IN')}</span>
         </div>

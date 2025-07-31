@@ -114,27 +114,27 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section id="features" className="relative z-50 mt-8 sm:mt-12 py-16 sm:py-20 md:py-28 bg-white dark:bg-gray-900 border-t-4 border-green-500">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-20">
-          <div className="inline-block px-4 py-2 bg-green-100 dark:bg-green-900 rounded-full mb-4">
-            <span className="text-green-800 dark:text-green-200 font-semibold text-sm">KEY FEATURES</span>
+    <section id="features" className="relative z-50 mt-4 sm:mt-5 py-4 sm:py-5 md:py-7 bg-white dark:bg-gray-900 border-t-4 border-green-500">
+      <div className="container mx-auto px-1 sm:px-2 lg:px-3">
+        <div className="text-center mb-3 sm:mb-5">
+          <div className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900 rounded-full mb-1">
+            <span className="text-green-800 dark:text-green-200 font-semibold text-[10px]">KEY FEATURES</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-green-800 dark:text-green-200">{t('keyFeaturesTitle')}</h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
+          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-green-800 dark:text-green-200">{t('keyFeaturesTitle')}</h2>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-snug">
             {t('keyFeaturesDescription')}
           </p>
         </div>
 
-        <div className="relative z-50 mb-8 sm:mb-12 bg-white dark:bg-gray-900 p-3 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <div className="relative z-50 mb-3 sm:mb-4 bg-white dark:bg-gray-900 p-1 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
+          <div className="flex flex-wrap justify-center gap-1 sm:gap-2">
             {getSupportedLanguages().map((lang) => (
               <Button
                 key={lang.code}
                 variant={currentLanguage === lang.code ? "default" : "outline"}
                 size="sm"
                 onClick={() => setLanguage(lang.code)}
-                className={`text-xs sm:text-sm px-3 py-2 transition-all duration-200 ${
+                className={`text-[10px] sm:text-xs px-2 py-1 transition-all duration-200 ${
                   currentLanguage === lang.code
                     ? 'bg-green-600 text-white shadow-lg'
                     : 'hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300'
@@ -147,91 +147,91 @@ export default function FeaturesSection() {
         </div>
 
         <Tabs defaultValue="overview" className="w-full">
-          <div className="relative z-50 mb-8 sm:mb-12 bg-white dark:bg-gray-900 p-3 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
-            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-transparent">
+          <div className="relative z-50 mb-4 sm:mb-6 bg-white dark:bg-gray-900 p-1 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
+          <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-transparent">
               <TabsList
-                className="flex w-max min-w-full gap-2 sm:gap-3 bg-green-50 dark:bg-green-900/50 rounded-lg p-2"
+                className="flex w-max min-w-full gap-1 sm:gap-2 bg-green-50 dark:bg-green-900/50 rounded-lg p-1"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
-                <TabsTrigger value="overview" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="overview" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('overview')}
                 </TabsTrigger>
-                <TabsTrigger value="marketplace" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="marketplace" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('marketplace')}
                 </TabsTrigger>
-                <TabsTrigger value="equipment" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="equipment" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('equipment')}
                 </TabsTrigger>
-                <TabsTrigger value="weather" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="weather" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('weather')}
                 </TabsTrigger>
-                <TabsTrigger value="expert" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="expert" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('expertConnect')}
                 </TabsTrigger>
-                <TabsTrigger value="ai" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="ai" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('aiTools')}
                 </TabsTrigger>
-                <TabsTrigger value="calendar" className="flex-shrink-0 text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-3 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger value="calendar" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
                   {t('cropCalendar')}
                 </TabsTrigger>
               </TabsList>
             </div>
           </div>
 
-          <TabsContent value="overview" className="relative z-50 space-y-8 sm:space-y-12 mt-6 sm:mt-8">
-            <div className="grid gap-6 sm:gap-8 md:gap-12">
-              {features.map((feature, index) => (
-                <Card key={index} className="bg-white dark:bg-gray-800 shadow-xl border-2 border-green-200 dark:border-green-700 rounded-2xl overflow-hidden">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
-                        {feature.icon}
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-xl sm:text-2xl font-bold text-green-800 dark:text-green-200">
-                          {feature.title}
-                        </CardTitle>
-                        <p className="text-gray-600 dark:text-gray-300 mt-2">
-                          {feature.description}
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleExpand(index)}
-                        className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200"
-                      >
-                        {expandedFeature === index ? <ChevronUp /> : <ChevronDown />}
-                      </Button>
+        <TabsContent value="overview" className="relative z-50 space-y-2 sm:space-y-3 mt-1 sm:mt-2">
+          <div className="grid gap-2 sm:gap-3 md:gap-4">
+            {features.map((feature, index) => (
+              <Card key={index} className="bg-white dark:bg-gray-800 shadow-xl border-2 border-green-200 dark:border-green-700 rounded-2xl overflow-hidden">
+                <CardHeader className="pb-1">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1 bg-green-100 dark:bg-green-900 rounded-full">
+                      {feature.icon}
                     </div>
-                  </CardHeader>
-                  {expandedFeature === index && (
-                    <CardContent className="pt-0">
-                      <div className="grid md:grid-cols-2 gap-6 items-center">
-                        <div className="relative h-[250px] sm:h-[300px] w-full rounded-xl overflow-hidden">
-                          <Image
-                            src={feature.image}
-                            alt={feature.title}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </div>
-                        <div className="space-y-4">
-                          <ul className="space-y-2 list-disc pl-5">
-                            {feature.details.map((detail, i) => (
-                              <li key={i} className="text-gray-600 dark:text-gray-300">
-                                {detail}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xs sm:text-sm font-bold text-green-800 dark:text-green-200">
+                        {feature.title}
+                      </CardTitle>
+                      <p className="text-gray-600 dark:text-gray-300 mt-0.5 text-[10px] sm:text-xs">
+                        {feature.description}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleExpand(index)}
+                      className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200"
+                    >
+                      {expandedFeature === index ? <ChevronUp /> : <ChevronDown />}
+                    </Button>
+                  </div>
+                </CardHeader>
+                {expandedFeature === index && (
+                  <CardContent className="pt-0">
+                    <div className="grid md:grid-cols-2 gap-2 items-center">
+                      <div className="relative h-[90px] sm:h-[120px] w-full rounded-xl overflow-hidden">
+                        <Image
+                          src={feature.image}
+                          alt={feature.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                        />
                       </div>
-                    </CardContent>
-                  )}
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+                      <div className="space-y-1">
+                        <ul className="space-y-0.5 list-disc pl-3">
+                          {feature.details.map((detail, i) => (
+                            <li key={i} className="text-gray-600 dark:text-gray-300 text-[10px] sm:text-xs">
+                              {detail}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
         </Tabs>
       </div>
     </section>
