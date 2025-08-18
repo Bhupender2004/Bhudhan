@@ -49,7 +49,7 @@ export default function FeaturesSection() {
         t('marketplaceDetail3'),
         t('marketplaceDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=Marketplace"
+  image: "/digital-marketplace.jpg"
     },
     {
       icon: <Tractor className="h-10 w-10 text-primary" />,
@@ -61,7 +61,7 @@ export default function FeaturesSection() {
         t('equipmentDetail3'),
         t('equipmentDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=Equipment"
+  image: "/Agriculture-Equipment.jpg"
     },
     {
       icon: <CloudSun className="h-10 w-10 text-primary" />,
@@ -73,7 +73,7 @@ export default function FeaturesSection() {
         t('weatherDetail3'),
         t('weatherDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=Weather"
+  image: "/Weather Intelligence.jpeg"
     },
     {
       icon: <MessageSquare className="h-10 w-10 text-primary" />,
@@ -85,7 +85,7 @@ export default function FeaturesSection() {
         t('expertConnectDetail3'),
         t('expertConnectDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=Expert+Connect"
+  image: "/Expert Connect.jpeg"
     },
     {
       icon: <Brain className="h-10 w-10 text-primary" />,
@@ -97,7 +97,7 @@ export default function FeaturesSection() {
         t('aiToolsDetail3'),
         t('aiToolsDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=AI+Tools"
+  image: "/AI-Powered Tools.jpeg"
     },
     {
       icon: <Calendar className="h-10 w-10 text-primary" />,
@@ -109,7 +109,7 @@ export default function FeaturesSection() {
         t('cropCalendarDetail3'),
         t('cropCalendarDetail4')
       ],
-      image: "https://placehold.co/600x400/e2f0d9/1d6f42?text=Crop+Calendar"
+  image: "/Crop Calendar.png"
     }
   ];
 
@@ -153,26 +153,11 @@ export default function FeaturesSection() {
                 className="flex w-max min-w-full gap-1 sm:gap-2 bg-green-50 dark:bg-green-900/50 rounded-lg p-1"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
-                <TabsTrigger value="overview" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <TabsTrigger
+                  value="overview"
+                  className="flex-shrink-0 text-[11px] sm:text-base md:text-lg px-3 py-1.5 sm:px-6 sm:py-2 font-semibold rounded-full transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-green-800 dark:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 max-w-full md:max-w-[320px] mx-auto text-center"
+                >
                   {t('overview')}
-                </TabsTrigger>
-                <TabsTrigger value="marketplace" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('marketplace')}
-                </TabsTrigger>
-                <TabsTrigger value="equipment" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('equipment')}
-                </TabsTrigger>
-                <TabsTrigger value="weather" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('weather')}
-                </TabsTrigger>
-                <TabsTrigger value="expert" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('expertConnect')}
-                </TabsTrigger>
-                <TabsTrigger value="ai" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('aiTools')}
-                </TabsTrigger>
-                <TabsTrigger value="calendar" className="flex-shrink-0 text-[10px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2 font-medium rounded-md transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400">
-                  {t('cropCalendar')}
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -188,10 +173,10 @@ export default function FeaturesSection() {
                       {feature.icon}
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-xs sm:text-sm font-bold text-green-800 dark:text-green-200">
+                      <CardTitle className="text-sm sm:text-lg font-bold text-green-800 dark:text-green-200">
                         {feature.title}
                       </CardTitle>
-                      <p className="text-gray-600 dark:text-gray-300 mt-0.5 text-[10px] sm:text-xs">
+                      <p className="text-gray-600 dark:text-gray-300 mt-1 text-xs sm:text-base">
                         {feature.description}
                       </p>
                     </div>
@@ -208,18 +193,21 @@ export default function FeaturesSection() {
                 {expandedFeature === index && (
                   <CardContent className="pt-0">
                     <div className="grid md:grid-cols-2 gap-2 items-center">
-                      <div className="relative h-[90px] sm:h-[120px] w-full rounded-xl overflow-hidden">
+                      <div className="relative flex items-center justify-center h-[90px] sm:h-[120px] w-full rounded-xl overflow-hidden bg-white dark:bg-gray-900">
                         <Image
                           src={feature.image}
                           alt={feature.title}
-                          fill
-                          style={{ objectFit: 'cover' }}
+                          fill={false}
+                          width={160}
+                          height={90}
+                          className="object-contain w-auto h-full max-h-[90px] sm:max-h-[120px] rounded-lg"
+                          sizes="(max-width: 640px) 90vw, 160px"
                         />
                       </div>
                       <div className="space-y-1">
                         <ul className="space-y-0.5 list-disc pl-3">
                           {feature.details.map((detail, i) => (
-                            <li key={i} className="text-gray-600 dark:text-gray-300 text-[10px] sm:text-xs">
+                            <li key={i} className="text-gray-600 dark:text-gray-300 text-xs sm:text-base">
                               {detail}
                             </li>
                           ))}
