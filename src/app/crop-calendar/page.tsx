@@ -175,10 +175,17 @@ export default function CropCalendarPage() {
     return filteredCrops;
   };
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 md:px-10">
+      <div className="flex items-center mb-2">
+        <a href="/dashboard">
+          <button className="mr-4 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded shadow transition-colors">
+            &#8592; Back to Dashboard
+          </button>
+        </a>
+        <h1 className="text-3xl font-bold tracking-tight">Crop Calendar</h1>
+      </div>
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Crop Calendar</h1>
           <p className="text-muted-foreground">
             Plan your farming activities with our seasonal crop calendar
           </p>

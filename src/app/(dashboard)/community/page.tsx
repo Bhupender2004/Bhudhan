@@ -14,32 +14,6 @@ import { Badge } from '@/components/ui/badge';
 import { ThumbsUp, MessageSquare, Share2, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/lib/context/language-context';
 
-// Define types for event and story
-interface CommunityEvent {
-  id: number;
-  title: string;
-  date?: string;
-  time?: string;
-  location?: string;
-  organizer?: string;
-  description?: string;
-  contactName?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  [key: string]: unknown;
-}
-
-interface Story {
-  id: number;
-  title: string;
-  content?: string;
-  author?: string;
-  date?: string;
-  likes?: number;
-  comments?: number;
-  [key: string]: unknown;
-}
-
 export default function FarmerSuccessStoriesPage() {
   useLanguage();
   const [, setActiveTab] = useState('success-stories');
@@ -47,8 +21,8 @@ export default function FarmerSuccessStoriesPage() {
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [isSubmitEventDialogOpen, setIsSubmitEventDialogOpen] = useState(false);
   const [isStoryDialogOpen, setIsStoryDialogOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<CommunityEvent | null>(null);
-  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [selectedStory, setSelectedStory] = useState<any>(null);
   const [likedStories, setLikedStories] = useState<number[]>([]);
   const [commentText, setCommentText] = useState('');
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
@@ -128,13 +102,13 @@ export default function FarmerSuccessStoriesPage() {
   };
 
   // Open event registration dialog
-  const openEventRegistration = (event: CommunityEvent) => {
+  const openEventRegistration = (event: any) => {
     setSelectedEvent(event);
     setIsEventDialogOpen(true);
   };
 
   // Open success story details dialog
-  const openStoryDetails = (story: Story) => {
+  const openStoryDetails = (story: any) => {
     setSelectedStory(story);
     setIsStoryDialogOpen(true);
   };
@@ -166,7 +140,7 @@ export default function FarmerSuccessStoriesPage() {
   };
 
   // Open comment dialog
-  const openCommentDialog = (story: Story, event?: React.MouseEvent) => {
+  const openCommentDialog = (story: any, event?: React.MouseEvent) => {
     // Prevent event propagation if called from a button inside a card
     if (event) {
       event.stopPropagation();
@@ -197,7 +171,7 @@ export default function FarmerSuccessStoriesPage() {
   };
 
   // Open share dialog
-  const openShareDialog = (story: Story, event?: React.MouseEvent) => {
+  const openShareDialog = (story: any, event?: React.MouseEvent) => {
     // Prevent event propagation if called from a button inside a card
     if (event) {
       event.stopPropagation();
@@ -533,92 +507,86 @@ export default function FarmerSuccessStoriesPage() {
       <Dialog open={isStoryDialogOpen} onOpenChange={setIsStoryDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           {selectedStory && (
-            (() => {
-              const farmer = typeof selectedStory.farmer === 'object' && selectedStory.farmer !== null ? selectedStory.farmer as { fallback?: string; name?: string; location?: string } : {};
-              const crops = Array.isArray(selectedStory.crops) ? selectedStory.crops as string[] : [];
-              return (
-                <div className="space-y-4">
-                  <DialogHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <Avatar>
-                        <AvatarFallback>{farmer.fallback}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <DialogTitle className="text-left">{farmer.name}</DialogTitle>
-                        <div className="text-xs text-muted-foreground">{farmer.location} • {selectedStory.date}</div>
-                      </div>
-                    </div>
-                  </DialogHeader>
-
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">{selectedStory.title}</h3>
-
-                    <div className="flex flex-wrap gap-2">
-                      {crops.map((crop: string) => (
-                        <Badge key={crop} variant="outline" className="bg-primary/5">{crop}</Badge>
-                      ))}
-                    </div>
-
-                    <div className="text-sm space-y-4">
-                      {selectedStory.content ? selectedStory.content.split('\n').map((paragraph: string, index: number) => (
-                        <p key={index}>{paragraph}</p>
-                      )) : null}
-                    </div>
-
-                    <div className="pt-4 border-t">
-                      <h4 className="text-sm font-medium mb-2">Impact</h4>
-                      <ul className="text-sm space-y-2">
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
-                          <span>Increased yield by approximately 40% compared to traditional methods</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
-                          <span>Reduced water usage by 30% through precision irrigation</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
-                          <span>Improved income stability through direct market access</span>
-                        </li>
-                      </ul>
-                    </div>
+            <div className="space-y-4">
+              <DialogHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Avatar>
+                    <AvatarFallback>{selectedStory.farmer.fallback}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <DialogTitle className="text-left">{selectedStory.farmer.name}</DialogTitle>
+                    <div className="text-xs text-muted-foreground">{selectedStory.farmer.location} • {selectedStory.date}</div>
                   </div>
-
-                  <DialogFooter className="flex justify-between border-t pt-4">
-                    <div className="flex gap-4">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={`flex items-center gap-1 ${likedStories.includes(selectedStory.id) ? 'text-primary' : 'text-muted-foreground'}`}
-                        onClick={() => handleLikeStory(selectedStory.id)}
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                        <span>{selectedStory.likes}</span>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="flex items-center gap-1 text-muted-foreground"
-                        onClick={() => openCommentDialog(selectedStory)}
-                      >
-                        <MessageSquare className="h-4 w-4" />
-                        <span>{selectedStory.comments}</span>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="flex items-center gap-1 text-muted-foreground"
-                        onClick={() => openShareDialog(selectedStory)}
-                      >
-                        <Share2 className="h-4 w-4" />
-                        <span>{typeof selectedStory.shares === 'number' ? selectedStory.shares : ''}</span>
-                      </Button>
-                    </div>
-                    <Button variant="outline" onClick={() => setIsStoryDialogOpen(false)}>Close</Button>
-                  </DialogFooter>
                 </div>
-              );
-            })()
+              </DialogHeader>
+
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold">{selectedStory.title}</h3>
+
+                <div className="flex flex-wrap gap-2">
+                  {selectedStory.crops.map((crop: string) => (
+                    <Badge key={crop} variant="outline" className="bg-primary/5">{crop}</Badge>
+                  ))}
+                </div>
+
+                <div className="text-sm space-y-4">
+                  {selectedStory.content.split('\n').map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
+                </div>
+
+                <div className="pt-4 border-t">
+                  <h4 className="text-sm font-medium mb-2">Impact</h4>
+                  <ul className="text-sm space-y-2">
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
+                      <span>Increased yield by approximately 40% compared to traditional methods</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
+                      <span>Reduced water usage by 30% through precision irrigation</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center flex-shrink-0 mt-0.5">+</div>
+                      <span>Improved income stability through direct market access</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <DialogFooter className="flex justify-between border-t pt-4">
+                <div className="flex gap-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`flex items-center gap-1 ${likedStories.includes(selectedStory.id) ? 'text-primary' : 'text-muted-foreground'}`}
+                    onClick={() => handleLikeStory(selectedStory.id)}
+                  >
+                    <ThumbsUp className="h-4 w-4" />
+                    <span>{selectedStory.likes}</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={() => openCommentDialog(selectedStory)}
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span>{selectedStory.comments}</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={() => openShareDialog(selectedStory)}
+                  >
+                    <Share2 className="h-4 w-4" />
+                    <span>{selectedStory.shares}</span>
+                  </Button>
+                </div>
+                <Button variant="outline" onClick={() => setIsStoryDialogOpen(false)}>Close</Button>
+              </DialogFooter>
+            </div>
           )}
         </DialogContent>
       </Dialog>

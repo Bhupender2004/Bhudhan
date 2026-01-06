@@ -120,8 +120,8 @@ export default function FeaturesSection() {
           <div className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900 rounded-full mb-1">
             <span className="text-green-800 dark:text-green-200 font-semibold text-[10px]">KEY FEATURES</span>
           </div>
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 text-green-800 dark:text-green-200">{t('keyFeaturesTitle')}</h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-snug">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 text-green-800 dark:text-green-200">{t('keyFeaturesTitle')}</h2>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-snug">
             {t('keyFeaturesDescription')}
           </p>
         </div>
@@ -173,10 +173,10 @@ export default function FeaturesSection() {
                       {feature.icon}
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-sm sm:text-lg font-bold text-green-800 dark:text-green-200">
+                      <CardTitle className="text-base sm:text-xl font-bold text-green-800 dark:text-green-200">
                         {feature.title}
                       </CardTitle>
-                      <p className="text-gray-600 dark:text-gray-300 mt-1 text-xs sm:text-base">
+                      <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm sm:text-lg">
                         {feature.description}
                       </p>
                     </div>
@@ -207,7 +207,7 @@ export default function FeaturesSection() {
                       <div className="space-y-1">
                         <ul className="space-y-0.5 list-disc pl-3">
                           {feature.details.map((detail, i) => (
-                            <li key={i} className="text-gray-600 dark:text-gray-300 text-xs sm:text-base">
+                            <li key={i} className="text-gray-600 dark:text-gray-300 text-sm sm:text-lg">
                               {detail}
                             </li>
                           ))}

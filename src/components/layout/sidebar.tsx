@@ -21,9 +21,10 @@ import {
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
+  onRouteClick?: () => void;
 }
 
-export default function Sidebar({ className, ...props }: SidebarProps) {
+export default function Sidebar({ className, onRouteClick, ...props }: SidebarProps) {
   const pathname = usePathname();
   const { t }: { t: (key: string) => string } = useLanguage();
 
@@ -125,6 +126,7 @@ export default function Sidebar({ className, ...props }: SidebarProps) {
               : 'text-gray-600 hover:bg-primary-50/50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-primary-900/20 dark:hover:text-primary-400'
           )}
           style={{ animationDelay: `${index * 50}ms` }}
+          onClick={onRouteClick}
         >
           {/* Active indicator */}
           {route.active && (

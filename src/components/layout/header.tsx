@@ -72,7 +72,7 @@ export default function Header() {
                   </div>
                 </Link>
               </div>
-              <Sidebar className="px-2" />
+              <Sidebar className="px-2" onRouteClick={() => setIsOpen(false)} />
             </SheetContent>
           </Sheet>
           <Link href="/dashboard" className="hidden items-center gap-3 md:flex transition-all duration-300 hover:scale-105">
