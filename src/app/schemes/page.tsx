@@ -126,9 +126,9 @@ export default function SchemesPage() {
     <div className="container mx-auto py-8">
       <div className="mb-6 flex items-center">
         <Link href="/dashboard">
-          <Button variant="ghost" size="sm" className="mr-2">
+          <Button variant="outline" className="mr-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back
           </Button>
         </Link>
         <h1 className="text-3xl font-bold">Government Schemes for Farmers</h1>
