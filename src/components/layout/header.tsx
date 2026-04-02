@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 import Sidebar from './sidebar';
+import Image from 'next/image';
 
 export default function Header() {
   const { user } = useUser();
@@ -63,8 +64,8 @@ export default function Header() {
                   className="flex items-center gap-2 font-bold"
                   onClick={() => setIsOpen(false)}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-primary">
-                    <span className="text-lg font-bold text-white">BD</span>
+                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-sm">
+                    <Image src="/logo.png" alt="BhuDhan Logo" fill className="object-cover" />
                   </div>
                   <div className="flex flex-col">
                     <span className="bg-gradient-to-r from-green-600 via-teal-500 to-blue-600 bg-clip-text text-xl font-bold text-transparent dark:from-green-400 dark:via-teal-400 dark:to-blue-400 logo-text-gradient">BhuDhan</span>
@@ -76,8 +77,8 @@ export default function Header() {
             </SheetContent>
           </Sheet>
           <Link href="/dashboard" className="hidden items-center gap-3 md:flex transition-all duration-300 hover:scale-105">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-primary animate-pulse-slow">
-              <span className="text-lg font-bold text-white">BD</span>
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-sm animate-pulse-slow">
+              <Image src="/logo.png" alt="BhuDhan Logo" fill className="object-cover" />
             </div>
             <div className="flex flex-col">
               <span className="bg-gradient-to-r from-green-600 via-teal-500 to-blue-600 bg-clip-text text-xl font-bold text-transparent dark:from-green-400 dark:via-teal-400 dark:to-blue-400 logo-text-gradient">BhuDhan</span>
