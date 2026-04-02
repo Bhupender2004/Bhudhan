@@ -15,7 +15,8 @@ import {
   Clock, 
   CheckCircle2, 
   XCircle,
-  AlertCircle
+  AlertCircle,
+  ArrowLeft
 } from 'lucide-react';
 
 // Mock data for seller products
@@ -146,6 +147,14 @@ export default function SellerDashboardPage() {
     <div className="container mx-auto py-10 px-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
+          <div className="mb-4">
+            <Link href="/dashboard">
+              <Button variant="outline">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to dashboard
+              </Button>
+            </Link>
+          </div>
           <h1 className="text-3xl font-bold">Seller Dashboard</h1>
           <p className="text-muted-foreground">Manage your products, orders, and seller account</p>
         </div>
