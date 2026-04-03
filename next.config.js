@@ -32,11 +32,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
-  },
+
 }
 
 module.exports = nextConfig
