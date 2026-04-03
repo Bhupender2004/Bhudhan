@@ -34,7 +34,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Current Weather</CardTitle>
           </CardHeader>
@@ -43,7 +43,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="h-[370px] flex flex-col">
+        <Card className="h-[370px] flex flex-col transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-1">
             <CardTitle className="text-sm font-medium">Crop Prices</CardTitle>
           </CardHeader>
@@ -52,7 +52,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="h-[370px] flex flex-col">
+        <Card className="h-[370px] flex flex-col transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-1">
             <CardTitle className="text-sm font-medium">Crop Price Calculator</CardTitle>
           </CardHeader>
@@ -61,7 +61,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Latest Schemes</CardTitle>
           </CardHeader>
@@ -70,7 +70,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Agricultural News</CardTitle>
           </CardHeader>
@@ -81,7 +81,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader>
             <CardTitle>Marketplace</CardTitle>
             <CardDescription>
@@ -100,7 +100,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader>
             <CardTitle>Expert Connect</CardTitle>
             <CardDescription>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader>
             <CardTitle>AI Tools</CardTitle>
             <CardDescription>
