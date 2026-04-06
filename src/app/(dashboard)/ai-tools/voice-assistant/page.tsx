@@ -211,261 +211,40 @@ The current waiting period for subsidy approval is approximately 30-45 days.` }
     // In a real implementation, this would start/stop audio playback
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
-    // Add user message
-    setMessages([...messages, { role: 'user', content: inputText }]);
+    const userMessage = { role: 'user' as const, content: inputText };
     
-    // Simulate AI response
-    setTimeout(() => {
-      let response = '';
-      
-      // Advanced pattern matching for more natural responses
-      const lowerInput = inputText.toLowerCase();
-      
-      // Weather related queries
-      if (lowerInput.includes('weather')) {
-        if (lowerInput.includes('forecast') || lowerInput.includes('predict') || lowerInput.includes('next') || lowerInput.includes('tomorrow')) {
-          response = `Based on the latest meteorological data for your region in Haryana, the forecast shows:
-
-• Today: Clear skies with temperatures between 26-32°C, humidity around 45%
-
-• Tomorrow: Partly cloudy with a slight chance (20%) of light showers in the evening, temperatures between 25-30°C
-
-• Next 3 days: Temperatures will gradually rise to 34°C with dry conditions suitable for field operations.`;
-        } else if (lowerInput.includes('rain') || lowerInput.includes('rainfall')) {
-          response = `The current rainfall prediction for your area shows a 20% chance of light showers tomorrow evening. The monthly rainfall so far is 45mm, which is about 15% below the seasonal average. I recommend planning any water-sensitive field operations for today while conditions remain dry.`;
-        } else {
-          response = `The current weather in your region shows clear skies with temperatures around 28°C and humidity at 45%. Wind speed is low at 5-10 km/h from the southwest. These conditions are favorable for most field activities including spraying and harvesting.`;
-        }
-      } 
-      
-      // Pest management queries
-      else if (lowerInput.includes('pest') || lowerInput.includes('insect') || lowerInput.includes('disease')) {
-        if (lowerInput.includes('wheat') || lowerInput.includes('gehun')) {
-          response = `For wheat crops in your region, the main concerns this season are:
-
-• Aphids: Currently at moderate risk levels. Look for clusters on new growth and honeydew secretion. Use neem-based sprays for early infestations.
-
-• Leaf rust: Risk is increasing with current humidity levels. Monitor for orange-brown pustules on leaves. Early application of propiconazole can be effective.
-
-• Powdery mildew: Low risk currently, but watch for white powdery patches if humidity increases.
-
-I recommend weekly scouting of your fields, focusing on field edges and areas with previous infestations.`;
-        } else if (lowerInput.includes('rice') || lowerInput.includes('paddy') || lowerInput.includes('chawal')) {
-          response = `For rice cultivation in your region, current pest alerts include:
-
-• Brown planthopper: Moderate to high risk with current temperatures. Check for hoppers at the base of plants and yellowing patches.
-
-• Stem borer: Early signs include dead hearts. Current risk is moderate.
-
-• Blast disease: Risk increases with fluctuating temperatures. Look for diamond-shaped lesions on leaves.
-
-Consider installing yellow sticky traps for monitoring and maintain optimal water levels to discourage certain pests.`;
-        } else {
-          response = `Based on current conditions in your region, pest pressure is moderate. I recommend implementing Integrated Pest Management (IPM) approaches including:
-
-• Regular monitoring using traps and visual inspection
-
-• Encouraging beneficial insects by maintaining diversity in field margins
-
-• Targeted use of biopesticides for early interventions
-
-• Cultural practices like crop rotation and timely planting
-
-• Chemical controls only when thresholds are exceeded
-
-Would you like specific recommendations for a particular crop?`;
-        }
-      } 
-      
-      // Fertilizer and soil nutrition queries
-      else if (lowerInput.includes('fertilizer') || lowerInput.includes('nutrient') || lowerInput.includes('soil health')) {
-        if (lowerInput.includes('wheat') || lowerInput.includes('gehun')) {
-          response = `For wheat cultivation in your region, I recommend:
-
-• Basal application: 60 kg N, 60 kg P2O5, and 40 kg K2O per hectare at sowing
-
-• Top dressing: Additional 60 kg N in two splits - first at crown root initiation (21-25 days) and second at tillering (45-50 days)
-
-• Micronutrients: Zinc deficiency is common in your area - apply 25 kg zinc sulfate per hectare
-
-• Consider soil test results for more precise recommendations. Current soil data for your region suggests watching for zinc and sulfur deficiencies.`;
-        } else if (lowerInput.includes('organic') || lowerInput.includes('natural') || lowerInput.includes('sustainable')) {
-          response = `For organic nutrient management, consider these approaches:
-
-• Compost application: 10-15 tonnes/hectare of well-decomposed compost before planting
-
-• Green manuring: Grow legumes like moong or cowpea and incorporate before flowering
-
-• Vermicompost: 5 tonnes/hectare provides balanced nutrition and improves soil biology
-
-• Biofertilizers: Azotobacter for non-legumes, Rhizobium for legumes, and PSB for phosphorus solubilization
-
-• Liquid formulations: Jeevamrut or Panchagavya as foliar sprays during vegetative growth
-
-These methods build long-term soil health while providing balanced nutrition.`;
-        } else {
-          response = `Based on typical soil conditions in your region, I recommend:
-
-• Conduct a soil test for precise recommendations - this is the most important first step
-
-• For most crops, a balanced NPK application (12-32-16 or similar) would be suitable as a starting point
-
-• Split nitrogen applications to improve efficiency and reduce losses
-
-• Include secondary nutrients (S, Ca, Mg) and micronutrients based on soil test results
-
-• Consider soil pH - current data shows your region has slightly alkaline soils (pH 7.5-8.2) which may affect nutrient availability
-
-• Incorporate organic matter to improve nutrient retention and soil structure`;
-        }
-      } 
-      
-      // Water and irrigation queries
-      else if (lowerInput.includes('water') || lowerInput.includes('irrigation')) {
-        if (lowerInput.includes('drip') || lowerInput.includes('micro')) {
-          response = `Drip irrigation is an excellent choice for your region. Benefits include:
-
-• Water savings of 30-60% compared to flood irrigation
-
-• Reduced weed growth between rows
-
-• Ability to apply fertilizers directly to the root zone (fertigation)
-
-• Lower disease pressure due to dry foliage
-
-• Government subsidies available under the PMKSY scheme (up to 55% for small farmers)
-
-For installation, I recommend consulting with suppliers like Netafim, Jain Irrigation, or local KVK centers for guidance specific to your crops and field conditions.`;
-        } else if (lowerInput.includes('schedule') || lowerInput.includes('timing') || lowerInput.includes('when')) {
-          response = `For optimal irrigation scheduling in your region:
-
-• Early morning irrigation (4-8 AM) is most efficient to reduce evaporation losses
-
-• For wheat at current growth stage: Irrigate at crown root initiation, tillering, jointing, flowering, and grain filling stages
-
-• Critical moisture-sensitive periods require special attention - flowering and grain development stages
-
-• Current soil moisture sensors indicate levels at 65% of field capacity - irrigation would be beneficial within the next 2-3 days
-
-• Adjust frequency based on temperature - current conditions suggest a 7-10 day interval for most crops`;
-        } else {
-          response = `For efficient water management in your region, I recommend:
-
-• Adopt water-efficient methods like drip or sprinkler irrigation where suitable
-
-• Implement irrigation scheduling based on crop water requirements and soil moisture status
-
-• Consider deficit irrigation strategies during less sensitive growth stages
-
-• Use mulching to reduce evaporation losses (organic mulch or plastic mulch)
-
-• Maintain irrigation infrastructure to prevent water losses through leakage
-
-• Harvest rainwater where possible to supplement irrigation needs
-
-• Current groundwater levels in your region are declining - conservation is increasingly important`;
-        }
-      }
-      
-      // Crop-specific advice
-      else if (lowerInput.includes('wheat') || lowerInput.includes('gehun')) {
-        response = `For wheat cultivation in your region:
-
-• Current optimal varieties: HD-3226, DBW-187, and PBW-752 show good performance
-
-• Sowing time: Late October to mid-November is ideal
-
-• Seed rate: 100 kg/ha for timely sowing, 125 kg/ha for late sowing
-
-• Spacing: 20-22.5 cm between rows
-
-• Major concerns: Yellow rust is showing increased incidence this season - monitor closely
-
-• Current market price: ₹2,125 per quintal at local mandis
-
-• Weather outlook is favorable for wheat development in the coming weeks`;
-      }
-      else if (lowerInput.includes('rice') || lowerInput.includes('paddy') || lowerInput.includes('chawal')) {
-        response = `For rice cultivation in your region:
-
-• Recommended varieties: Pusa Basmati-1509, PR-126, and HKR-47 are performing well
-
-• Transplanting: Complete by mid-July for optimal yields
-
-• Water management: Practice alternate wetting and drying to save water and reduce methane emissions
-
-• Current challenges: Bacterial leaf blight pressure is moderate - maintain field hygiene
-
-• Market outlook: Basmati prices are trending 15% higher than last season
-
-• Post-harvest: Ensure proper drying to 14% moisture content for storage`;
-      }
-      
-      // Market and prices
-      else if (lowerInput.includes('price') || lowerInput.includes('market') || lowerInput.includes('sell') || lowerInput.includes('mandi')) {
-        response = `Current market prices in your region:
-
-• Wheat: ₹2,125-2,200 per quintal (MSP: ₹2,125)
-
-• Paddy: ₹2,040-2,100 per quintal (MSP: ₹2,040)
-
-• Mustard: ₹5,450-5,650 per quintal (MSP: ₹5,450)
-
-• Cotton: ₹6,620-7,000 per quintal (MSP: ₹6,620)
-
-• Nearest active mandis: Rewari Grain Market, Bawal Agricultural Market
-
-• Market trend: Prices expected to remain stable for the next 2-3 weeks based on current demand and supply patterns`;
-      }
-      
-      // Government schemes
-      else if (lowerInput.includes('scheme') || lowerInput.includes('subsidy') || lowerInput.includes('government') || lowerInput.includes('yojana')) {
-        response = `Current agricultural schemes available in your region:
-
-• PM-KISAN: ₹6,000 annual direct benefit transfer - next installment due in April
-
-• Soil Health Card: Free soil testing available at nearest KVK center
-
-• PMFBY: Crop insurance scheme - last date for Kharif enrollment is July 15th
-
-• PMKSY: Subsidies for micro-irrigation (up to 55% for small farmers)
-
-• RKVY: Assistance for farm machinery and infrastructure
-
-• E-NAM: Online trading platform connecting to larger markets
-
-• For application assistance, visit your local Agriculture Department office or call the Kisan Call Center at 1800-180-1551`;
-      }
-      
-      // Fallback for other queries
-      else {
-        response = `Thank you for your question about ${inputText}. As your BhuDhan AI farming assistant, I can provide information on:
-
-• Weather forecasts and alerts
-
-• Crop-specific cultivation practices
-
-• Pest and disease management
-
-• Soil health and fertilizer recommendations
-
-• Irrigation management
-
-• Market prices and trends
-
-• Government schemes and subsidies
-
-Please feel free to ask about any of these topics, or specify your crop and region for more tailored advice.`;
-      }
-      
-      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-    }, 1000);
-    
+    // Add user message to UI immediately
+    setMessages(prev => [...prev, userMessage]);
     setInputText('');
+
+    try {
+      const response = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Send history context
+        body: JSON.stringify({ messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })) }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await response.json();
+      
+      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages(prev => [
+        ...prev, 
+        { role: 'assistant', content: 'Sorry, I am having trouble connecting to the network right now. Please try again later.' }
+      ]);
+    }
   };
 
   const loadConversation = (index: number) => {
