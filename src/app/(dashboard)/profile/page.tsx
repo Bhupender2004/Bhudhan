@@ -42,8 +42,8 @@ export default function ProfilePage() {
         if (street) setUserStreet(street);
         if (city) setUserCity(city);
         if (state) setUserState(state);
-        if (pincode) setUserPincode(pincode);
-        if (email) setUserEmail(email);
+        if (savedPincode) setUserPincode(savedPincode);
+        if (savedEmail) setUserEmail(savedEmail);
         if (savedImage) setProfileImage(savedImage);
 
         // Set a mock join date
