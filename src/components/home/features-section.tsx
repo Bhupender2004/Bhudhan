@@ -114,105 +114,98 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section id="features" className="relative z-50 mt-4 sm:mt-5 py-4 sm:py-5 md:py-7 bg-white dark:bg-gray-900 border-t-4 border-green-500">
-      <div className="container mx-auto px-1 sm:px-2 lg:px-3">
-        <div className="text-center mb-3 sm:mb-5">
-          <div className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900 rounded-full mb-1">
-            <span className="text-green-800 dark:text-green-200 font-semibold text-[10px]">KEY FEATURES</span>
+    <section id="features" className="relative z-50 py-12 sm:py-20 md:py-24 bg-white dark:bg-gray-900 border-t border-green-100 dark:border-green-800">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 sm:mb-16">
+          <div className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/50 rounded-full mb-4">
+            <span className="text-green-700 dark:text-green-300 font-bold text-xs tracking-wider uppercase">KEY FEATURES</span>
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 text-green-800 dark:text-green-200">{t('keyFeaturesTitle')}</h2>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-snug">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-green-900 dark:text-green-50 tracking-tight">
+            <span className="text-shimmer">{t('keyFeaturesTitle')}</span>
+          </h2>
+          <p className="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
             {t('keyFeaturesDescription')}
           </p>
         </div>
 
-        <div className="relative z-50 mb-3 sm:mb-4 bg-white dark:bg-gray-900 p-1 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
-          <div className="flex flex-wrap justify-center gap-1 sm:gap-2">
+        <div className="flex flex-col space-y-8 mb-12">
+          {/* Language Selector - Clean & Minimal */}
+          <div className="flex flex-wrap justify-center items-center gap-2 p-1.5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 w-fit mx-auto shadow-sm">
             {getSupportedLanguages().map((lang) => (
               <Button
                 key={lang.code}
-                variant={currentLanguage === lang.code ? "default" : "outline"}
+                variant={currentLanguage === lang.code ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setLanguage(lang.code)}
-                className={`text-[10px] sm:text-xs px-2 py-1 transition-all duration-200 ${
+                className={`text-xs sm:text-sm font-medium transition-all rounded-xl ${
                   currentLanguage === lang.code
-                    ? 'bg-green-600 text-white shadow-lg'
-                    : 'hover:bg-green-100 dark:hover:bg-green-800 text-gray-700 dark:text-gray-300'
+                    ? 'bg-green-600 text-white shadow-md hover:bg-green-700'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700'
                 }`}
               >
                 {lang.name}
               </Button>
             ))}
           </div>
-        </div>
 
-        <Tabs defaultValue="overview" className="w-full">
-          <div className="relative z-50 mb-4 sm:mb-6 bg-white dark:bg-gray-900 p-1 rounded-xl shadow-lg border-2 border-green-200 dark:border-green-700">
-          <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-200 scrollbar-track-transparent">
-              <TabsList
-                className="flex w-max min-w-full gap-1 sm:gap-2 bg-green-50 dark:bg-green-900/50 rounded-lg p-1"
-                style={{ WebkitOverflowScrolling: 'touch' }}
-              >
+          <Tabs defaultValue="overview" className="w-full">
+            <div className="flex justify-center mb-10">
+              <TabsList className="bg-green-50 dark:bg-green-900/20 p-1 rounded-2xl border border-green-100 dark:border-green-900/50">
                 <TabsTrigger
                   value="overview"
-                  className="flex-shrink-0 text-[11px] sm:text-base md:text-lg px-3 py-1.5 sm:px-6 sm:py-2 font-semibold rounded-full transition-all duration-200 shadow-none data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-green-100 dark:hover:bg-green-800 text-green-800 dark:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 max-w-full md:max-w-[320px] mx-auto text-center"
+                  className="px-8 py-2.5 text-sm sm:text-base font-bold rounded-xl transition-all data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-green-800 dark:text-green-200"
                 >
                   {t('overview')}
                 </TabsTrigger>
+                {/* Space for future tabs like 'Benefits' */}
               </TabsList>
             </div>
-          </div>
 
         <TabsContent value="overview" className="relative z-50 space-y-2 sm:space-y-3 mt-1 sm:mt-2">
-          <div className="grid gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="bg-white dark:bg-gray-800 shadow-xl border-2 border-green-200 dark:border-green-700 rounded-2xl overflow-hidden">
-                <CardHeader className="pb-1">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1 bg-green-100 dark:bg-green-900 rounded-full">
+              <Card key={index} className="group bg-white dark:bg-gray-800/50 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden flex flex-col">
+                <CardHeader className="p-6 pb-2">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-2xl text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-base sm:text-xl font-bold text-green-800 dark:text-green-200">
-                        {feature.title}
-                      </CardTitle>
-                      <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm sm:text-lg">
-                        {feature.description}
-                      </p>
                     </div>
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="icon"
                       onClick={() => toggleExpand(index)}
-                      className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200"
+                      className="text-gray-400 hover:text-green-600 dark:text-gray-500 dark:hover:text-green-400 rounded-full"
                     >
-                      {expandedFeature === index ? <ChevronUp /> : <ChevronDown />}
+                      {expandedFeature === index ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                     </Button>
                   </div>
+                  <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    {feature.title}
+                  </CardTitle>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed">
+                    {feature.description}
+                  </p>
                 </CardHeader>
                 {expandedFeature === index && (
-                  <CardContent className="pt-0">
-                    <div className="grid md:grid-cols-2 gap-2 items-center">
-                      <div className="relative flex items-center justify-center h-[90px] sm:h-[120px] w-full rounded-xl overflow-hidden bg-white dark:bg-gray-900">
+                  <CardContent className="p-6 pt-0 mt-auto">
+                    <div className="space-y-4 pt-4 border-t border-gray-50 dark:border-gray-800">
+                      <div className="relative h-[160px] w-full rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-900/50">
                         <Image
                           src={feature.image}
                           alt={feature.title}
-                          fill={false}
-                          width={160}
-                          height={90}
-                          className="object-contain w-auto h-full max-h-[90px] sm:max-h-[120px] rounded-lg"
-                          sizes="(max-width: 640px) 90vw, 160px"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       </div>
-                      <div className="space-y-1">
-                        <ul className="space-y-0.5 list-disc pl-3">
-                          {feature.details.map((detail, i) => (
-                            <li key={i} className="text-gray-600 dark:text-gray-300 text-sm sm:text-lg">
-                              {detail}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <ul className="space-y-2">
+                        {feature.details.map((detail, i) => (
+                          <li key={i} className="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+                            <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-500 flex-shrink-0" />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </CardContent>
                 )}
@@ -220,7 +213,8 @@ export default function FeaturesSection() {
             ))}
           </div>
         </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </div>
     </section>
   );
