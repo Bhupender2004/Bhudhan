@@ -17,6 +17,7 @@ export default function ProfileSettings() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [pincode, setPincode] = useState('');
+  const [email, setEmail] = useState('');
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -24,10 +25,22 @@ export default function ProfileSettings() {
     // Get user info from localStorage
     const savedName = localStorage.getItem('userName');
     const savedPhone = localStorage.getItem('userPhone');
+    const savedRole = localStorage.getItem('userRole');
+    const savedStreet = localStorage.getItem('userStreet');
+    const savedCity = localStorage.getItem('userCity');
+    const savedState = localStorage.getItem('userState');
+    const savedPincode = localStorage.getItem('userPincode');
+    const savedEmail = localStorage.getItem('userEmail');
     const savedImage = localStorage.getItem('userProfileImage');
 
     if (savedName) setName(savedName);
     if (savedPhone) setPhone(savedPhone);
+    if (savedRole) setRole(savedRole);
+    if (savedStreet) setStreet(savedStreet);
+    if (savedCity) setCity(savedCity);
+    if (savedState) setState(savedState);
+    if (savedPincode) setPincode(savedPincode);
+    if (savedEmail) setEmail(savedEmail);
     if (savedImage) setProfileImage(savedImage);
 
     // In a real implementation, we would fetch the user's profile from the API
@@ -37,8 +50,18 @@ export default function ProfileSettings() {
     // Save to localStorage for demo purposes
     localStorage.setItem('userName', name);
     localStorage.setItem('userPhone', phone);
+    localStorage.setItem('userRole', role);
+    localStorage.setItem('userStreet', street);
+    localStorage.setItem('userCity', city);
+    localStorage.setItem('userState', state);
+    localStorage.setItem('userPincode', pincode);
+    localStorage.setItem('userEmail', email);
+    if (profileImage) localStorage.setItem('userProfileImage', profileImage);
 
     toast.success('Profile updated successfully');
+
+    // Trigger an event to notify other components (like Header) to update
+    window.dispatchEvent(new Event('userProfileUpdated'));
 
     // In a real implementation, this would update the user's profile in the database
   };
@@ -86,6 +109,17 @@ export default function ProfileSettings() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Enter your phone number"
+          />
+        </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email Address</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email address"
           />
         </div>
 

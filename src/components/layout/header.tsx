@@ -7,7 +7,7 @@ import { User } from 'lucide-react';
 import LanguageSelector from '@/components/language/language-selector';
 import { useLanguage } from '@/lib/context/language-context';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
@@ -20,6 +20,7 @@ export default function Header() {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState<string>('User');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
@@ -27,18 +28,33 @@ export default function Header() {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    // Only run in browser environment
-    if (typeof window !== 'undefined') {
-      // Get user info from localStorage
-      const name = localStorage.getItem('userName');
-      const phone = localStorage.getItem('userPhone');
+    const updateUserInfo = () => {
+      // Only run in browser environment
+      if (typeof window !== 'undefined') {
+        // Get user info from localStorage
+        const name = localStorage.getItem('userName');
+        const phone = localStorage.getItem('userPhone');
+        const savedImage = localStorage.getItem('userProfileImage');
 
-      if (name) {
-        setUserName(name);
-      } else if (phone) {
-        setUserName(phone.substring(phone.length - 4)); // Last 4 digits of phone as fallback
+        if (name) {
+          setUserName(name);
+        } else if (phone) {
+          setUserName(phone.substring(phone.length - 4)); // Last 4 digits of phone as fallback
+        }
+
+        if (savedImage) {
+          setProfileImage(savedImage);
+        } else {
+          setProfileImage(null);
+        }
       }
-    }
+    };
+
+    updateUserInfo();
+
+    // Listen for profile updates
+    window.addEventListener('userProfileUpdated', updateUserInfo);
+    return () => window.removeEventListener('userProfileUpdated', updateUserInfo);
   }, []);
 
   return (
@@ -168,6 +184,7 @@ export default function Header() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full icon-hover-effect hover:ring-2 hover:ring-primary/50">
                 <Avatar className="border-2 border-primary-200 dark:border-primary-800">
+                  {profileImage && <AvatarImage src={profileImage} alt={userName} />}
                   <AvatarFallback className="bg-gradient-primary text-white">
                     {user?.firstName?.[0] || userName?.[0] || <User className="h-5 w-5" />}
                   </AvatarFallback>

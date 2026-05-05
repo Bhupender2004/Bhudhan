@@ -11,49 +11,64 @@ import Link from 'next/link';
 import ImageUpload from '@/components/profile/image-upload';
 
 export default function ProfilePage() {
-  useLanguage();
   const [userName, setUserName] = useState('');
   const [userPhone, setUserPhone] = useState('');
   const [joinDate, setJoinDate] = useState('');
+  const [userRole, setUserRole] = useState('Farmer');
+  const [userStreet, setUserStreet] = useState('');
+  const [userCity, setUserCity] = useState('');
+  const [userState, setUserState] = useState('');
+  const [userPincode, setUserPincode] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Only run in browser environment
-    if (typeof window !== 'undefined') {
-      const name = localStorage.getItem('userName');
-      const phone = localStorage.getItem('userPhone');
+    const loadUserData = () => {
+      // Only run in browser environment
+      if (typeof window !== 'undefined') {
+        const name = localStorage.getItem('userName');
+        const phone = localStorage.getItem('userPhone');
+        const role = localStorage.getItem('userRole');
+        const street = localStorage.getItem('userStreet');
+        const city = localStorage.getItem('userCity');
+        const state = localStorage.getItem('userState');
+        const savedPincode = localStorage.getItem('userPincode');
+        const savedEmail = localStorage.getItem('userEmail');
+        const savedImage = localStorage.getItem('userProfileImage');
 
-      if (name) {
-        setUserName(name);
-      }
+        if (name) setUserName(name);
+        if (phone) setUserPhone(phone);
+        if (role) setUserRole(role.charAt(0).toUpperCase() + role.slice(1));
+        if (street) setUserStreet(street);
+        if (city) setUserCity(city);
+        if (state) setUserState(state);
+        if (pincode) setUserPincode(pincode);
+        if (email) setUserEmail(email);
+        if (savedImage) setProfileImage(savedImage);
 
-      if (phone) {
-        setUserPhone(phone);
+        // Set a mock join date
+        const storedJoinDate = localStorage.getItem('userJoinDate');
+        if (storedJoinDate) {
+          setJoinDate(storedJoinDate);
+        } else {
+          const mockJoinDate = new Date();
+          mockJoinDate.setMonth(mockJoinDate.getMonth() - 3);
+          const formattedDate = mockJoinDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          localStorage.setItem('userJoinDate', formattedDate);
+          setJoinDate(formattedDate);
+        }
       }
+    };
 
-      // Get profile image if exists
-      const savedImage = localStorage.getItem('userProfileImage');
-      if (savedImage) {
-        setProfileImage(savedImage);
-      }
+    loadUserData();
 
-      // Set a mock join date
-      const storedJoinDate = localStorage.getItem('userJoinDate');
-      if (storedJoinDate) {
-        setJoinDate(storedJoinDate);
-      } else {
-        // If no join date exists, create one and store it
-        const mockJoinDate = new Date();
-        mockJoinDate.setMonth(mockJoinDate.getMonth() - 3); // 3 months ago
-        const formattedDate = mockJoinDate.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        localStorage.setItem('userJoinDate', formattedDate);
-        setJoinDate(formattedDate);
-      }
-    }
+    // Listen for profile updates
+    window.addEventListener('userProfileUpdated', loadUserData);
+    return () => window.removeEventListener('userProfileUpdated', loadUserData);
   }, []);
 
   return (
@@ -77,7 +92,7 @@ export default function ProfilePage() {
               />
             </div>
             <CardTitle className="mt-4">{userName || 'User'}</CardTitle>
-            <CardDescription>Farmer</CardDescription>
+            <CardDescription>{userRole}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -87,11 +102,11 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-primary-500" />
-                <span>user@example.com</span>
+                <span>{userEmail || 'user@example.com'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-primary-500" />
-                <span>Rewari, Haryana</span>
+                <span>{userStreet || userCity ? `${userStreet}${userStreet && userCity ? ', ' : ''}${userCity}${userCity && userState ? ', ' : ''}${userState}` : 'Rewari, Haryana'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-primary-500" />

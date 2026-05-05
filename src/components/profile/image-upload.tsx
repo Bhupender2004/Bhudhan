@@ -24,6 +24,11 @@ export default function ImageUpload({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  // Sync internal state with prop changes
+  useEffect(() => {
+    setImage(initialImage || null);
+  }, [initialImage]);
+
   const sizeClasses = {
     sm: 'h-16 w-16',
     md: 'h-24 w-24',
