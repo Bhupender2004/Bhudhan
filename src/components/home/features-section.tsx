@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 interface FeatureProps {
   icon: React.ReactNode;
   title: string;
@@ -164,8 +166,25 @@ export default function FeaturesSection() {
         <TabsContent value="overview" className="relative z-50 space-y-2 sm:space-y-3 mt-1 sm:mt-2">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="group bg-white dark:bg-gray-800/50 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden flex flex-col">
-                <CardHeader className="p-6 pb-2">
+              <Card 
+                key={index} 
+                className={`group bg-white dark:bg-gray-800/50 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden flex flex-col ${expandedFeature === index ? 'ring-2 ring-green-500/20 shadow-xl' : ''}`}
+                onMouseEnter={() => {
+                  if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+                    setExpandedFeature(index);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+                    setExpandedFeature(null);
+                  }
+                }}
+              >
+                <CardHeader className="p-6 pb-2 cursor-pointer md:cursor-default" onClick={() => {
+                  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                    toggleExpand(index);
+                  }
+                }}>
                   <div className="flex items-start justify-between mb-4">
                     <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-2xl text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
@@ -173,7 +192,10 @@ export default function FeaturesSection() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => toggleExpand(index)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpand(index);
+                      }}
                       className="text-gray-400 hover:text-green-600 dark:text-gray-500 dark:hover:text-green-400 rounded-full"
                     >
                       {expandedFeature === index ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
@@ -186,29 +208,39 @@ export default function FeaturesSection() {
                     {feature.description}
                   </p>
                 </CardHeader>
-                {expandedFeature === index && (
-                  <CardContent className="p-6 pt-0 mt-auto">
-                    <div className="space-y-4 pt-4 border-t border-gray-50 dark:border-gray-800">
-                      <div className="relative h-[160px] w-full rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-900/50">
-                        <Image
-                          src={feature.image}
-                          alt={feature.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </div>
-                      <ul className="space-y-2">
-                        {feature.details.map((detail, i) => (
-                          <li key={i} className="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                            <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-500 flex-shrink-0" />
-                            <span>{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-                )}
+                <AnimatePresence>
+                  {expandedFeature === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <CardContent className="p-6 pt-0 mt-auto">
+                        <div className="space-y-4 pt-4 border-t border-gray-50 dark:border-gray-800">
+                          <div className="relative h-[160px] w-full rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-900/50">
+                            <Image
+                              src={feature.image}
+                              alt={feature.title}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                          </div>
+                          <ul className="space-y-2">
+                            {feature.details.map((detail, i) => (
+                              <li key={i} className="flex items-start gap-2 text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+                                <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-500 flex-shrink-0" />
+                                <span>{detail}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </CardContent>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </Card>
             ))}
           </div>
