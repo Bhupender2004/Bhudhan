@@ -301,37 +301,47 @@ export default function CropCalendarPage() {
                 <span>Filter</span>
               </Button>
             </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Filter Crops</SheetTitle>
-                <SheetDescription>
-                  Refine your crop search by name, region, or season.
+            <SheetContent className="sm:max-w-md w-full px-0">
+              <SheetHeader className="px-6 pb-6 border-b">
+                <SheetTitle className="text-2xl font-bold">Filter Crops</SheetTitle>
+                <SheetDescription className="text-sm">
+                  Refine your crop search by name, region, or season to plan your farming.
                 </SheetDescription>
               </SheetHeader>
-              <div className="space-y-6 py-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Search</label>
-                  <div className="relative">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              
+              <div className="flex flex-col h-[calc(100vh-120px)] overflow-y-auto px-6 py-8 space-y-10">
+                {/* Search Section */}
+                <div className="space-y-4">
+                  <label htmlFor="search-crops" className="text-sm font-bold flex items-center gap-2 text-foreground tracking-tight uppercase">
+                    <Search className="h-4 w-4 text-green-600" />
+                    Search Crops
+                  </label>
+                  <div className="relative group">
                     <Input
-                      placeholder="Search crops..."
-                      className="pl-8"
+                      id="search-crops"
+                      placeholder="e.g. Wheat, Rice..."
+                      className="h-12 px-4 border-muted-foreground/20 focus-visible:ring-green-500 transition-all text-base"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Region</label>
+
+                {/* Region Section */}
+                <div className="space-y-4">
+                  <label className="text-sm font-bold flex items-center gap-2 text-foreground tracking-tight uppercase">
+                    <MapPin className="h-4 w-4 text-green-600" />
+                    Preferred Region
+                  </label>
                   <Select
                     value={selectedRegion}
                     onValueChange={setSelectedRegion}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Region" />
+                    <SelectTrigger className="h-12 w-full border-muted-foreground/20 focus:ring-green-500 text-base">
+                      <SelectValue placeholder="All India" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Regions</SelectItem>
+                      <SelectItem value="all">All India (Default)</SelectItem>
                       <SelectItem value="north">North India</SelectItem>
                       <SelectItem value="south">South India</SelectItem>
                       <SelectItem value="east">East India</SelectItem>
@@ -340,21 +350,52 @@ export default function CropCalendarPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="pt-4 flex gap-2">
+
+                {/* Season Section */}
+                <div className="space-y-4">
+                  <label className="text-sm font-bold flex items-center gap-2 text-foreground tracking-tight uppercase">
+                    <CalendarIcon className="h-4 w-4 text-green-600" />
+                    Crop Season
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {['Kharif', 'Rabi', 'Zaid', 'All Seasons'].map((s) => (
+                      <Button
+                        key={s}
+                        variant="outline"
+                        className={`h-11 font-medium transition-all hover:border-green-500 hover:text-green-600 ${s === 'All Seasons' ? 'col-span-2' : ''}`}
+                      >
+                        {s}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Status/Badge Section for visual flair */}
+                <div className="pt-2">
+                  <div className="bg-green-50 dark:bg-green-900/10 rounded-xl p-4 border border-green-100 dark:border-green-900/20">
+                    <p className="text-xs text-green-800 dark:text-green-400 font-medium leading-relaxed">
+                      Pro Tip: Select your specific region to see crops that are most suitable for your local climate and soil conditions.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-6 flex flex-col gap-4">
                   <Button 
-                    className="flex-1" 
+                    className="w-full h-14 text-lg font-bold bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-[0.98]" 
                     onClick={() => setIsFilterOpen(false)}
                   >
-                    Apply Filters
+                    Apply Preferences
                   </Button>
                   <Button 
-                    variant="outline" 
+                    variant="ghost" 
+                    className="w-full h-10 text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-colors"
                     onClick={() => {
                       setSearchTerm('');
                       setSelectedRegion('all');
                     }}
                   >
-                    Reset
+                    Clear all selections
                   </Button>
                 </div>
               </div>
