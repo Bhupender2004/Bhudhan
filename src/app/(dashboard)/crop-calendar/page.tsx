@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { CalendarIcon, Filter, X } from 'lucide-react';
+import { CalendarIcon, Filter, X, LayoutGrid, Search, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
 
 // Metadata is moved to layout.tsx for client components
 
@@ -135,10 +137,97 @@ const cropCalendarData: CropData[] = [
   }
 ];
 
+const months = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+
+const getMonthIndex = (monthStr: string) => {
+  const m = monthStr.toLowerCase().substring(0, 3);
+  return months.findIndex(month => month.toLowerCase() === m);
+};
+
+const isCropActiveInMonth = (crop: CropData, monthIndex: number) => {
+  // Parsing logic for sowing and harvest times
+  const sowingParts = crop.sowingTime.split(/[-–,]/).map(s => s.trim());
+  const harvestParts = crop.harvestTime.split(/[-–,]/).map(s => s.trim());
+  
+  if (sowingParts.length === 0 || harvestParts.length === 0) return false;
+
+  const startMonth = getMonthIndex(sowingParts[0]);
+  const endMonth = getMonthIndex(harvestParts[harvestParts.length - 1]);
+
+  if (startMonth === -1 || endMonth === -1) {
+      if (crop.season.toLowerCase().includes('year-round')) return true;
+      return false;
+  }
+
+  if (startMonth <= endMonth) {
+    return monthIndex >= startMonth && monthIndex <= endMonth;
+  } else {
+    return monthIndex >= startMonth || monthIndex <= endMonth;
+  }
+};
+
+const MonthlyCalendarView = ({ crops }: { crops: CropData[] }) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Monthly Crop Cycle</CardTitle>
+        <CardDescription>Visual representation of sowing and harvesting periods</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto pb-4">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[150px] bg-background sticky left-0 z-10">Crop</TableHead>
+                {months.map(m => (
+                  <TableHead key={m} className="text-center px-1 min-w-[50px]">{m}</TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {crops.map(crop => (
+                <TableRow key={crop.id}>
+                  <TableCell className="font-medium bg-background sticky left-0 z-10 border-r">{crop.crop}</TableCell>
+                  {months.map((_, i) => {
+                    const isActive = isCropActiveInMonth(crop, i);
+                    return (
+                      <TableCell key={i} className="p-1 border-x h-12">
+                        <div 
+                          className={`h-full w-full rounded-sm transition-all ${isActive ? 'bg-green-500 shadow-sm' : 'bg-muted/30'}`}
+                          title={isActive ? `${crop.crop} is active in ${months[i]}` : ''}
+                        />
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-6 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 bg-green-500 rounded-sm shadow-sm" />
+            <span className="text-muted-foreground">Active Period (Sowing to Harvest)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 bg-muted/30 rounded-sm" />
+            <span className="text-muted-foreground">Dormant Period</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 export default function CropCalendarPage() {
   const [selectedCrop, setSelectedCrop] = useState<CropData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const [viewMode, setViewMode] = useState<'grid' | 'calendar'>('grid');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');
 
@@ -186,32 +275,112 @@ export default function CropCalendarPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-8 gap-1">
-            <CalendarIcon className="h-3.5 w-3.5" />
-            <span>View by Month</span>
+          <Button 
+            variant={viewMode === 'calendar' ? 'default' : 'outline'} 
+            size="sm" 
+            className="h-8 gap-1"
+            onClick={() => setViewMode(viewMode === 'grid' ? 'calendar' : 'grid')}
+          >
+            {viewMode === 'grid' ? (
+              <>
+                <CalendarIcon className="h-3.5 w-3.5" />
+                <span>View by Month</span>
+              </>
+            ) : (
+              <>
+                <LayoutGrid className="h-3.5 w-3.5" />
+                <span>Grid View</span>
+              </>
+            )}
           </Button>
-          <Button variant="outline" size="sm" className="h-8 gap-1">
-            <Filter className="h-3.5 w-3.5" />
-            <span>Filter</span>
-          </Button>
+
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 gap-1">
+                <Filter className="h-3.5 w-3.5" />
+                <span>Filter</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Filter Crops</SheetTitle>
+                <SheetDescription>
+                  Refine your crop search by name, region, or season.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="space-y-6 py-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Search</label>
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search crops..."
+                      className="pl-8"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Region</label>
+                  <Select
+                    value={selectedRegion}
+                    onValueChange={setSelectedRegion}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Region" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Regions</SelectItem>
+                      <SelectItem value="north">North India</SelectItem>
+                      <SelectItem value="south">South India</SelectItem>
+                      <SelectItem value="east">East India</SelectItem>
+                      <SelectItem value="west">West India</SelectItem>
+                      <SelectItem value="central">Central India</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="pt-4 flex gap-2">
+                  <Button 
+                    className="flex-1" 
+                    onClick={() => setIsFilterOpen(false)}
+                  >
+                    Apply Filters
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      setSearchTerm('');
+                      setSelectedRegion('all');
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
 
       <Tabs defaultValue="all">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between overflow-x-auto pb-2 sm:overflow-visible">
           <TabsList>
             <TabsTrigger value="all">All Crops</TabsTrigger>
             <TabsTrigger value="kharif">Kharif</TabsTrigger>
             <TabsTrigger value="rabi">Rabi</TabsTrigger>
             <TabsTrigger value="zaid">Zaid</TabsTrigger>
           </TabsList>
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder="Search crops..."
-              className="h-8 w-[150px] lg:w-[250px]"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="hidden items-center gap-2 md:flex">
+            <div className="relative">
+              <Search className="absolute left-2 top-2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search crops..."
+                className="h-8 w-[150px] pl-8 lg:w-[250px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
             <Select
               value={selectedRegion}
               onValueChange={setSelectedRegion}
@@ -232,163 +401,13 @@ export default function CropCalendarPage() {
         </div>
 
         <TabsContent value="all" className="mt-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filterCrops(cropCalendarData, 'all').map((crop) => (
-              <Card key={crop.id}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle>{crop.crop}</CardTitle>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openCropDetails(crop)}
-                    >
-                      Details
-                    </Button>
-                  </div>
-                  <CardDescription>Season: {crop.season}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-2 text-sm">
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Sowing Time</div>
-                      <div className="col-span-2">{crop.sowingTime}</div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Harvest Time</div>
-                      <div className="col-span-2">{crop.harvestTime}</div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Region</div>
-                      <div className="col-span-2">{crop.region}</div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Soil Type</div>
-                      <div className="col-span-2">{crop.soilType}</div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Water Need</div>
-                      <div className="col-span-2">{crop.waterRequirement}</div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-1">
-                      <div className="font-medium">Expected Yield</div>
-                      <div className="col-span-2">{crop.expectedYield}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="kharif" className="mt-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filterCrops(cropCalendarData, 'kharif').map((crop) => (
-                <Card key={crop.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle>{crop.crop}</CardTitle>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openCropDetails(crop)}
-                      >
-                        Details
-                      </Button>
-                    </div>
-                    <CardDescription>Season: {crop.season}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-2 text-sm">
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Sowing Time</div>
-                        <div className="col-span-2">{crop.sowingTime}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Harvest Time</div>
-                        <div className="col-span-2">{crop.harvestTime}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Region</div>
-                        <div className="col-span-2">{crop.region}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Soil Type</div>
-                        <div className="col-span-2">{crop.soilType}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Water Need</div>
-                        <div className="col-span-2">{crop.waterRequirement}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Expected Yield</div>
-                        <div className="col-span-2">{crop.expectedYield}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="rabi" className="mt-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filterCrops(cropCalendarData, 'rabi').map((crop) => (
-                <Card key={crop.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle>{crop.crop}</CardTitle>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openCropDetails(crop)}
-                      >
-                        Details
-                      </Button>
-                    </div>
-                    <CardDescription>Season: {crop.season}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-2 text-sm">
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Sowing Time</div>
-                        <div className="col-span-2">{crop.sowingTime}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Harvest Time</div>
-                        <div className="col-span-2">{crop.harvestTime}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Region</div>
-                        <div className="col-span-2">{crop.region}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Soil Type</div>
-                        <div className="col-span-2">{crop.soilType}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Water Need</div>
-                        <div className="col-span-2">{crop.waterRequirement}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Expected Yield</div>
-                        <div className="col-span-2">{crop.expectedYield}</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="zaid" className="mt-4">
-          {filterCrops(cropCalendarData, 'zaid').length > 0 ? (
+          {viewMode === 'grid' ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filterCrops(cropCalendarData, 'zaid').map((crop) => (
-                <Card key={crop.id}>
+              {filterCrops(cropCalendarData, 'all').map((crop) => (
+                <Card key={crop.id} className="overflow-hidden border-t-4 border-t-green-500">
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
-                      <CardTitle>{crop.crop}</CardTitle>
+                      <CardTitle className="text-lg">{crop.crop}</CardTitle>
                       <Button
                         variant="outline"
                         size="sm"
@@ -397,39 +416,183 @@ export default function CropCalendarPage() {
                         Details
                       </Button>
                     </div>
-                    <CardDescription>Season: {crop.season}</CardDescription>
+                    <CardDescription className="flex items-center gap-2">
+                      <Badge variant="secondary" className="font-normal">{crop.season}</Badge>
+                      <span className="flex items-center gap-1 text-xs">
+                        <MapPin className="h-3 w-3" />
+                        {crop.region}
+                      </span>
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-2 text-sm">
                       <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Sowing Time</div>
-                        <div className="col-span-2">{crop.sowingTime}</div>
+                        <div className="text-muted-foreground">Sowing</div>
+                        <div className="col-span-2 font-medium">{crop.sowingTime}</div>
                       </div>
                       <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Harvest Time</div>
-                        <div className="col-span-2">{crop.harvestTime}</div>
+                        <div className="text-muted-foreground">Harvest</div>
+                        <div className="col-span-2 font-medium">{crop.harvestTime}</div>
                       </div>
                       <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Region</div>
-                        <div className="col-span-2">{crop.region}</div>
+                        <div className="text-muted-foreground">Soil</div>
+                        <div className="col-span-2 line-clamp-1">{crop.soilType}</div>
                       </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Soil Type</div>
-                        <div className="col-span-2">{crop.soilType}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Water Need</div>
-                        <div className="col-span-2">{crop.waterRequirement}</div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1">
-                        <div className="font-medium">Expected Yield</div>
-                        <div className="col-span-2">{crop.expectedYield}</div>
+                      <div className="grid grid-cols-3 gap-1 pt-1 border-t">
+                        <div className="text-muted-foreground">Water</div>
+                        <div className="col-span-2">
+                          <Badge variant="outline" className="font-normal text-[10px]">{crop.waterRequirement}</Badge>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
+          ) : (
+            <MonthlyCalendarView crops={filterCrops(cropCalendarData, 'all')} />
+          )}
+        </TabsContent>
+
+        <TabsContent value="kharif" className="mt-4">
+          {viewMode === 'grid' ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filterCrops(cropCalendarData, 'kharif').map((crop) => (
+                  <Card key={crop.id} className="overflow-hidden border-t-4 border-t-green-500">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">{crop.crop}</CardTitle>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openCropDetails(crop)}
+                        >
+                          Details
+                        </Button>
+                      </div>
+                      <CardDescription className="flex items-center gap-2">
+                        <Badge variant="secondary" className="font-normal">{crop.season}</Badge>
+                        <span className="flex items-center gap-1 text-xs">
+                          <MapPin className="h-3 w-3" />
+                          {crop.region}
+                        </span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-2 text-sm">
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Sowing</div>
+                          <div className="col-span-2 font-medium">{crop.sowingTime}</div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Harvest</div>
+                          <div className="col-span-2 font-medium">{crop.harvestTime}</div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Soil</div>
+                          <div className="col-span-2 line-clamp-1">{crop.soilType}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          ) : (
+            <MonthlyCalendarView crops={filterCrops(cropCalendarData, 'kharif')} />
+          )}
+        </TabsContent>
+
+        <TabsContent value="rabi" className="mt-4">
+          {viewMode === 'grid' ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filterCrops(cropCalendarData, 'rabi').map((crop) => (
+                  <Card key={crop.id} className="overflow-hidden border-t-4 border-t-green-500">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">{crop.crop}</CardTitle>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openCropDetails(crop)}
+                        >
+                          Details
+                        </Button>
+                      </div>
+                      <CardDescription className="flex items-center gap-2">
+                        <Badge variant="secondary" className="font-normal">{crop.season}</Badge>
+                        <span className="flex items-center gap-1 text-xs">
+                          <MapPin className="h-3 w-3" />
+                          {crop.region}
+                        </span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-2 text-sm">
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Sowing</div>
+                          <div className="col-span-2 font-medium">{crop.sowingTime}</div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Harvest</div>
+                          <div className="col-span-2 font-medium">{crop.harvestTime}</div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Soil</div>
+                          <div className="col-span-2 line-clamp-1">{crop.soilType}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          ) : (
+            <MonthlyCalendarView crops={filterCrops(cropCalendarData, 'rabi')} />
+          )}
+        </TabsContent>
+
+        <TabsContent value="zaid" className="mt-4">
+          {filterCrops(cropCalendarData, 'zaid').length > 0 ? (
+            viewMode === 'grid' ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filterCrops(cropCalendarData, 'zaid').map((crop) => (
+                  <Card key={crop.id} className="overflow-hidden border-t-4 border-t-green-500">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">{crop.crop}</CardTitle>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openCropDetails(crop)}
+                        >
+                          Details
+                        </Button>
+                      </div>
+                      <CardDescription className="flex items-center gap-2">
+                        <Badge variant="secondary" className="font-normal">{crop.season}</Badge>
+                        <span className="flex items-center gap-1 text-xs">
+                          <MapPin className="h-3 w-3" />
+                          {crop.region}
+                        </span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-2 text-sm">
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Sowing</div>
+                          <div className="col-span-2 font-medium">{crop.sowingTime}</div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="text-muted-foreground">Harvest</div>
+                          <div className="col-span-2 font-medium">{crop.harvestTime}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <MonthlyCalendarView crops={filterCrops(cropCalendarData, 'zaid')} />
+            )
           ) : (
             <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
               <div className="text-center">
