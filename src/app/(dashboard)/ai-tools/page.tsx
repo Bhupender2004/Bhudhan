@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
@@ -9,6 +10,51 @@ export const metadata: Metadata = {
 };
 
 export default function AIToolsPage() {
+  const tools = [
+    {
+      title: 'Crop Disease Detection',
+      description: 'Upload images of your crops to identify diseases and get treatment recommendations',
+      image: '/images/ai-tools/disease-detection.png',
+      href: '/ai-tools/disease-detection',
+      alt: 'Identify Plant Diseases'
+    },
+    {
+      title: 'Voice Assistant',
+      description: 'Ask farming questions in your local language and get instant answers',
+      image: '/images/ai-tools/voice-assistant.png',
+      href: '/ai-tools/voice-assistant',
+      alt: 'Voice-Powered Assistance'
+    },
+    {
+      title: 'Yield Prediction',
+      description: 'Predict your crop yield based on historical data and current conditions',
+      image: '/images/ai-tools/yield-prediction.png',
+      href: '/ai-tools/yield-prediction',
+      alt: 'Predict Your Harvest'
+    },
+    {
+      title: 'BhuDhan Irrigation',
+      description: 'Get personalized irrigation schedules based on weather and soil conditions',
+      image: '/images/ai-tools/smart-irrigation.png',
+      href: '/ai-tools/smart-irrigation',
+      alt: 'Optimize Water Usage'
+    },
+    {
+      title: 'Pest Prediction',
+      description: 'Forecast potential pest outbreaks based on environmental conditions',
+      image: '/images/ai-tools/pest-prediction.png',
+      href: '/ai-tools/pest-prediction',
+      alt: 'Stay Ahead of Pests'
+    },
+    {
+      title: 'Soil Analysis',
+      description: 'Upload soil images to get composition analysis and crop recommendations',
+      image: '/images/ai-tools/soil-analysis.png',
+      href: '/ai-tools/soil-analysis',
+      alt: 'Understand Your Soil'
+    }
+  ];
+
   return (
     <div className="space-y-6">
       <div>
@@ -19,119 +65,30 @@ export default function AIToolsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Crop Disease Detection</CardTitle>
-            <CardDescription>
-              Upload images of your crops to identify diseases and get treatment recommendations
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-red-100 to-orange-100 flex items-center justify-center">
-              <p className="text-red-800 font-medium">Identify Plant Diseases</p>
+        {tools.map((tool) => (
+          <Card key={tool.title} className="overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+            <div className="relative h-48 w-full">
+              <Image
+                src={tool.image}
+                alt={tool.alt}
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
             </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/disease-detection" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Voice Assistant</CardTitle>
-            <CardDescription>
-              Ask farming questions in your local language and get instant answers
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
-              <p className="text-blue-800 font-medium">Voice-Powered Assistance</p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/voice-assistant" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Yield Prediction</CardTitle>
-            <CardDescription>
-              Predict your crop yield based on historical data and current conditions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-green-100 to-emerald-100 flex items-center justify-center">
-              <p className="text-green-800 font-medium">Predict Your Harvest</p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/yield-prediction" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>BhuDhan Irrigation</CardTitle>
-            <CardDescription>
-              Get personalized irrigation schedules based on weather and soil conditions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-cyan-100 to-sky-100 flex items-center justify-center">
-              <p className="text-cyan-800 font-medium">Optimize Water Usage</p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/smart-irrigation" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Pest Prediction</CardTitle>
-            <CardDescription>
-              Forecast potential pest outbreaks based on environmental conditions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-amber-100 to-yellow-100 flex items-center justify-center">
-              <p className="text-amber-800 font-medium">Stay Ahead of Pests</p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/pest-prediction" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Soil Analysis</CardTitle>
-            <CardDescription>
-              Upload soil images to get composition analysis and crop recommendations
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 rounded-md bg-gradient-to-r from-brown-100 to-amber-100 flex items-center justify-center">
-              <p className="text-amber-900 font-medium">Understand Your Soil</p>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Link href="/ai-tools/soil-analysis" className="w-full">
-              <Button className="w-full">Try Now</Button>
-            </Link>
-          </CardFooter>
-        </Card>
+            <CardHeader>
+              <CardTitle>{tool.title}</CardTitle>
+              <CardDescription>
+                {tool.description}
+              </CardDescription>
+            </CardHeader>
+            <div className="flex-grow"></div>
+            <CardFooter>
+              <Link href={tool.href} className="w-full">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white">Try Now</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </div>
   );
