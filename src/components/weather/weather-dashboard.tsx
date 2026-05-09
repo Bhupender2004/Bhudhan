@@ -5,7 +5,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, CloudSun, CloudRain, Sun, Cloud, Wind, Droplets } from 'lucide-react';
+import { 
+  Loader2, CloudSun, CloudRain, Sun, Cloud, Wind, 
+  Droplets, Search, MapPin, Thermometer, 
+  SunMedium, Umbrella, Waves, Sprout, 
+  ArrowUpRight, Navigation, Gauge, Eye
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface WeatherData {
   location: string;
@@ -17,6 +25,7 @@ interface WeatherData {
     pressure: number;
     visibility: number;
     icon: string;
+    feelsLike: number;
   };
   forecast: {
     date: string;
@@ -38,6 +47,7 @@ interface WeatherData {
     evaporation: number;
     uvIndex: number;
     rainProbability: number;
+    soilTemp: number;
   };
 }
 
@@ -47,29 +57,21 @@ export default function WeatherDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
-  // Map OpenWeatherMap icon codes to our internal icon names
   const mapWeatherIconToName = (iconCode: string): string => {
-    // OpenWeatherMap icon codes: https://openweathermap.org/weather-conditions
-    if (iconCode.includes('01')) return 'sun'; // clear sky
-    if (iconCode.includes('02') || iconCode.includes('03')) return 'cloud-sun'; // few/scattered clouds
-    if (iconCode.includes('04')) return 'cloud'; // broken/overcast clouds
-    if (iconCode.includes('09') || iconCode.includes('10')) return 'cloud-rain'; // rain
-    if (iconCode.includes('11')) return 'cloud-lightning'; // thunderstorm
-    if (iconCode.includes('13')) return 'cloud-snow'; // snow
-    if (iconCode.includes('50')) return 'cloud-fog'; // mist/fog
-    return 'cloud-sun'; // default
+    if (iconCode.includes('01')) return 'sun';
+    if (iconCode.includes('02') || iconCode.includes('03')) return 'cloud-sun';
+    if (iconCode.includes('04')) return 'cloud';
+    if (iconCode.includes('09') || iconCode.includes('10')) return 'cloud-rain';
+    if (iconCode.includes('11')) return 'cloud-lightning';
+    if (iconCode.includes('13')) return 'cloud-snow';
+    if (iconCode.includes('50')) return 'cloud-fog';
+    return 'cloud-sun';
   };
 
-  // Fetch real weather data from OpenWeatherMap API
   const fetchWeather = async () => {
     try {
       setLoading(true);
-
-      // Import the weather API functions
       const { getCurrentWeather } = await import('@/lib/api/weather');
-
-      // Fetch current weather data
       const weatherData = await getCurrentWeather(location);
 
       setWeather({
@@ -80,73 +82,18 @@ export default function WeatherDashboard() {
           humidity: weatherData.main.humidity,
           windSpeed: weatherData.wind.speed,
           pressure: weatherData.main.pressure,
-          visibility: weatherData.visibility / 1000, // Convert to km
-          icon: mapWeatherIconToName(weatherData.weather[0].icon)
+          visibility: weatherData.visibility / 1000,
+          icon: mapWeatherIconToName(weatherData.weather[0].icon),
+          feelsLike: Math.round(weatherData.main.feels_like || weatherData.main.temp)
         },
         forecast: [
-          {
-            date: '2025-04-09',
-            day: 'Today',
-            maxTemp: 32,
-            minTemp: 24,
-            condition: 'Sunny',
-            icon: 'sun',
-            precipitation: 0
-          },
-          {
-            date: '2025-04-10',
-            day: 'Tomorrow',
-            maxTemp: 33,
-            minTemp: 25,
-            condition: 'Partly Cloudy',
-            icon: 'cloud-sun',
-            precipitation: 10
-          },
-          {
-            date: '2025-04-11',
-            day: 'Friday',
-            maxTemp: 30,
-            minTemp: 23,
-            condition: 'Rain',
-            icon: 'cloud-rain',
-            precipitation: 60
-          },
-          {
-            date: '2025-04-12',
-            day: 'Saturday',
-            maxTemp: 29,
-            minTemp: 22,
-            condition: 'Rain',
-            icon: 'cloud-rain',
-            precipitation: 70
-          },
-          {
-            date: '2025-04-13',
-            day: 'Sunday',
-            maxTemp: 28,
-            minTemp: 21,
-            condition: 'Cloudy',
-            icon: 'cloud',
-            precipitation: 30
-          },
-          {
-            date: '2025-04-14',
-            day: 'Monday',
-            maxTemp: 30,
-            minTemp: 22,
-            condition: 'Partly Cloudy',
-            icon: 'cloud-sun',
-            precipitation: 20
-          },
-          {
-            date: '2025-04-15',
-            day: 'Tuesday',
-            maxTemp: 31,
-            minTemp: 23,
-            condition: 'Sunny',
-            icon: 'sun',
-            precipitation: 0
-          }
+          { day: 'Today', maxTemp: 32, minTemp: 24, condition: 'Sunny', icon: 'sun', precipitation: 0, date: '1' },
+          { day: 'Tomorrow', maxTemp: 33, minTemp: 25, condition: 'Partly Cloudy', icon: 'cloud-sun', precipitation: 10, date: '2' },
+          { day: 'Friday', maxTemp: 30, minTemp: 23, condition: 'Rain', icon: 'cloud-rain', precipitation: 60, date: '3' },
+          { day: 'Saturday', maxTemp: 29, minTemp: 22, condition: 'Rain', icon: 'cloud-rain', precipitation: 70, date: '4' },
+          { day: 'Sunday', maxTemp: 28, minTemp: 21, condition: 'Cloudy', icon: 'cloud', precipitation: 30, date: '5' },
+          { day: 'Monday', maxTemp: 30, minTemp: 22, condition: 'Partly Cloudy', icon: 'cloud-sun', precipitation: 20, date: '6' },
+          { day: 'Tuesday', maxTemp: 31, minTemp: 23, condition: 'Sunny', icon: 'sun', precipitation: 0, date: '7' }
         ],
         hourly: [
           { time: '06:00', temperature: 26, condition: 'Sunny', icon: 'sun' },
@@ -161,7 +108,8 @@ export default function WeatherDashboard() {
           soilMoisture: 35,
           evaporation: 5.2,
           uvIndex: 8,
-          rainProbability: 10
+          rainProbability: 10,
+          soilTemp: 22
         }
       });
       setLoading(false);
@@ -172,7 +120,6 @@ export default function WeatherDashboard() {
 
   useEffect(() => {
     fetchWeather();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const handleLocationChange = (e: React.FormEvent<HTMLFormElement>) => {
@@ -182,109 +129,15 @@ export default function WeatherDashboard() {
     }
   };
 
-  // Add geolocation support for 'Use Current Location' button
   const handleUseCurrentLocation = () => {
     if (navigator.geolocation) {
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           try {
-            // Import the weather API functions
             const { getWeatherByCoordinates } = await import('@/lib/api/weather');
             const weatherData = await getWeatherByCoordinates(position.coords.latitude, position.coords.longitude);
             setLocation(weatherData.name);
-            setWeather({
-              location: weatherData.name,
-              current: {
-                temperature: Math.round(weatherData.main.temp),
-                condition: weatherData.weather[0].description,
-                humidity: weatherData.main.humidity,
-                windSpeed: weatherData.wind.speed,
-                pressure: weatherData.main.pressure,
-                visibility: weatherData.visibility / 1000, // Convert to km
-                icon: mapWeatherIconToName(weatherData.weather[0].icon)
-              },
-              forecast: [
-                {
-                  date: '2025-04-09',
-                  day: 'Today',
-                  maxTemp: 32,
-                  minTemp: 24,
-                  condition: 'Sunny',
-                  icon: 'sun',
-                  precipitation: 0
-                },
-                {
-                  date: '2025-04-10',
-                  day: 'Tomorrow',
-                  maxTemp: 33,
-                  minTemp: 25,
-                  condition: 'Partly Cloudy',
-                  icon: 'cloud-sun',
-                  precipitation: 10
-                },
-                {
-                  date: '2025-04-11',
-                  day: 'Friday',
-                  maxTemp: 30,
-                  minTemp: 23,
-                  condition: 'Rain',
-                  icon: 'cloud-rain',
-                  precipitation: 60
-                },
-                {
-                  date: '2025-04-12',
-                  day: 'Saturday',
-                  maxTemp: 29,
-                  minTemp: 22,
-                  condition: 'Rain',
-                  icon: 'cloud-rain',
-                  precipitation: 70
-                },
-                {
-                  date: '2025-04-13',
-                  day: 'Sunday',
-                  maxTemp: 28,
-                  minTemp: 21,
-                  condition: 'Cloudy',
-                  icon: 'cloud',
-                  precipitation: 30
-                },
-                {
-                  date: '2025-04-14',
-                  day: 'Monday',
-                  maxTemp: 30,
-                  minTemp: 22,
-                  condition: 'Partly Cloudy',
-                  icon: 'cloud-sun',
-                  precipitation: 20
-                },
-                {
-                  date: '2025-04-15',
-                  day: 'Tuesday',
-                  maxTemp: 31,
-                  minTemp: 23,
-                  condition: 'Sunny',
-                  icon: 'sun',
-                  precipitation: 0
-                }
-              ],
-              hourly: [
-                { time: '06:00', temperature: 26, condition: 'Sunny', icon: 'sun' },
-                { time: '09:00', temperature: 28, condition: 'Sunny', icon: 'sun' },
-                { time: '12:00', temperature: 31, condition: 'Sunny', icon: 'sun' },
-                { time: '15:00', temperature: 32, condition: 'Sunny', icon: 'sun' },
-                { time: '18:00', temperature: 30, condition: 'Partly Cloudy', icon: 'cloud-sun' },
-                { time: '21:00', temperature: 27, condition: 'Partly Cloudy', icon: 'cloud-sun' },
-                { time: '00:00', temperature: 25, condition: 'Cloudy', icon: 'cloud' }
-              ],
-              agricultural: weather?.agricultural || {
-                soilMoisture: 35,
-                evaporation: 5.2,
-                uvIndex: 8,
-                rainProbability: 10
-              }
-            });
             setLoading(false);
           } catch {
             setError('Failed to fetch weather for your location');
@@ -296,232 +149,290 @@ export default function WeatherDashboard() {
           setLoading(false);
         }
       );
-    } else {
-      setError('Geolocation is not supported by your browser');
     }
   };
 
-  const getWeatherIcon = (icon: string) => {
+  const getWeatherIcon = (icon: string, size = "h-8 w-8") => {
     switch (icon) {
-      case 'sun':
-        return <Sun className="h-8 w-8 text-yellow-500" />;
-      case 'cloud-sun':
-        return <CloudSun className="h-8 w-8 text-blue-400" />;
-      case 'cloud':
-        return <Cloud className="h-8 w-8 text-gray-400" />;
-      case 'cloud-rain':
-        return <CloudRain className="h-8 w-8 text-blue-600" />;
-      default:
-        return <CloudSun className="h-8 w-8 text-blue-400" />;
+      case 'sun': return <Sun className={cn(size, "text-amber-500")} />;
+      case 'cloud-sun': return <CloudSun className={cn(size, "text-sky-400")} />;
+      case 'cloud': return <Cloud className={cn(size, "text-slate-400")} />;
+      case 'cloud-rain': return <CloudRain className={cn(size, "text-blue-500")} />;
+      default: return <CloudSun className={cn(size, "text-sky-400")} />;
     }
   };
 
   if (loading && !weather) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-64 flex-col items-center justify-center text-center">
-        <p className="text-muted-foreground">{error}</p>
+      <div className="flex h-96 items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-10 w-10 animate-spin text-green-600 mx-auto" />
+          <p className="text-muted-foreground font-medium">Gathering agricultural insights...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="w-full md:w-2/3">
-          <form onSubmit={handleLocationChange} className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Enter city or location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full"
-            />
-            <Button type="submit">Search</Button>
-          </form>
-        </div>
-        <div className="w-full md:w-1/3">
-          <Button variant="outline" className="w-full" onClick={handleUseCurrentLocation}>
-            Use Current Location
-          </Button>
-        </div>
+    <div className="space-y-8 pb-10">
+      {/* Location Bar */}
+      <div className="flex flex-col md:flex-row items-center gap-4 bg-white/50 dark:bg-gray-900/50 p-2 rounded-2xl border border-border shadow-sm">
+        <form onSubmit={handleLocationChange} className="relative flex-1 w-full">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search city for farming weather..."
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full pl-10 h-12 bg-transparent border-none focus-visible:ring-0 text-base font-medium"
+          />
+        </form>
+        <div className="h-8 w-[1px] bg-border hidden md:block" />
+        <Button 
+          variant="ghost" 
+          onClick={handleUseCurrentLocation}
+          className="h-12 px-6 rounded-xl text-green-700 dark:text-green-400 font-bold hover:bg-green-50 dark:hover:bg-green-900/20 gap-2 w-full md:w-auto"
+        >
+          <MapPin className="h-4 w-4" />
+          Current Location
+        </Button>
+        <Button 
+          type="submit"
+          onClick={() => fetchWeather()}
+          className="h-12 px-8 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold shadow-lg shadow-green-600/20 w-full md:w-auto"
+        >
+          Search
+        </Button>
       </div>
 
-      {weather && (
-        <>
-          <Card className="overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-500 to-cyan-400 p-6 text-white">
-              <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                <div>
-                  <h2 className="text-2xl font-bold">{weather.location}</h2>
-                  <p className="text-lg">{weather.current.condition}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  {getWeatherIcon(weather.current.icon)}
-                  <span className="text-5xl font-bold">{weather.current.temperature}°C</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Droplets className="h-5 w-5" />
+      <AnimatePresence mode="wait">
+        {weather && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            {/* Main Weather Card */}
+            <div className="relative overflow-hidden rounded-3xl group">
+              {/* Sky Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 dark:from-sky-900 dark:via-blue-900 dark:to-indigo-950 transition-all duration-700 group-hover:scale-105" />
+              
+              {/* Decorative Clouds/Atmosphere */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-400/20 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
+
+              <div className="relative p-8 md:p-12 text-white z-10">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 px-3 py-1 bg-white/20 rounded-full w-fit backdrop-blur-md border border-white/20">
+                      <MapPin className="h-3.5 w-3.5" />
+                      <span className="text-xs font-bold uppercase tracking-wider">{weather.location}</span>
+                    </div>
                     <div>
-                      <p className="font-medium">Humidity</p>
-                      <p>{weather.current.humidity}%</p>
+                      <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-2">
+                        {weather.current.temperature}°
+                      </h2>
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl md:text-3xl font-bold capitalize opacity-90">{weather.current.condition}</span>
+                        <div className="h-6 w-[1px] bg-white/30" />
+                        <span className="text-lg font-medium opacity-70">Feels like {weather.current.feelsLike}°</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Wind className="h-5 w-5" />
-                    <div>
-                      <p className="font-medium">Wind</p>
-                      <p>{weather.current.windSpeed} km/h</p>
-                    </div>
+
+                  <div className="flex-shrink-0 animate-float">
+                    {getWeatherIcon(weather.current.icon, "h-32 w-32 md:h-48 md:w-48 text-white filter drop-shadow-2xl")}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
+                    {[
+                      { icon: Droplets, label: 'Humidity', value: `${weather.current.humidity}%`, color: 'bg-blue-500/20' },
+                      { icon: Wind, label: 'Wind', value: `${weather.current.windSpeed} km/h`, color: 'bg-indigo-500/20' },
+                      { icon: Gauge, label: 'Pressure', value: `${weather.current.pressure} hPa`, color: 'bg-emerald-500/20' },
+                      { icon: Eye, label: 'Visibility', value: `${weather.current.visibility} km`, color: 'bg-amber-500/20' }
+                    ].map((stat, i) => (
+                      <div key={i} className={cn("p-4 rounded-2xl backdrop-blur-xl border border-white/20 transition-transform hover:scale-105", stat.color)}>
+                        <stat.icon className="h-5 w-5 mb-2 opacity-80" />
+                        <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">{stat.label}</p>
+                        <p className="text-xl font-bold">{stat.value}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-          </Card>
 
-          <Tabs defaultValue="forecast">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="forecast">7-Day Forecast</TabsTrigger>
-              <TabsTrigger value="hourly">Hourly Forecast</TabsTrigger>
-              <TabsTrigger value="agricultural">Agricultural Data</TabsTrigger>
-            </TabsList>
+            {/* Dashboard Tabs */}
+            <Tabs defaultValue="forecast" className="space-y-6">
+              <TabsList className="flex w-full max-w-2xl bg-white/50 dark:bg-gray-900/50 p-1.5 rounded-2xl border border-border shadow-sm h-16">
+                <TabsTrigger value="forecast" className="flex-1 rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-md font-bold text-base transition-all gap-2 h-full">
+                  <SunMedium className="h-4 w-4" />
+                  7-Day
+                </TabsTrigger>
+                <TabsTrigger value="hourly" className="flex-1 rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-md font-bold text-base transition-all gap-2 h-full">
+                  <Navigation className="h-4 w-4" />
+                  Hourly
+                </TabsTrigger>
+                <TabsTrigger value="agricultural" className="flex-1 rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-md font-bold text-base transition-all gap-2 h-full">
+                  <Sprout className="h-4 w-4" />
+                  Farming
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="forecast" className="mt-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
-                {weather.forecast.map((day) => (
-                  <Card key={day.date}>
-                    <CardHeader className="pb-2 pt-4">
-                      <CardTitle className="text-center text-sm">{day.day}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pb-4 pt-0 text-center">
-                      <div className="mb-2 flex justify-center">
-                        {getWeatherIcon(day.icon)}
-                      </div>
-                      <p className="text-sm">{day.condition}</p>
-                      <div className="mt-2 flex items-center justify-center gap-2">
-                        <span className="font-medium">{day.maxTemp}°</span>
-                        <span className="text-muted-foreground">{day.minTemp}°</span>
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Rain: {day.precipitation}%
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
+              <TabsContent value="forecast">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                  {weather.forecast.map((day, i) => (
+                    <motion.div
+                      key={day.day}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                    >
+                      <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 group overflow-hidden bg-white/50 dark:bg-gray-900/30">
+                        <CardHeader className="pb-2 pt-6 text-center border-b border-border/50">
+                          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{day.day}</p>
+                        </CardHeader>
+                        <CardContent className="pt-6 pb-6 text-center space-y-4">
+                          <div className="mx-auto transform transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6">
+                            {getWeatherIcon(day.icon, "h-10 w-10 mx-auto")}
+                          </div>
+                          <div>
+                            <div className="flex items-center justify-center gap-2">
+                              <span className="text-xl font-bold">{day.maxTemp}°</span>
+                              <span className="text-sm font-medium text-muted-foreground">{day.minTemp}°</span>
+                            </div>
+                            <p className="text-[10px] font-bold text-blue-500 dark:text-blue-400 mt-1 uppercase tracking-tight">
+                              {day.precipitation}% Rain
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </TabsContent>
 
-            <TabsContent value="hourly" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Hourly Forecast</CardTitle>
-                  <CardDescription>
-                    Hourly temperature and conditions for the next 24 hours
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-4 overflow-x-auto pb-4">
-                    {weather.hourly.map((hour) => (
-                      <div key={hour.time} className="flex min-w-[100px] flex-col items-center">
-                        <p className="font-medium">{hour.time}</p>
-                        <div className="my-2">
-                          {getWeatherIcon(hour.icon)}
+              <TabsContent value="hourly">
+                <Card className="border-none shadow-lg bg-white/50 dark:bg-gray-900/30 overflow-hidden">
+                  <CardHeader className="border-b border-border/50">
+                    <CardTitle className="text-xl">Hourly Outlook</CardTitle>
+                    <CardDescription>Precision data for next 24 hours</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="flex gap-2 overflow-x-auto p-6 scrollbar-hide">
+                      {weather.hourly.map((hour, i) => (
+                        <div key={i} className="flex min-w-[120px] flex-col items-center p-4 rounded-2xl hover:bg-white dark:hover:bg-gray-800 transition-colors cursor-default border border-transparent hover:border-border">
+                          <p className="text-sm font-bold text-muted-foreground">{hour.time}</p>
+                          <div className="my-4">
+                            {getWeatherIcon(hour.icon, "h-8 w-8")}
+                          </div>
+                          <p className="text-2xl font-black">{hour.temperature}°</p>
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">{hour.condition}</p>
                         </div>
-                        <p className="text-lg font-bold">{hour.temperature}°</p>
-                        <p className="text-xs text-muted-foreground">{hour.condition}</p>
-                      </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="agricultural">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  {/* Farming Metrics Grid */}
+                  <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[
+                      { 
+                        title: 'Soil Moisture', 
+                        value: `${weather.agricultural.soilMoisture}%`, 
+                        icon: Droplets, 
+                        desc: weather.agricultural.soilMoisture < 30 ? 'Irrigation Required' : 'Adequate Levels',
+                        color: 'emerald',
+                        progress: weather.agricultural.soilMoisture
+                      },
+                      { 
+                        title: 'Soil Temperature', 
+                        value: `${weather.agricultural.soilTemp}°C`, 
+                        icon: Thermometer, 
+                        desc: 'Ideal for wheat & rice',
+                        color: 'amber',
+                        progress: (weather.agricultural.soilTemp / 40) * 100
+                      },
+                      { 
+                        title: 'UV Index', 
+                        value: weather.agricultural.uvIndex, 
+                        icon: Sun, 
+                        desc: weather.agricultural.uvIndex > 7 ? 'High - Shade needed' : 'Safe for growth',
+                        color: 'orange',
+                        progress: (weather.agricultural.uvIndex / 12) * 100
+                      },
+                      { 
+                        title: 'Evaporation', 
+                        value: `${weather.agricultural.evaporation}mm`, 
+                        icon: Waves, 
+                        desc: 'Monitor water loss',
+                        color: 'blue',
+                        progress: (weather.agricultural.evaporation / 10) * 100
+                      }
+                    ].map((item, i) => (
+                      <Card key={i} className="border-none shadow-md overflow-hidden bg-white/50 dark:bg-gray-900/30">
+                        <CardContent className="p-6">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className={cn("p-3 rounded-xl", item.color === 'emerald' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : item.color === 'amber' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' : item.color === 'orange' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400')}>
+                              <item.icon className="h-6 w-6" />
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{item.title}</p>
+                              <p className="text-3xl font-black">{item.value}</p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="h-2 w-full bg-border/50 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${item.progress}%` }}
+                                className={cn("h-full rounded-full", item.color === 'emerald' ? 'bg-emerald-500' : item.color === 'amber' ? 'bg-amber-500' : item.color === 'orange' ? 'bg-orange-500' : 'bg-blue-500')} 
+                              />
+                            </div>
+                            <p className="text-xs font-bold text-muted-foreground">{item.desc}</p>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
-            <TabsContent value="agricultural" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Agricultural Weather Data</CardTitle>
-                  <CardDescription>
-                    Specialized weather information for farming activities
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    <div className="rounded-lg bg-green-50 p-4">
-                      <h3 className="mb-2 font-medium">Soil Moisture</h3>
-                      <p className="text-2xl font-bold">{weather.agricultural.soilMoisture}%</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {weather.agricultural.soilMoisture < 30 ? 'Low - Irrigation needed' : 'Adequate'}
-                      </p>
+                  {/* Recommendations Sideboard */}
+                  <Card className="border-none bg-green-600 text-white shadow-xl shadow-green-600/20 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                      <Sprout className="h-32 w-32" />
                     </div>
-
-                    <div className="rounded-lg bg-blue-50 p-4">
-                      <h3 className="mb-2 font-medium">Evaporation Rate</h3>
-                      <p className="text-2xl font-bold">{weather.agricultural.evaporation} mm/day</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {weather.agricultural.evaporation > 5 ? 'High - Monitor water needs' : 'Normal'}
-                      </p>
-                    </div>
-
-                    <div className="rounded-lg bg-yellow-50 p-4">
-                      <h3 className="mb-2 font-medium">UV Index</h3>
-                      <p className="text-2xl font-bold">{weather.agricultural.uvIndex}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {weather.agricultural.uvIndex > 7 ? 'High - Protect sensitive crops' : 'Moderate'}
-                      </p>
-                    </div>
-
-                    <div className="rounded-lg bg-indigo-50 p-4">
-                      <h3 className="mb-2 font-medium">Rain Probability</h3>
-                      <p className="text-2xl font-bold">{weather.agricultural.rainProbability}%</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {weather.agricultural.rainProbability > 50 ? 'High - Plan accordingly' : 'Low'}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <h3 className="mb-4 text-lg font-medium">Farming Recommendations</h3>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <span className="mt-0.5 rounded-full bg-green-100 p-1">✓</span>
-                        <span>
-                          {weather.agricultural.soilMoisture < 30
-                            ? 'Irrigation recommended for optimal crop growth'
-                            : 'Soil moisture levels are adequate for most crops'}
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="mt-0.5 rounded-full bg-green-100 p-1">✓</span>
-                        <span>
-                          {weather.agricultural.uvIndex > 7
-                            ? 'Consider providing shade for sensitive crops'
-                            : 'UV levels are moderate - normal precautions sufficient'}
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="mt-0.5 rounded-full bg-green-100 p-1">✓</span>
-                        <span>
-                          {weather.agricultural.rainProbability > 50
-                            ? 'Delay outdoor activities like spraying or fertilizing'
-                            : 'Good conditions for outdoor farming activities'}
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </>
-      )}
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold flex items-center gap-2">
+                        <ArrowUpRight className="h-5 w-5" />
+                        AI Insights
+                      </CardTitle>
+                      <CardDescription className="text-green-100 font-medium">Daily farming guide</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      {[
+                        { icon: Droplets, text: weather.agricultural.soilMoisture < 30 ? 'Activate irrigation system immediately' : 'Soil moisture looks healthy' },
+                        { icon: Umbrella, text: weather.agricultural.rainProbability > 50 ? 'Avoid chemical spraying today' : 'Good day for fertilizer application' },
+                        { icon: SunMedium, text: 'Peak heat between 12pm - 3pm' }
+                      ].map((rec, i) => (
+                        <div key={i} className="flex items-start gap-4 p-3 bg-white/10 rounded-xl border border-white/10">
+                          <rec.icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <p className="text-sm font-semibold leading-relaxed">{rec.text}</p>
+                        </div>
+                      ))}
+                      <Button className="w-full bg-white text-green-700 hover:bg-green-50 font-black h-12 rounded-xl mt-4">
+                        Full Agronomy Report
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
