@@ -22,7 +22,8 @@ const nextConfig = {
       'www.cropnutrition.com',
       'www.cropguardindia.com',
       'www.gardenpro.com',
-      'openweathermap.org' // Added for weather icons
+      'openweathermap.org', // Added for weather icons
+      'flagcdn.com' // Added for language flags
     ],
   },
   eslint: {

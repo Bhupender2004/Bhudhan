@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, Globe, Sparkles, Languages } from 'lucide-react';
+import { motion as m } from 'framer-motion';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/lib/utils/toast';
 import { getSupportedLanguages } from '@/lib/api/translate';
 import { useLanguage } from '@/lib/context/language-context';
+import { cn } from '@/lib/utils';
 
 export default function LanguageSettings() {
   const { currentLanguage, setLanguage, t } = useLanguage();
@@ -28,90 +32,148 @@ export default function LanguageSettings() {
     setSelectedLanguage(code);
   };
 
-  // Map of language codes to flag images
+  // High-quality flag URLs from FlagCDN
   const languageFlags: Record<string, string> = {
-    en: 'https://placehold.co/60x40/003366/ffffff?text=EN',
-    hi: 'https://placehold.co/60x40/FF9933/ffffff?text=HI',
-    bn: 'https://placehold.co/60x40/006A4E/ffffff?text=BN',
-    te: 'https://placehold.co/60x40/0000FF/ffffff?text=TE',
-    mr: 'https://placehold.co/60x40/FF9933/ffffff?text=MR',
-    ta: 'https://placehold.co/60x40/006A4E/ffffff?text=TA',
-    gu: 'https://placehold.co/60x40/FF9933/ffffff?text=GU',
-    kn: 'https://placehold.co/60x40/FFCC00/ffffff?text=KN',
-    ml: 'https://placehold.co/60x40/006A4E/ffffff?text=ML',
-    pa: 'https://placehold.co/60x40/003366/ffffff?text=PA',
-    or: 'https://placehold.co/60x40/FF9933/ffffff?text=OR',
-    as: 'https://placehold.co/60x40/006A4E/ffffff?text=AS',
+    en: 'https://flagcdn.com/w160/gb.png',
+    hi: 'https://flagcdn.com/w160/in.png',
+    pa: 'https://flagcdn.com/w160/in.png',
+    ta: 'https://flagcdn.com/w160/in.png',
+    te: 'https://flagcdn.com/w160/in.png',
+  };
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05
+      }
+    }
+  };
+
+  const item = {
+    hidden: { y: 10, opacity: 0 },
+    show: { y: 0, opacity: 1 }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <RadioGroup
-          value={selectedLanguage}
-          onValueChange={handleLanguageSelect}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
-        >
-          {languages.map((language) => (
-            <div
-              key={language.code}
-              className={`relative flex cursor-pointer rounded-lg border p-4 transition-all hover:border-primary-500 hover:bg-primary-50 dark:hover:border-primary-500 dark:hover:bg-primary-950/30 ${
-                selectedLanguage === language.code
-                  ? 'border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-950/50'
-                  : 'border-gray-200 dark:border-gray-800'
-              }`}
-              onClick={() => handleLanguageSelect(language.code)}
-            >
-              <RadioGroupItem
-                value={language.code}
-                id={`language-${language.code}`}
-                className="sr-only"
-              />
-              <Label
-                htmlFor={`language-${language.code}`}
-                className="flex flex-1 cursor-pointer items-center gap-3"
-              >
-                <div className="relative h-10 w-14 overflow-hidden rounded border">
+    <div className="space-y-8 py-2">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-3 rounded-xl bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+          <Languages className="h-6 w-6" />
+        </div>
+        <div>
+          <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Available Languages</h3>
+          <p className="text-sm text-muted-foreground font-medium">Select your preferred local language for a personalized farming experience</p>
+        </div>
+      </div>
+
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {languages.map((language) => (
+          <motion.div
+            key={language.code}
+            variants={item}
+            whileHover={{ scale: 1.01, translateY: -2 }}
+            whileTap={{ scale: 0.99 }}
+            className={cn(
+              "relative flex cursor-pointer rounded-xl border-2 p-1 transition-all duration-200 overflow-hidden",
+              selectedLanguage === language.code
+                ? "border-green-600 bg-green-50/50 dark:border-green-500 dark:bg-green-900/10 shadow-md"
+                : "border-border bg-card hover:border-green-200 dark:hover:border-green-900 shadow-sm"
+            )}
+            onClick={() => handleLanguageSelect(language.code)}
+          >
+            <div className="relative flex w-full flex-col gap-3 p-4 z-10">
+              <div className="flex items-center justify-between">
+                <div className="relative h-10 w-14 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm">
                   <Image
                     src={languageFlags[language.code]}
                     alt={language.name}
                     fill
-                    style={{ objectFit: 'cover' }}
+                    className="object-cover"
                   />
                 </div>
-                <div>
-                  <p className="font-medium">{language.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {language.code === 'en' ? 'English' :
-                     language.code === 'hi' ? 'हिन्दी' :
-                     language.code === 'bn' ? 'বাংলা' :
-                     language.code === 'te' ? 'తెలుగు' :
-                     language.code === 'mr' ? 'मराठी' :
-                     language.code === 'ta' ? 'தமிழ்' :
-                     language.code === 'gu' ? 'ગુજરાતી' :
-                     language.code === 'kn' ? 'ಕನ್ನಡ' :
-                     language.code === 'ml' ? 'മലയാളം' :
-                     language.code === 'pa' ? 'ਪੰਜਾਬੀ' :
-                     language.code === 'or' ? 'ଓଡ଼ିଆ' :
-                     language.code === 'as' ? 'অসমীয়া' : ''}
-                  </p>
-                </div>
-                {selectedLanguage === language.code && (
-                  <div className="absolute right-4 top-4 h-3 w-3 rounded-full bg-primary-500"></div>
-                )}
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
+                
+                <AnimatePresence>
+                  {selectedLanguage === language.code && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      className="flex h-6 w-6 items-center justify-center rounded-full bg-green-600 text-white shadow-sm"
+                    >
+                      <Check className="h-3.5 w-3.5 stroke-[3]" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-      <Button
-        onClick={handleSaveLanguage}
-        className="w-full sm:w-auto"
-        disabled={selectedLanguage === currentLanguage}
-      >
-        {selectedLanguage === currentLanguage ? t('saved') : t('saveLanguage')}
-      </Button>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <p className={cn(
+                    "font-bold text-base transition-colors",
+                    selectedLanguage === language.code ? "text-green-700 dark:text-green-400" : "text-gray-900 dark:text-gray-100"
+                  )}>
+                    {language.name}
+                  </p>
+                  {language.code === currentLanguage && (
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-[10px] font-bold text-amber-800 uppercase tracking-wider dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/50">
+                      Current
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm font-medium text-muted-foreground leading-snug">
+                  {language.code === 'en' ? 'English' :
+                   language.code === 'hi' ? 'हिन्दी' :
+                   language.code === 'pa' ? 'ਪੰਜਾਬੀ' :
+                   language.code === 'ta' ? 'தமிழ்' :
+                   language.code === 'te' ? 'తెలుగు' : ''}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <div className="pt-6 flex flex-col sm:flex-row items-center gap-6 border-t border-border/50">
+        <Button
+          onClick={handleSaveLanguage}
+          size="lg"
+          className={cn(
+            "w-full sm:w-64 h-12 text-base font-bold transition-all duration-200 rounded-xl",
+            selectedLanguage === currentLanguage 
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500" 
+              : "bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/10 active:scale-95"
+          )}
+          disabled={selectedLanguage === currentLanguage}
+        >
+          {selectedLanguage === currentLanguage ? (
+            <span className="flex items-center gap-2">
+              <Check className="h-4 w-4" />
+              {t('saved')}
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              {t('saveLanguage')}
+            </span>
+          )}
+        </Button>
+        
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-sm text-gray-700 dark:text-gray-300 font-semibold mb-0.5">
+            Automatic Translation
+          </p>
+          <p className="text-xs text-muted-foreground max-w-sm italic">
+            Your preferences will be updated instantly across all services.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
