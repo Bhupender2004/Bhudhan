@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import WeatherWidget from '@/components/weather/weather-widget';
@@ -89,8 +90,16 @@ export default function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-32 rounded-md bg-gradient-to-r from-green-100 to-emerald-100 flex items-center justify-center">
-              <p className="text-green-800 font-medium">Browse Products</p>
+            <div className="relative h-32 w-full overflow-hidden rounded-md group">
+              <Image 
+                src="/images/dashboard/marketplace.png" 
+                alt="Marketplace" 
+                fill 
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-black/40">
+                <p className="text-white font-bold text-lg drop-shadow-md">Browse Products</p>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
@@ -108,8 +117,16 @@ export default function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-32 rounded-md bg-gradient-to-r from-blue-100 to-sky-100 flex items-center justify-center">
-              <p className="text-blue-800 font-medium">Get Expert Advice</p>
+            <div className="relative h-32 w-full overflow-hidden rounded-md group">
+              <Image 
+                src="/images/dashboard/expert-connect.png" 
+                alt="Expert Connect" 
+                fill 
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-black/40">
+                <p className="text-white font-bold text-lg drop-shadow-md">Get Expert Advice</p>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
@@ -127,8 +144,16 @@ export default function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-32 rounded-md bg-gradient-to-r from-purple-100 to-violet-100 flex items-center justify-center">
-              <p className="text-purple-800 font-medium">Explore AI Tools</p>
+            <div className="relative h-32 w-full overflow-hidden rounded-md group">
+              <Image 
+                src="/images/dashboard/ai-tools.png" 
+                alt="AI Tools" 
+                fill 
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-black/40">
+                <p className="text-white font-bold text-lg drop-shadow-md">Explore AI Tools</p>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
