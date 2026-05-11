@@ -34,15 +34,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans antialiased`}>
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="light">
+      <body className={`${poppins.variable} font-sans antialiased`} suppressHydrationWarning>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <AuthProvider>
             <LanguageProvider>
-              {children}
-              <Toaster />
+              <div className="relative flex min-h-screen flex-col">
+                {children}
+              </div>
+              <Toaster position="top-right" expand={false} richColors />
             </LanguageProvider>
-          </ThemeProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
