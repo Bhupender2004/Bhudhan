@@ -1,15 +1,13 @@
+'use client';
+
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, ExternalLink } from 'lucide-react';
+import { Calendar, ExternalLink, ArrowRight, CheckCircle2, ShieldCheck, Landmark } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-export const metadata: Metadata = {
-  title: 'Government Schemes | BhuDhan Krishi',
-  description: 'Agricultural schemes and subsidies for farmers in India',
-};
+import { motion } from 'framer-motion';
 
 // Mock schemes data (in a real app, this would come from an API)
 const schemes = [
@@ -121,86 +119,178 @@ const groupedSchemes = schemes.reduce((acc, scheme) => {
   return acc;
 }, {} as Record<string, typeof schemes>);
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  show: { y: 0, opacity: 1 }
+};
+
 export default function SchemesPage() {
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-6 flex items-center">
-        <h1 className="text-3xl font-bold">Government Schemes for Farmers</h1>
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950/50 pb-20">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-slate-900 pt-20 pb-24 text-white">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/schemes-hero.png" 
+            alt="Indian Farmer" 
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl"
+          >
+            <Badge className="mb-6 bg-primary text-white border-none px-4 py-1.5 text-sm font-semibold shadow-lg shadow-primary/20">
+              Official Government Initiatives
+            </Badge>
+            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8">
+              Empowering Indian <br />
+              <span className="text-primary">Agriculture</span>
+            </h1>
+            <p className="text-xl text-slate-300 leading-relaxed mb-0 max-w-2xl font-medium">
+              Access curated government schemes, subsidies, and financial support designed to boost your farming productivity and secure your family's future.
+            </p>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="mb-8">
-        <p className="text-muted-foreground">
-          Explore various government schemes and subsidies available for farmers in India.
-          These schemes aim to provide financial assistance, insurance coverage, and other benefits to support agricultural activities.
-        </p>
-      </div>
-
-      <Tabs defaultValue="all" className="mb-8">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Schemes</TabsTrigger>
-          <TabsTrigger value="subsidy">Subsidies</TabsTrigger>
-          <TabsTrigger value="loan">Loans</TabsTrigger>
-          <TabsTrigger value="insurance">Insurance</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="all">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {schemes.map((scheme) => (
-              <SchemeCard key={scheme.id} scheme={scheme} />
-            ))}
-          </div>
-        </TabsContent>
-
-        {Object.entries(groupedSchemes).map(([category, categorySchemes]) => (
-          <TabsContent key={category} value={category.toLowerCase()}>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {categorySchemes.map((scheme) => (
-                <SchemeCard key={scheme.id} scheme={scheme} />
-              ))}
+      <div className="container mx-auto px-4 mt-12">
+        <Tabs defaultValue="all" className="w-full">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <TabsList className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 p-1">
+              <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-white transition-all">All Schemes</TabsTrigger>
+              <TabsTrigger value="subsidy" className="data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Subsidies</TabsTrigger>
+              <TabsTrigger value="loan" className="data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Loans</TabsTrigger>
+              <TabsTrigger value="insurance" className="data-[state=active]:bg-primary data-[state=active]:text-white transition-all">Insurance</TabsTrigger>
+            </TabsList>
+            
+            <div className="text-sm text-muted-foreground flex items-center gap-2 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-full">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              <span>{schemes.length} Active Schemes Available</span>
             </div>
+          </div>
+
+          <TabsContent value="all" className="mt-0 outline-none">
+            <motion.div 
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+              {schemes.map((scheme) => (
+                <motion.div key={scheme.id} variants={item}>
+                  <SchemeCard scheme={scheme} />
+                </motion.div>
+              ))}
+            </motion.div>
           </TabsContent>
-        ))}
-      </Tabs>
+
+          {Object.entries(groupedSchemes).map(([category, categorySchemes]) => (
+            <TabsContent key={category} value={category.toLowerCase()} className="mt-0 outline-none">
+              <motion.div 
+                variants={container}
+                initial="hidden"
+                animate="show"
+                className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              >
+                {categorySchemes.map((scheme) => (
+                  <motion.div key={scheme.id} variants={item}>
+                    <SchemeCard scheme={scheme} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
     </div>
   );
 }
 
 function SchemeCard({ scheme }: { scheme: typeof schemes[0] }) {
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'Subsidy': return <CheckCircle2 className="h-4 w-4" />;
+      case 'Loan': return <Landmark className="h-4 w-4" />;
+      case 'Insurance': return <ShieldCheck className="h-4 w-4" />;
+      default: return null;
+    }
+  };
+
+  const getBadgeColor = (category: string) => {
+    switch (category) {
+      case 'Subsidy': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+      case 'Loan': return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+      case 'Insurance': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+      default: return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+    }
+  };
+
   return (
-    <Card className="overflow-hidden">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="line-clamp-2">{scheme.title}</CardTitle>
-          <Badge variant={
-            scheme.category === 'Subsidy' ? 'default' :
-            scheme.category === 'Loan' ? 'secondary' :
-            scheme.category === 'Insurance' ? 'outline' : 'default'
-          }>
+    <Card className="group h-full flex flex-col overflow-hidden border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 card-hover-glow">
+      <CardHeader className="pb-4">
+        <div className="flex justify-between items-start mb-3">
+          <Badge className={`flex items-center gap-1.5 px-2.5 py-0.5 font-medium border ${getBadgeColor(scheme.category)}`}>
+            {getCategoryIcon(scheme.category)}
             {scheme.category}
           </Badge>
+          <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <Landmark className="h-4 w-4 text-slate-400" />
+          </div>
         </div>
-        <CardDescription className="line-clamp-2">
+        <CardTitle className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors mb-2">
+          {scheme.title}
+        </CardTitle>
+        <CardDescription className="text-sm leading-relaxed line-clamp-3">
           {scheme.description}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <div className="flex items-center text-sm">
-            <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-            <span>Last Date: <span className="font-medium">{scheme.lastDate}</span></span>
+      
+      <CardContent className="flex-grow pb-6">
+        <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center text-sm font-medium">
+            <Calendar className="h-4 w-4 mr-2.5 text-primary" />
+            <span className="text-slate-500 dark:text-slate-400 mr-2">Last Date:</span>
+            <span className={`${scheme.lastDate === 'Ongoing' ? 'text-emerald-600' : 'text-slate-900 dark:text-white'}`}>
+              {scheme.lastDate}
+            </span>
           </div>
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            <span className="font-medium">Benefits:</span> {scheme.benefits}
-          </p>
+          
+          <div className="flex items-start">
+            <div className="mt-1 h-1.5 w-1.5 rounded-full bg-primary shrink-0 mr-2.5" />
+            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 italic">
+              "{scheme.benefits}"
+            </p>
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Link href={`/schemes/${scheme.id}`} className="w-full mr-2">
-          <Button variant="outline" className="w-full">View Details</Button>
+      
+      <CardFooter className="pt-0 pb-6 px-6 gap-3">
+        <Link href={`/schemes/${scheme.id}`} className="flex-1">
+          <Button variant="outline" className="w-full h-11 font-medium border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 group/btn">
+            View Details
+            <ArrowRight className="ml-2 h-4 w-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all" />
+          </Button>
         </Link>
-        <a href={scheme.link} target="_blank" rel="noopener noreferrer">
-          <Button variant="ghost" size="icon">
-            <ExternalLink className="h-4 w-4" />
+        <a href={scheme.link} target="_blank" rel="noopener noreferrer" className="flex-1">
+          <Button className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+            Apply Now
+            <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         </a>
       </CardFooter>

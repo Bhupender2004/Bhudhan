@@ -1,14 +1,12 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowLeft, Calendar, ExternalLink, FileText, Users, CheckCircle, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Scheme Details | BhuDhan Krishi',
-  description: 'Detailed information about government schemes for farmers',
-};
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, Calendar, ExternalLink, FileText, Users, CheckCircle, AlertCircle, Landmark, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
 
 // Mock schemes data (in a real app, this would come from an API)
 const schemes = [
@@ -22,6 +20,7 @@ const schemes = [
     applicationProcess: 'Apply online through the PM-KISAN portal or visit your nearest Common Service Center.',
     documents: ['Aadhaar Card', 'Land Records', 'Bank Account Details'],
     lastDate: '30 June 2025',
+    launchedIn: '2019',
     link: 'https://pmkisan.gov.in/',
     details: `
       <p>The Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) is a Central Sector scheme with 100% funding from the Government of India. The scheme was launched on February 24, 2019.</p>
@@ -43,6 +42,7 @@ const schemes = [
     applicationProcess: 'Apply at your nearest bank branch or through online banking portals.',
     documents: ['Identity Proof', 'Address Proof', 'Land Records', 'Passport Size Photographs'],
     lastDate: 'Ongoing',
+    launchedIn: '1998',
     link: 'https://www.nabard.org/content.aspx?id=591',
     details: `
       <p>The Kisan Credit Card (KCC) scheme was introduced in 1998 to provide adequate and timely credit support from the banking system to the farmers for their cultivation needs.</p>
@@ -72,6 +72,7 @@ const schemes = [
     applicationProcess: 'Apply through banks at the time of taking crop loans or through insurance companies.',
     documents: ['Bank Account Details', 'Land Records', 'Sowing Certificate'],
     lastDate: '15 July 2025',
+    launchedIn: '2016',
     link: 'https://pmfby.gov.in/',
     details: `
       <p>The Pradhan Mantri Fasal Bima Yojana (PMFBY) was launched in 2016 to provide comprehensive insurance coverage to farmers against crop loss due to non-preventable natural risks.</p>
@@ -312,27 +313,45 @@ const schemes = [
   }
 ];
 
-export default async function SchemeDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const scheme = schemes.find(scheme => scheme.id === id);
+export default function SchemeDetailPage({ params }: { params: React.PropsWithChildren<{ id: string }>['params'] }) {
+  // Fix for React.use() or await params in Client Components
+  const [scheme, setScheme] = React.useState<typeof schemes[0] | null>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchParams = async () => {
+      const { id } = await params;
+      const found = schemes.find(s => s.id === id);
+      setScheme(found || null);
+      setLoading(false);
+    };
+    fetchParams();
+  }, [params]);
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="animate-pulse flex flex-col items-center">
+        <div className="h-12 w-12 rounded-full bg-primary/20 mb-4" />
+        <div className="h-4 w-32 bg-slate-200 dark:bg-slate-800 rounded" />
+      </div>
+    </div>
+  );
 
   if (!scheme) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="mb-6 flex items-center">
-          <Link href="/schemes">
-            <Button variant="ghost" size="sm" className="mr-2">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Schemes
-            </Button>
-          </Link>
-        </div>
-        <Card>
-          <CardContent className="p-8 text-center">
+      <div className="container mx-auto py-20 px-4">
+        <Card className="max-w-md mx-auto glass-card">
+          <CardContent className="p-12 text-center">
+            <div className="h-16 w-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="h-8 w-8" />
+            </div>
             <h1 className="text-2xl font-bold mb-4">Scheme Not Found</h1>
-            <p>The scheme you are looking for does not exist or has been removed.</p>
+            <p className="text-muted-foreground mb-8">The scheme you are looking for does not exist or has been removed from our database.</p>
             <Link href="/schemes">
-              <Button className="mt-4">View All Schemes</Button>
+              <Button className="w-full">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to All Schemes
+              </Button>
             </Link>
           </CardContent>
         </Card>
@@ -340,114 +359,210 @@ export default async function SchemeDetailPage({ params }: { params: Promise<{ i
     );
   }
 
-  return (
-    <div className="container mx-auto py-8">
-      <div className="mb-6 flex items-center">
-        <Link href="/schemes">
-          <Button variant="ghost" size="sm" className="mr-2">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Schemes
-          </Button>
-        </Link>
-      </div>
+  const getBadgeColor = (category: string) => {
+    switch (category) {
+      case 'Subsidy': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+      case 'Loan': return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+      case 'Insurance': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+      default: return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+    }
+  };
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-2 space-y-6">
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-2xl">{scheme.title}</CardTitle>
-                <Badge variant={
-                  scheme.category === 'Subsidy' ? 'default' :
-                  scheme.category === 'Loan' ? 'secondary' :
-                  scheme.category === 'Insurance' ? 'outline' : 'default'
-                }>
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'Subsidy': return <CheckCircle2 className="h-5 w-5" />;
+      case 'Loan': return <Landmark className="h-5 w-5" />;
+      case 'Insurance': return <ShieldCheck className="h-5 w-5" />;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950/50 pb-20">
+      {/* Header / Hero */}
+      <div className="relative overflow-hidden bg-slate-900 pt-16 pb-12 text-white">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/schemes-hero.png" 
+            alt="Scheme Background" 
+            className="w-full h-full object-cover opacity-20 blur-[2px]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+        </div>
+
+        <div className="container relative z-10 mx-auto px-4">
+          <Link 
+            href="/schemes" 
+            className="inline-flex items-center text-slate-300 hover:text-white mb-8 transition-colors group font-medium"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            Back to All Schemes
+          </Link>
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-3 mb-4">
+                <Badge className="bg-primary/20 text-primary-foreground border-primary/30 backdrop-blur-md px-3 py-1">
                   {scheme.category}
                 </Badge>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-6">{scheme.description}</p>
-
-              <div className="prose prose-green dark:prose-invert max-w-none"
-                   dangerouslySetInnerHTML={{ __html: scheme.details }} />
-
-              <div className="mt-6 flex justify-end">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                {scheme.title}
+              </h1>
+              <p className="text-xl text-slate-300 leading-relaxed font-medium">
+                {scheme.description}
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                variant="outline" 
+                className="border-slate-700 bg-slate-800/50 hover:bg-slate-800 text-white font-semibold backdrop-blur-md h-12 px-6"
+                asChild
+              >
                 <a href={scheme.link} target="_blank" rel="noopener noreferrer">
-                  <Button>
-                    Visit Official Website
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
+                  Official Website
                 </a>
-              </div>
-            </CardContent>
-          </Card>
+              </Button>
+              <Button 
+                className="bg-primary hover:bg-primary/90 text-white font-bold h-12 px-8 shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95"
+                asChild
+              >
+                <a href={scheme.link} target="_blank" rel="noopener noreferrer">
+                  Apply Now
+                </a>
+              </Button>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Calendar className="mr-2 h-5 w-5" />
-                Application Deadline
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-lg font-semibold">{scheme.lastDate}</p>
-            </CardContent>
-          </Card>
+      <div className="container mx-auto px-4 -mt-8 relative z-20">
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card className="glass-card overflow-hidden border-slate-200/60 dark:border-slate-800/60">
+                <CardHeader className="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    Detailed Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-8">
+                  <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed prose-li:my-2"
+                       dangerouslySetInnerHTML={{ __html: scheme.details }} />
+                  
+                  <div className="mt-12 p-6 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-4 text-primary">
+                      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle2 className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold">Ready to benefit?</h4>
+                        <p className="text-sm opacity-80">Apply through the official government portal.</p>
+                      </div>
+                    </div>
+                    <a href={scheme.link} target="_blank" rel="noopener noreferrer">
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 group">
+                        Apply Now
+                        <ExternalLink className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                      </Button>
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Users className="mr-2 h-5 w-5" />
-                Eligibility
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{scheme.eligibility}</p>
-            </CardContent>
-          </Card>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="space-y-6"
+            >
+              <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center font-bold">
+                    <Calendar className="mr-2.5 h-4 w-4 text-primary" />
+                    Deadline
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className={`text-xl font-bold ${scheme.lastDate === 'Ongoing' ? 'text-emerald-600' : 'text-slate-900 dark:text-white'}`}>
+                    {scheme.lastDate}
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <CheckCircle className="mr-2 h-5 w-5" />
-                Benefits
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{scheme.benefits}</p>
-            </CardContent>
-          </Card>
+              <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center font-bold">
+                    <Users className="mr-2.5 h-4 w-4 text-primary" />
+                    Eligibility
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {scheme.eligibility}
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <AlertCircle className="mr-2 h-5 w-5" />
-                How to Apply
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{scheme.applicationProcess}</p>
-            </CardContent>
-          </Card>
+              <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center font-bold">
+                    <ShieldCheck className="mr-2.5 h-4 w-4 text-primary" />
+                    Main Benefits
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {scheme.benefits}
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Required Documents
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-5 space-y-1">
-                {scheme.documents.map((doc, index) => (
-                  <li key={index}>{doc}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+              <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center font-bold">
+                    <FileText className="mr-2.5 h-4 w-4 text-primary" />
+                    Documents Needed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {scheme.documents.map((doc, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                        <div className="mt-1.5 h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700 shrink-0" />
+                        {doc}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-primary/5 border-primary/20 shadow-none">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center font-bold text-primary">
+                    <AlertCircle className="mr-2.5 h-4 w-4" />
+                    How to Apply
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-relaxed text-primary/80">
+                    {scheme.applicationProcess}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
