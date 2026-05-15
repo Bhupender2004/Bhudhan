@@ -75,32 +75,45 @@ export default function LanguageSelector({
         <Button
           variant="ghost"
           size="icon"
-          className={`rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/30 ${className}`}
+          className={`h-9 w-9 rounded-full hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-300 group ${className}`}
         >
-          <Globe className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          <Globe className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-green-600 transition-colors" />
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
-        <div className="p-2 text-xs font-medium text-muted-foreground">
-          Select Language
+      <DropdownMenuContent align="end" className="w-48 p-1.5 border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl">
+        <div className="px-2 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          Preferred Language
         </div>
-        {languages.map((language) => (
-          <DropdownMenuItem
-            key={language.code}
-            className={`flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm ${
-              currentLanguage === language.code
-                ? 'bg-primary-50 font-medium text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                : 'hover:bg-primary-50 dark:hover:bg-primary-900/20'
-            }`}
-            onClick={() => handleLanguageChange(language.code)}
-          >
-            {language.name}
-            {currentLanguage === language.code && (
-              <span className="ml-auto text-primary-600 dark:text-primary-400">✓</span>
-            )}
-          </DropdownMenuItem>
-        ))}
+        <div className="space-y-0.5">
+          {languages.map((language) => (
+            <DropdownMenuItem
+              key={language.code}
+              className={`flex cursor-pointer items-center gap-3 rounded-lg p-2.5 text-sm transition-all ${
+                currentLanguage === language.code
+                  ? 'bg-green-50 font-bold text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-green-600'
+              }`}
+              onClick={() => handleLanguageChange(language.code)}
+            >
+              <div className={`flex h-6 w-6 items-center justify-center rounded-md border text-[10px] uppercase ${
+                currentLanguage === language.code
+                  ? 'border-green-200 bg-green-100 text-green-700 dark:border-green-800 dark:bg-green-900/50 dark:text-green-400'
+                  : 'border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800 text-slate-500'
+              }`}>
+                {language.code}
+              </div>
+              {language.name}
+              {currentLanguage === language.code && (
+                <div className="ml-auto flex h-4 w-4 items-center justify-center rounded-full bg-green-500">
+                  <svg className="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              )}
+            </DropdownMenuItem>
+          ))}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
