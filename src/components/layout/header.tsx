@@ -13,6 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useTheme } from 'next-themes';
 import Sidebar from './sidebar';
 import Image from 'next/image';
+import { CommandPalette } from '@/components/layout/command-palette';
 
 export default function Header() {
   const { user } = useUser();
@@ -23,6 +24,7 @@ export default function Header() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
+  const [isCommandOpen, setIsCommandOpen] = useState(false);
 
   // After mounting, we have access to the theme
   useEffect(() => setMounted(true), []);
@@ -107,19 +109,18 @@ export default function Header() {
 
         {/* Center Section: Search Bar */}
         <div className="hidden flex-1 max-w-md mx-8 md:flex relative group">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <svg className="h-4 w-4 text-slate-400 group-focus-within:text-green-500 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none z-10">
+            <svg className="h-4 w-4 text-slate-400 group-hover:text-green-500 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
             </svg>
           </div>
-          <input
-            type="text"
-            placeholder="Search crops, prices, or news..."
-            className="w-full h-11 pl-10 pr-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          />
-          <div className="absolute inset-y-0 right-3 flex items-center">
+          <button
+            onClick={() => setIsCommandOpen(true)}
+            className="w-full h-11 pl-10 pr-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-left text-slate-400 dark:text-slate-500 hover:bg-white dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/50 transition-all flex items-center justify-between"
+          >
+            <span>Search crops, tools, prices, or news...</span>
             <span className="text-[10px] font-medium text-slate-400 border border-slate-200 dark:border-slate-700 px-1.5 py-0.5 rounded-md bg-slate-50 dark:bg-slate-900 shadow-sm pointer-events-none">⌘K</span>
-          </div>
+          </button>
         </div>
 
         {/* Right Section: Actions & Profile */}
@@ -279,6 +280,7 @@ export default function Header() {
           </DropdownMenu>
         </div>
       </div>
+      <CommandPalette open={isCommandOpen} setOpen={setIsCommandOpen} />
     </header>
   );
 }
