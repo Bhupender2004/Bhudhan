@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { FaYoutube, FaWhatsapp, FaInstagram, FaXTwitter } from 'react-icons/fa6';
 
 export default function Footer() {
   return (
@@ -82,55 +83,37 @@ export default function Footer() {
               href="https://www.youtube.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-red-600 p-2 text-white hover:bg-red-700 transition-colors"
+              className="rounded-full bg-[#FF0000] p-2.5 text-white hover:bg-red-700 transition-colors"
               aria-label="YouTube"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                <path d="M12 19c-2.3 0-6.4-.2-8.1-.6-.7-.2-1.2-.7-1.4-1.4-.3-1.1-.5-3.4-.5-5s.2-3.9.5-5c.2-.7.7-1.2 1.4-1.4C5.6 5.2 9.7 5 12 5s6.4.2 8.1.6c.7.2 1.2.7 1.4 1.4.3 1.1.5 3.4.5 5s-.2 3.9-.5 5c-.2.7-.7 1.2-1.4 1.4-1.7.4-5.8.6-8.1.6 0 0 0 0 0 0z"></path>
-                <polygon points="10 15 15 12 10 9"></polygon>
-              </svg>
+              <FaYoutube className="h-5 w-5" />
             </Link>
             <Link
               href="https://wa.me/917206110977"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-green-500 p-2 text-white hover:bg-green-600 transition-colors"
+              className="rounded-full bg-[#25D366] p-2.5 text-white hover:bg-green-600 transition-colors"
               aria-label="WhatsApp"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                <path d="M17.6 6.8A7.8 7.8 0 0 0 12 4c-4.4 0-8 3.6-8 8 0 1.4.4 2.8 1 4l-1 4 4.1-1c1.2.7 2.6 1 4 1 4.4 0 8-3.6 8-8 0-2.1-.8-4.1-2.3-5.5z"></path>
-                <path d="M15 12.5a1 1 0 0 1 1 1v1a3 3 0 0 1-3 3h-.5a7 7 0 0 1-5-2 7 7 0 0 1-2-5v-.5a3 3 0 0 1 3-3h1a1 1 0 0 1 1 1 1 1 0 0 0 1 1h2a1 1 0 0 0 1-1 1 1 0 0 1 1-1h1a3 3 0 0 1 3 3v.5a7 7 0 0 1-2 5 7 7 0 0 1-5 2h-.5a3 3 0 0 1-3-3v-1a1 1 0 0 1 1-1"></path>
-              </svg>
+              <FaWhatsapp className="h-5 w-5" />
             </Link>
             <Link
               href="https://www.instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 p-2 text-white hover:opacity-90 transition-opacity"
+              className="rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] p-2.5 text-white hover:opacity-90 transition-opacity"
               aria-label="Instagram"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-              </svg>
+              <FaInstagram className="h-5 w-5" />
             </Link>
             <Link
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-black p-2 text-white hover:bg-gray-800 transition-colors"
+              className="rounded-full bg-black p-2.5 text-white hover:bg-gray-800 transition-colors"
               aria-label="X (Twitter)"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                <path d="M4 4l11.5 11.5"></path>
-                <path d="M20 4L8.5 15.5"></path>
-                <path d="M4 20l7.5-7.5"></path>
-                <path d="M12 12l4 4"></path>
-                <path d="M20 20h-4"></path>
-                <path d="M4 4h4"></path>
-                <path d="M16 4h4"></path>
-              </svg>
+              <FaXTwitter className="h-5 w-5" />
             </Link>
           </div>
           <div className="text-center">
