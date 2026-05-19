@@ -140,12 +140,9 @@ export default function SchemesPage() {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-slate-900 pt-20 pb-24 text-white">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/schemes-hero.png" 
-            alt="Indian Farmer" 
-            className="w-full h-full object-cover opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-950/40 to-slate-900" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="absolute top-0 left-1/4 rounded-full bg-emerald-500/20 blur-[120px] w-[500px] h-[500px] pointer-events-none" />
         </div>
         
         <div className="container relative z-10 mx-auto px-4">
