@@ -138,11 +138,11 @@ export default function SchemesPage() {
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950/50 pb-20">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-slate-900 pt-20 pb-24 text-white">
+      <div className="relative overflow-hidden bg-white dark:bg-slate-900 pt-20 pb-24 border-b border-slate-100 dark:border-slate-800">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-950/40 to-slate-900" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-          <div className="absolute top-0 left-1/4 rounded-full bg-emerald-500/20 blur-[120px] w-[500px] h-[500px] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50/80 via-emerald-50/50 to-teal-50/80 dark:from-slate-900 dark:via-emerald-950/40 dark:to-slate-900" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:24px_24px] opacity-60 dark:opacity-100"></div>
+          <div className="absolute top-0 left-1/4 rounded-full bg-emerald-400/20 dark:bg-emerald-500/20 blur-[120px] w-[500px] h-[500px] pointer-events-none" />
         </div>
         
         <div className="container relative z-10 mx-auto px-4">
@@ -155,11 +155,11 @@ export default function SchemesPage() {
             <Badge className="mb-6 bg-primary text-white border-none px-4 py-1.5 text-sm font-semibold shadow-lg shadow-primary/20">
               Official Government Initiatives
             </Badge>
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8">
+            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8 text-slate-900 dark:text-white">
               Empowering Indian <br />
               <span className="text-primary">Agriculture</span>
             </h1>
-            <p className="text-xl text-slate-300 leading-relaxed mb-0 max-w-2xl font-medium">
+            <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-0 max-w-2xl font-medium">
               Access curated government schemes, subsidies, and financial support designed to boost your farming productivity and secure your family's future.
             </p>
           </motion.div>
