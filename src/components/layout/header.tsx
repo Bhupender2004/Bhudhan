@@ -88,7 +88,7 @@ export default function Header() {
                   </div>
                   <div className="flex flex-col">
                     <span className="bg-gradient-to-r from-green-600 via-teal-500 to-blue-600 bg-clip-text text-xl font-bold text-transparent dark:from-green-400 dark:via-teal-400 dark:to-blue-400 logo-text-gradient">BhuDhan</span>
-                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 leading-tight">Intelligence Meets Agriculture</span>
+                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 leading-tight">Where Intelligence Meets Agriculture</span>
                   </div>
                 </Link>
               </div>
@@ -102,7 +102,7 @@ export default function Header() {
             </div>
             <div className="flex flex-col">
               <span className="bg-gradient-to-r from-green-600 via-teal-500 to-emerald-600 bg-clip-text text-2xl font-black tracking-tight text-transparent dark:from-green-400 dark:via-teal-400 dark:to-emerald-400 logo-text-gradient">BhuDhan</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-green-600/70 dark:text-green-400/60 hidden lg:block">Smart Krishi Ecosystem</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-green-600/70 dark:text-green-400/60 hidden lg:block">Where Intelligence Meets Agriculture</span>
             </div>
           </Link>
         </div>
