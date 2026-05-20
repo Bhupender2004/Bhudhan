@@ -53,15 +53,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="h-[370px] flex flex-col transition-all duration-300 hover:scale-[1.02]">
-          <CardHeader className="pb-1">
-            <CardTitle className="text-sm font-medium">Crop Price Calculator</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-auto">
-            <CropPriceCalculator />
-          </CardContent>
-        </Card>
-
         <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Latest Schemes</CardTitle>
@@ -79,6 +70,35 @@ export default function DashboardPage() {
             <NewsWidget />
           </CardContent>
         </Card>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">Calculator & Tools</h2>
+            <p className="text-muted-foreground">
+              Calculate crop prices and manage your farming finance
+            </p>
+          </div>
+          <div className="mt-4">
+            <CropPriceCalculator />
+          </div>
+        </div>
+        <div className="flex flex-col justify-center">
+          <Card className="bg-green-50 dark:bg-green-950/20 border-green-100 dark:border-green-900/30">
+            <CardHeader>
+              <CardTitle className="text-lg">Price Insights</CardTitle>
+              <CardDescription>
+                Calculations are based on current market rates and standard quality.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm space-y-2">
+              <p>• Prices are updated every 24 hours</p>
+              <p>• Mandi rates vary by location</p>
+              <p>• Quality grade affects final pricing</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
