@@ -383,17 +383,17 @@ export default function DiseaseDetectionTool() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <Card className="border-none shadow-xl bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Info className="h-5 w-5 text-green-400" />
+          <Card className="border-none shadow-xl bg-white overflow-hidden ring-1 ring-slate-200">
+            <CardHeader className="border-b border-slate-100 bg-slate-50/30">
+              <CardTitle className="flex items-center gap-2 text-slate-900">
+                <Info className="h-5 w-5 text-green-600" />
                 Tips for Best Accuracy
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-slate-500">
                 AI works best when you provide high-quality data.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-0">
+            <CardContent className="space-y-4 pt-6">
               <div className="grid gap-3">
                 <TipItem 
                   icon={Camera} 
@@ -441,13 +441,13 @@ export default function DiseaseDetectionTool() {
 
 function TipItem({ icon: Icon, title, desc }: { icon: any, title: string, desc: string }) {
   return (
-    <div className="flex gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
-      <div className="shrink-0 p-2 bg-green-500/20 rounded-lg h-fit">
-        <Icon className="h-5 w-5 text-green-400" />
+    <div className="flex gap-4 p-3 rounded-xl bg-slate-50 hover:bg-green-50 transition-all duration-200 border border-slate-100 group">
+      <div className="shrink-0 p-2 bg-white rounded-lg h-fit shadow-sm group-hover:bg-green-100 transition-colors">
+        <Icon className="h-5 w-5 text-green-600" />
       </div>
       <div>
-        <h5 className="font-bold text-sm text-white mb-0.5">{title}</h5>
-        <p className="text-xs text-slate-400">{desc}</p>
+        <h5 className="font-bold text-sm text-slate-900 mb-0.5">{title}</h5>
+        <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
       </div>
     </div>
   );
