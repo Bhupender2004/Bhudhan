@@ -93,9 +93,9 @@ export default function DiseaseDetectionTool() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
+    <div className="mx-auto max-w-5xl space-y-8 p-4 md:p-0">
       <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-bold tracking-tight text-green-800">Crop Health Diagnosis</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-green-800 dark:text-green-400">Crop Health Diagnosis</h2>
         <p className="text-muted-foreground text-lg">
           Powered by AI to help you identify and treat plant diseases early.
         </p>
@@ -103,15 +103,15 @@ export default function DiseaseDetectionTool() {
 
       <div className="grid gap-8 lg:grid-cols-5">
         <div className="lg:col-span-3 space-y-6">
-          <Card className="overflow-hidden border-none shadow-xl bg-white/50 backdrop-blur-sm">
-            <CardHeader className="bg-green-50/50 pb-4">
+          <Card className="overflow-hidden border-none shadow-xl bg-white dark:bg-slate-900/50 backdrop-blur-sm ring-1 ring-slate-200 dark:ring-slate-800">
+            <CardHeader className="bg-green-50/50 dark:bg-green-950/10 pb-4">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Camera className="h-5 w-5 text-green-700" />
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Camera className="h-5 w-5 text-green-700 dark:text-green-400" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl text-green-900">Upload Plant Image</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-xl text-green-900 dark:text-green-100">Upload Plant Image</CardTitle>
+                  <CardDescription className="dark:text-slate-400">
                     Highest accuracy with sharp, well-lit photos
                   </CardDescription>
                 </div>
@@ -122,8 +122,8 @@ export default function DiseaseDetectionTool() {
                 {...getRootProps()}
                 className={`group relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 min-h-[300px] flex flex-col items-center justify-center ${
                   isDragActive 
-                    ? 'border-green-500 bg-green-50/50 scale-[1.01]' 
-                    : 'border-muted-foreground/20 hover:border-green-400 hover:bg-green-50/10'
+                    ? 'border-green-500 bg-green-50/50 dark:bg-green-900/20 scale-[1.01]' 
+                    : 'border-muted-foreground/20 dark:border-slate-700 hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50/10 dark:hover:bg-green-900/10'
                 }`}
               >
                 <input {...getInputProps()} />
@@ -165,31 +165,31 @@ export default function DiseaseDetectionTool() {
                       animate={{ opacity: 1 }}
                       className="flex flex-col items-center justify-center py-8"
                     >
-                      <div className="mb-4 p-4 bg-green-50 rounded-full text-green-600 group-hover:scale-110 transition-transform">
+                      <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-full text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform">
                         <Upload className="h-10 w-10" />
                       </div>
-                      <h3 className="text-lg font-semibold mb-2">
+                      <h3 className="text-lg font-semibold mb-2 dark:text-slate-200">
                         {isDragActive ? 'Drop your photo here' : 'Select a leaf or plant part photo'}
                       </h3>
                       <p className="text-sm text-muted-foreground mb-4 max-w-xs">
                         Drag and drop your image here, or click to browse files
                       </p>
                       <div className="flex gap-4 text-xs font-medium text-muted-foreground mt-2">
-                        <span className="bg-muted px-2 py-1 rounded">JPG / PNG</span>
-                        <span className="bg-muted px-2 py-1 rounded">MAX 5MB</span>
-                        <span className="bg-muted px-2 py-1 rounded">WEBP</span>
+                        <span className="bg-muted dark:bg-slate-800 px-2 py-1 rounded">JPG / PNG</span>
+                        <span className="bg-muted dark:bg-slate-800 px-2 py-1 rounded">MAX 5MB</span>
+                        <span className="bg-muted dark:bg-slate-800 px-2 py-1 rounded">WEBP</span>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             </CardContent>
-            <CardFooter className="bg-muted/30 flex justify-between gap-4 p-4 border-t">
+            <CardFooter className="bg-muted/30 dark:bg-slate-900/50 flex justify-between gap-4 p-4 border-t dark:border-slate-800">
               <Button 
                 variant="ghost" 
                 onClick={resetTool} 
                 disabled={!image || isAnalyzing}
-                className="hover:bg-red-50 hover:text-red-600 font-medium"
+                className="hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-600 dark:hover:text-red-400 font-medium"
               >
                 Reset Progress
               </Button>
@@ -199,7 +199,7 @@ export default function DiseaseDetectionTool() {
                 className={`relative px-8 h-12 rounded-xl transition-all ${
                   !image || isAnalyzing 
                     ? 'bg-muted text-muted-foreground' 
-                    : 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-200 hover:shadow-green-300'
+                    : 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-200 dark:shadow-none hover:shadow-green-300'
                 }`}
               >
                 {isAnalyzing ? (
@@ -224,7 +224,7 @@ export default function DiseaseDetectionTool() {
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-6"
               >
-                <Card className="border-none shadow-2xl overflow-hidden ring-1 ring-green-100">
+                <Card className="border-none shadow-2xl overflow-hidden ring-1 ring-green-100 dark:ring-green-900/30 bg-white dark:bg-slate-900">
                   <header className="bg-gradient-to-r from-green-600 to-emerald-600 p-6 text-white">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-3">
@@ -244,16 +244,16 @@ export default function DiseaseDetectionTool() {
                   
                   <CardContent className="p-0">
                     <Tabs defaultValue="overview" className="w-full">
-                      <TabsList className="w-full h-14 grid grid-cols-3 rounded-none bg-muted/20">
-                        <TabsTrigger value="overview" className="data-[state=active]:bg-white data-[state=active]:text-green-700 h-full font-semibold">
+                      <TabsList className="w-full h-14 grid grid-cols-3 rounded-none bg-muted/20 dark:bg-slate-800/50">
+                        <TabsTrigger value="overview" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-400 h-full font-semibold">
                           <Info className="h-4 w-4 mr-2" />
                           Overview
                         </TabsTrigger>
-                        <TabsTrigger value="treatment" className="data-[state=active]:bg-white data-[state=active]:text-green-700 h-full font-semibold">
+                        <TabsTrigger value="treatment" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-400 h-full font-semibold">
                           <Zap className="h-4 w-4 mr-2" />
                           Treatment
                         </TabsTrigger>
-                        <TabsTrigger value="prevention" className="data-[state=active]:bg-white data-[state=active]:text-green-700 h-full font-semibold">
+                        <TabsTrigger value="prevention" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-400 h-full font-semibold">
                           <ShieldCheck className="h-4 w-4 mr-2" />
                           Prevention
                         </TabsTrigger>
@@ -261,25 +261,25 @@ export default function DiseaseDetectionTool() {
 
                       <div className="p-6">
                         <TabsContent value="overview" className="mt-0 space-y-6">
-                          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100/50">
-                            <h3 className="text-amber-900 font-bold flex items-center gap-2 mb-2">
+                          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100/50 dark:border-amber-900/20">
+                            <h3 className="text-amber-900 dark:text-amber-400 font-bold flex items-center gap-2 mb-2">
                               <Leaf className="h-4 w-4" />
                               Disease Description
                             </h3>
-                            <p className="text-amber-800 leading-relaxed leading-relaxed">{result.description}</p>
+                            <p className="text-amber-800 dark:text-amber-200/80 leading-relaxed font-medium">{result.description}</p>
                           </div>
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+                            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 flex flex-col justify-between">
                               <div className="flex justify-between items-center mb-3">
-                                <h4 className="font-bold text-slate-700 uppercase text-xs tracking-widest">Severity</h4>
+                                <h4 className="font-bold text-slate-700 dark:text-slate-300 uppercase text-xs tracking-widest">Severity</h4>
                                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                  result.confidence > 80 ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
+                                  result.confidence > 80 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
                                 }`}>
                                   {result.confidence > 80 ? 'CRITICAL' : 'MODERATE'}
                                 </span>
                               </div>
-                              <div className="h-3 w-full rounded-full bg-slate-200 overflow-hidden shadow-inner mb-2">
+                              <div className="h-3 w-full rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-inner mb-2">
                                 <motion.div
                                   initial={{ width: 0 }}
                                   animate={{ width: `${result.confidence}%` }}
@@ -287,15 +287,15 @@ export default function DiseaseDetectionTool() {
                                   className={`h-full rounded-full ${result.confidence > 80 ? 'bg-red-500' : 'bg-orange-500'}`}
                                 />
                               </div>
-                              <p className="text-xs text-slate-500">Based on leaf discoloration patterns</p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400">Based on leaf discoloration patterns</p>
                             </div>
 
-                            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+                            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 flex flex-col justify-between">
                               <div className="flex justify-between items-center mb-3">
-                                <h4 className="font-bold text-slate-700 uppercase text-xs tracking-widest">Spread Risk</h4>
-                                <span className="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full">HIGH RISK</span>
+                                <h4 className="font-bold text-slate-700 dark:text-slate-300 uppercase text-xs tracking-widest">Spread Risk</h4>
+                                <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 font-bold px-2 py-0.5 rounded-full">HIGH RISK</span>
                               </div>
-                              <div className="h-3 w-full rounded-full bg-slate-200 overflow-hidden shadow-inner mb-2">
+                              <div className="h-3 w-full rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-inner mb-2">
                                 <motion.div
                                   initial={{ width: 0 }}
                                   animate={{ width: "85%" }}
@@ -303,25 +303,25 @@ export default function DiseaseDetectionTool() {
                                   className="h-full bg-red-400 rounded-full"
                                 />
                               </div>
-                              <p className="text-xs text-slate-500">Fast transmission in current weather</p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400">Fast transmission in current weather</p>
                             </div>
                           </div>
                         </TabsContent>
 
                         <TabsContent value="treatment" className="mt-0">
-                          <div className="rounded-2xl bg-blue-50/70 border border-blue-100 p-6">
-                            <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
+                          <div className="rounded-2xl bg-blue-50/70 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 p-6">
+                            <h3 className="text-xl font-bold text-blue-900 dark:text-blue-400 mb-4 flex items-center gap-2">
                               <Zap className="h-5 w-5 fill-blue-500 text-blue-500" />
                               Immediate Actions
                             </h3>
-                            <p className="text-blue-800 mb-6 bg-white/40 p-4 rounded-xl border border-blue-200/50 italic">
+                            <p className="text-blue-800 dark:text-blue-200/80 mb-6 bg-white/40 dark:bg-slate-900/40 p-4 rounded-xl border border-blue-200/50 dark:border-blue-800/30 italic">
                               "{result.treatment}"
                             </p>
 
                             <div className="space-y-4">
-                              <h4 className="font-bold text-blue-900 flex items-center gap-2">
-                                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-                                step-by-step application
+                              <h4 className="font-bold text-blue-900 dark:text-blue-300 flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+                                Step-by-step application
                               </h4>
                               <div className="grid gap-3">
                                 {[
@@ -331,15 +331,15 @@ export default function DiseaseDetectionTool() {
                                   "Monitor plants regularly for new symptoms",
                                   "Avoid overhead watering to prevent spread"
                                 ].map((step, i) => (
-                                  <div key={i} className="flex gap-3 text-sm text-blue-800 bg-white/30 p-3 rounded-lg border border-blue-100/30">
-                                    <span className="font-bold text-blue-400">0{i + 1}</span>
+                                  <div key={i} className="flex gap-3 text-sm text-blue-800 dark:text-blue-200/70 bg-white/30 dark:bg-slate-800/30 p-3 rounded-lg border border-blue-100/30 dark:border-blue-900/20">
+                                    <span className="font-bold text-blue-400 dark:text-blue-500">0{i + 1}</span>
                                     <span>{step}</span>
                                   </div>
                                 ))}
                               </div>
                             </div>
 
-                            <div className="mt-6 flex items-center gap-3 rounded-xl bg-amber-50/50 p-4 text-xs font-medium text-amber-900 border border-amber-200/50">
+                            <div className="mt-6 flex items-center gap-3 rounded-xl bg-amber-50/50 dark:bg-amber-900/10 p-4 text-xs font-medium text-amber-900 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/20">
                               <AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
                               <p>AI diagnosis is an advisory tool. For commercial operations, please cross-verify with a local agricultural extension officer.</p>
                             </div>
@@ -347,12 +347,12 @@ export default function DiseaseDetectionTool() {
                         </TabsContent>
 
                         <TabsContent value="prevention" className="mt-0">
-                          <div className="rounded-2xl bg-green-50/70 border border-green-100 p-6">
-                            <h3 className="text-xl font-bold text-green-900 mb-4 flex items-center gap-2">
+                          <div className="rounded-2xl bg-green-50/70 dark:bg-green-900/10 border border-green-100 dark:border-green-900/20 p-6">
+                            <h3 className="text-xl font-bold text-green-900 dark:text-green-400 mb-4 flex items-center gap-2">
                               <ShieldCheck className="h-5 w-5 fill-green-500 text-green-500" />
                               Long-term Protection
                             </h3>
-                            <p className="text-green-800 mb-6 bg-white/40 p-4 rounded-xl border border-green-200/50">
+                            <p className="text-green-800 dark:text-green-200/80 mb-6 bg-white/40 dark:bg-slate-900/40 p-4 rounded-xl border border-green-200/50 dark:border-green-800/30">
                               {result.prevention}
                             </p>
 
@@ -365,7 +365,7 @@ export default function DiseaseDetectionTool() {
                                 "Keep garden clean of plant debris",
                                 "Use drip irrigation"
                               ].map((item, i) => (
-                                <div key={i} className="flex items-center gap-2 p-3 bg-white/50 rounded-xl border border-green-100 text-sm text-green-800">
+                                <div key={i} className="flex items-center gap-2 p-3 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-green-100 dark:border-green-900/30 text-sm text-green-800 dark:text-green-200/70">
                                   <div className="h-2 w-2 rounded-full bg-green-500 shadow-sm shadow-green-200" />
                                   {item}
                                 </div>
@@ -383,13 +383,13 @@ export default function DiseaseDetectionTool() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <Card className="border-none shadow-xl bg-white overflow-hidden ring-1 ring-slate-200">
-            <CardHeader className="border-b border-slate-100 bg-slate-50/30">
-              <CardTitle className="flex items-center gap-2 text-slate-900">
-                <Info className="h-5 w-5 text-green-600" />
+          <Card className="border-none shadow-xl bg-white dark:bg-slate-900/50 overflow-hidden ring-1 ring-slate-200 dark:ring-slate-800">
+            <CardHeader className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/20">
+              <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                <Info className="h-5 w-5 text-green-600 dark:text-green-400" />
                 Tips for Best Accuracy
               </CardTitle>
-              <CardDescription className="text-slate-500">
+              <CardDescription className="dark:text-slate-400">
                 AI works best when you provide high-quality data.
               </CardDescription>
             </CardHeader>
@@ -424,12 +424,12 @@ export default function DiseaseDetectionTool() {
             </CardContent>
           </Card>
 
-          <div className="p-6 rounded-2xl bg-green-50 border border-green-100">
-            <h4 className="font-bold text-green-900 mb-2 flex items-center gap-2">
+          <div className="p-6 rounded-2xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/20">
+            <h4 className="font-bold text-green-900 dark:text-green-400 mb-2 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" />
               Privacy Note
             </h4>
-            <p className="text-xs text-green-800 leading-relaxed">
+            <p className="text-xs text-green-800 dark:text-green-200/60 leading-relaxed font-medium">
               Your uploaded images are processed locally for analysis and are not permanently stored on our public servers without consent.
             </p>
           </div>
@@ -441,13 +441,13 @@ export default function DiseaseDetectionTool() {
 
 function TipItem({ icon: Icon, title, desc }: { icon: any, title: string, desc: string }) {
   return (
-    <div className="flex gap-4 p-3 rounded-xl bg-slate-50 hover:bg-green-50 transition-all duration-200 border border-slate-100 group">
-      <div className="shrink-0 p-2 bg-white rounded-lg h-fit shadow-sm group-hover:bg-green-100 transition-colors">
-        <Icon className="h-5 w-5 text-green-600" />
+    <div className="flex gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/30 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 border border-slate-100 dark:border-slate-800 group">
+      <div className="shrink-0 p-2 bg-white dark:bg-slate-900 rounded-lg h-fit shadow-sm group-hover:bg-green-100 dark:group-hover:bg-green-800/50 transition-colors">
+        <Icon className="h-5 w-5 text-green-600 dark:text-green-400" />
       </div>
       <div>
-        <h5 className="font-bold text-sm text-slate-900 mb-0.5">{title}</h5>
-        <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+        <h5 className="font-bold text-sm text-slate-900 dark:text-slate-200 mb-0.5">{title}</h5>
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</p>
       </div>
     </div>
   );
