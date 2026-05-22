@@ -273,33 +273,33 @@ export default function WeatherDashboard() {
 
             {/* Right: Insights & Alerts */}
             <div className="lg:col-span-4 space-y-6">
-              <Card className="border-none bg-stone-900 dark:bg-stone-800 text-white shadow-lg overflow-hidden">
+              <Card className="border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-6">
                     <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-400">Farmer Insights</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-stone-500 dark:text-stone-400">Farmer Insights</h3>
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div className="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-xl border border-stone-100 dark:border-stone-700/50">
                       <div className="flex gap-3">
-                        <AlertCircle className="h-4 w-4 text-green-400 flex-shrink-0" />
-                        <p className="text-xs font-medium text-stone-300 leading-relaxed">
-                          Soil moisture is optimal for <span className="text-white font-bold">Rice transplantation</span>. Next 48 hours show no major rain alerts.
+                        <AlertCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+                        <p className="text-xs font-medium text-stone-600 dark:text-stone-300 leading-relaxed">
+                          Soil moisture is optimal for <span className="text-stone-900 dark:text-white font-bold">Rice transplantation</span>. Next 48 hours show no major rain alerts.
                         </p>
                       </div>
                     </div>
-                    <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div className="p-4 bg-stone-50 dark:bg-stone-800/50 rounded-xl border border-stone-100 dark:border-stone-700/50">
                       <div className="flex gap-3">
-                        <Navigation className="h-4 w-4 text-amber-400 flex-shrink-0" />
-                        <p className="text-xs font-medium text-stone-300 leading-relaxed">
-                          Wind speeds are low (<span className="text-white font-bold">7 km/h</span>). Good time for pesticide application.
+                        <Navigation className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                        <p className="text-xs font-medium text-stone-600 dark:text-stone-300 leading-relaxed">
+                          Wind speeds are low (<span className="text-stone-900 dark:text-white font-bold">7 km/h</span>). Good time for pesticide application.
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <Button className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold h-10 rounded-lg text-xs">
+                  <Button className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold h-10 rounded-lg text-xs shadow-sm">
                     View Full Forecast
                   </Button>
                 </CardContent>
