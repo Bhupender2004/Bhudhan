@@ -9,10 +9,26 @@ import {
   Loader2, CloudSun, CloudRain, Sun, Cloud, Wind, 
   Droplets, Search, MapPin, Thermometer, 
   SunMedium, Waves, Sprout, 
-  Navigation, Gauge, Eye, AlertCircle
+  Navigation, Gauge, Eye, AlertCircle, Calendar
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger,
+  SheetDescription 
+} from '@/components/ui/sheet';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface WeatherData {
   location: string;
@@ -299,9 +315,71 @@ export default function WeatherDashboard() {
                     </div>
                   </div>
 
-                  <Button className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold h-10 rounded-lg text-xs shadow-sm">
-                    View Full Forecast
-                  </Button>
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold h-10 rounded-lg text-xs shadow-sm">
+                        View Full Forecast
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="w-[400px] sm:w-[540px] border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-y-auto">
+                      <SheetHeader className="mb-6">
+                        <SheetTitle className="flex items-center gap-2 text-stone-900 dark:text-white">
+                          <Calendar className="h-5 w-5 text-green-600" />
+                          7-Day Detailed Forecast
+                        </SheetTitle>
+                        <SheetDescription className="text-stone-500 dark:text-stone-400">
+                          Extended weather outlook and agricultural impact for {weather.location}
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="space-y-6">
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="hover:bg-transparent border-stone-100 dark:border-stone-800">
+                              <TableHead className="text-[10px] font-bold uppercase tracking-wider text-stone-400">Day</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-wider text-stone-400 text-center">Condition</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-wider text-stone-400 text-right">Temp</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-wider text-stone-400 text-right">Rain</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {weather.forecast.map((day, i) => (
+                              <TableRow key={i} className="border-stone-50 dark:border-stone-800/50">
+                                <TableCell className="py-4">
+                                  <p className="font-bold text-stone-900 dark:text-white">{day.day}</p>
+                                  <p className="text-[10px] text-stone-400">May {22 + i}</p>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                  <div className="flex flex-col items-center gap-1">
+                                    {getWeatherIcon(day.icon, "h-5 w-5")}
+                                    <span className="text-[10px] font-medium text-stone-600 dark:text-stone-400 capitalize">{day.condition}</span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <div className="flex flex-col items-end">
+                                    <span className="font-black text-stone-900 dark:text-white">{day.maxTemp}°</span>
+                                    <span className="text-xs text-stone-400">{day.minTemp}°</span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <span className="text-[10px] font-bold text-blue-500">{day.precipitation}%</span>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+
+                        <div className="p-4 bg-green-50 dark:bg-green-900/10 rounded-xl border border-green-100 dark:border-green-800/50">
+                          <h4 className="text-xs font-bold text-green-700 dark:text-green-400 mb-2 flex items-center gap-1.5">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            Agricultural Intelligence
+                          </h4>
+                          <p className="text-[11px] leading-relaxed text-green-600/80 dark:text-green-400/80">
+                            The upcoming week shows stable temperatures ideal for most seasonal crops. Ensure consistent irrigation during the warmer mid-week period. Moderate UV levels expected; plan field work for early morning or late afternoon.
+                          </p>
+                        </div>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
                 </CardContent>
               </Card>
 
