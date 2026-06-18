@@ -52,29 +52,29 @@ export default function RewardsWidget() {
       <div className="absolute -right-12 -top-12 w-24 h-24 bg-amber-200/20 dark:bg-amber-500/5 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-500" />
       <div className="absolute -left-12 -bottom-12 w-24 h-24 bg-orange-200/20 dark:bg-orange-500/5 rounded-full blur-2xl" />
 
-      <CardHeader className="pb-3 relative z-10">
+      <CardHeader className="pb-4 relative z-10 p-5 md:p-6">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-100">
-            <Trophy className="h-4 w-4 text-amber-500 animate-bounce" />
+          <CardTitle className="text-sm font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100">
+            <Trophy className="h-4.5 w-4.5 text-amber-500 animate-bounce" />
             Farmer Rewards
           </CardTitle>
-          <Badge variant="outline" className="bg-amber-100/50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 font-bold border-amber-200 dark:border-amber-900 text-[10px]">
+          <Badge variant="outline" className="bg-amber-100/50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 font-bold border-amber-200 dark:border-amber-900 text-[10px] px-2.5 py-0.5">
             Level {level}
           </Badge>
         </div>
-        <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+        <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Earn XP points by learning and using BhuDhan
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-4 flex-1 relative z-10">
+      <CardContent className="space-y-5 flex-1 relative z-10 px-5 md:px-6 pb-6">
         {/* XP Progress Bar */}
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div className="flex justify-between text-xs font-semibold">
             <span className="text-slate-600 dark:text-slate-400">{points} Total XP</span>
             <span className="text-amber-600 dark:text-amber-400 font-bold">{remainingPoints} XP to Lvl {level + 1}</span>
           </div>
-          <div className="h-2.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+          <div className="h-3 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
             <div 
               className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-full transition-all duration-1000 ease-out shadow-sm"
               style={{ width: `${progressPercent}%` }}
@@ -83,10 +83,10 @@ export default function RewardsWidget() {
         </div>
 
         {/* Streak & Achievements Counter */}
-        <div className="grid grid-cols-2 gap-3 py-1">
-          <div className="flex items-center gap-2 px-3 py-2 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400">
-              <Flame className={`h-4.5 w-4.5 ${streak > 0 ? 'animate-pulse' : ''}`} />
+        <div className="grid grid-cols-2 gap-4 py-1">
+          <div className="flex items-center gap-3 p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800/60 shadow-sm transition-all hover:shadow-md">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400">
+              <Flame className={`h-5 w-5 ${streak > 0 ? 'animate-pulse' : ''}`} />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] text-muted-foreground font-semibold uppercase leading-none">Streak</p>
@@ -94,9 +94,9 @@ export default function RewardsWidget() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-2 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
-              <Trophy className="h-4.5 w-4.5" />
+          <div className="flex items-center gap-3 p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800/60 shadow-sm transition-all hover:shadow-md">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
+              <Trophy className="h-5 w-5" />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] text-muted-foreground font-semibold uppercase leading-none">Badges</p>
@@ -106,19 +106,25 @@ export default function RewardsWidget() {
         </div>
 
         {/* Daily Check-In button */}
-        <div>
+        <div className="pt-1">
           {hasCheckedInToday ? (
-            <Button disabled className="w-full h-10 gap-1.5 bg-green-500 hover:bg-green-500 text-white font-bold opacity-90 rounded-xl cursor-default">
-              <CheckCircle2 className="h-4.5 w-4.5" />
-              Daily Reward Claimed (+15 XP)
+            <Button disabled className="w-full h-12 bg-green-500 hover:bg-green-500 text-white font-bold opacity-90 rounded-xl cursor-default flex items-center justify-center gap-2">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-green-100" />
+              <div className="flex flex-col items-start leading-tight text-left">
+                <span className="text-[9px] font-bold text-green-200 uppercase tracking-wider">Reward Claimed</span>
+                <span className="text-xs font-black">+15 XP Added</span>
+              </div>
             </Button>
           ) : (
             <Button 
               onClick={handleCheckIn}
-              className="w-full h-10 gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl shadow-md shadow-orange-200 dark:shadow-none animate-pulse hover:animate-none active:scale-[0.98] transition-all"
+              className="w-full h-12 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl shadow-md shadow-orange-100 dark:shadow-none active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative overflow-hidden group/btn"
             >
-              <CalendarDays className="h-4.5 w-4.5" />
-              Claim Daily Check-In (+15 XP)
+              <CalendarDays className="h-5 w-5 shrink-0 text-amber-200 animate-pulse" />
+              <div className="flex flex-col items-start leading-tight text-left">
+                <span className="text-[9px] font-bold text-amber-100 uppercase tracking-wider leading-none">Daily Check-In</span>
+                <span className="text-xs font-black mt-0.5">Claim +15 XP</span>
+              </div>
             </Button>
           )}
         </div>

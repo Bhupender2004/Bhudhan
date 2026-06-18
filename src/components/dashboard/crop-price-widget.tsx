@@ -281,8 +281,8 @@ export default function CropPriceWidget() {
 
   if (loading) {
     return (
-      <div className="flex h-[150px] items-center justify-center">
-        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+      <div className="flex h-[290px] items-center justify-center">
+        <Loader2 className="h-5 w-5 animate-spin text-emerald-500" />
       </div>
     );
   }
@@ -363,7 +363,7 @@ export default function CropPriceWidget() {
         </Button>
       </div>
 
-      <div className="space-y-1 overflow-y-auto max-h-[150px] pr-1 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400">
+      <div className="space-y-2 overflow-y-auto max-h-[290px] pr-1 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400">
         {prices.map((crop) => (
           <div key={`${crop.name}-${crop.state}-${crop.district}`} className="flex flex-col gap-0.5 border-b border-gray-100 pb-1 last:border-0">
             <div className="flex items-center justify-between">
