@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/lib/context/language-context";
+import { RewardsProvider } from "@/lib/context/rewards-context";
 import AuthProvider from "@/components/auth/auth-provider";
 import "./globals.css";
 
@@ -43,10 +44,12 @@ export default function RootLayout({
         >
           <AuthProvider>
             <LanguageProvider>
-              <div className="relative flex min-h-screen flex-col">
-                {children}
-              </div>
-              <Toaster position="top-right" expand={false} richColors />
+              <RewardsProvider>
+                <div className="relative flex min-h-screen flex-col">
+                  {children}
+                </div>
+                <Toaster position="top-right" expand={false} richColors />
+              </RewardsProvider>
             </LanguageProvider>
           </AuthProvider>
         </ThemeProvider>

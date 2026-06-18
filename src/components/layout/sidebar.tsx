@@ -15,6 +15,7 @@ import {
   Calendar,
   Brain,
   Users,
+  Award,
   Settings,
   Store
 } from 'lucide-react';
@@ -94,6 +95,12 @@ export default function Sidebar({ className, onRouteClick, ...props }: SidebarPr
       icon: Users,
       href: '/community',
       active: pathname === '/community' || pathname.startsWith('/community/'),
+    },
+    {
+      label: t('rewards'),
+      icon: Award,
+      href: '/rewards',
+      active: pathname === '/rewards' || pathname.startsWith('/rewards/'),
     },
     {
       label: t('settings'),

@@ -16,6 +16,7 @@ const translations: Record<string, Record<string, string>> = {
     cropCalendar: 'Crop Calendar',
     aiTools: 'AI Tools',
     community: 'Community',
+    rewards: 'Rewards & Quizzes',
     settings: 'Settings',
 
     // Auth
@@ -161,6 +162,7 @@ const translations: Record<string, Record<string, string>> = {
     cropCalendar: 'फसल कैलेंडर',
     aiTools: 'AI उपकरण',
     community: 'समुदाय',
+    rewards: 'पुरस्कार और प्रश्नोत्तरी',
     settings: 'सेटिंग्स',
 
     // Auth
@@ -304,6 +306,7 @@ const translations: Record<string, Record<string, string>> = {
     cropCalendar: 'ফসল ক্যালেন্ডার',
     aiTools: 'AI টুলস',
     community: 'সম্প্রদায়',
+    rewards: 'পুরস্কার ও কুইজ',
     settings: 'সেটিংস',
 
     // Auth
@@ -365,6 +368,7 @@ const translations: Record<string, Record<string, string>> = {
     cropCalendar: 'పంట క్యాలెండర్',
     aiTools: 'AI పరికరాలు',
     community: 'సమాజం',
+    rewards: 'బహుమతులు & క్విజ్',
     settings: 'సెట్టింగ్‌లు',
 
     // Auth

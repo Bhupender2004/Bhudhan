@@ -6,6 +6,7 @@ import { useUser, useClerk } from '@clerk/nextjs';
 import { User } from 'lucide-react';
 import LanguageSelector from '@/components/language/language-selector';
 import { useLanguage } from '@/lib/context/language-context';
+import { useRewards } from '@/lib/context/rewards-context';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
@@ -23,6 +24,7 @@ export default function Header() {
   const [userName, setUserName] = useState<string>('User');
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const { t } = useLanguage();
+  const { points, level } = useRewards();
   const [mounted, setMounted] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
 
@@ -128,6 +130,16 @@ export default function Header() {
         {/* Right Section: Actions & Profile */}
         <div className="flex flex-1 items-center justify-end gap-3">
           <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md rounded-full border border-white/60 dark:border-slate-700/60 shadow-sm">
+            {mounted && (
+              <Link href="/rewards">
+                <Button variant="ghost" className="h-8 gap-1.5 rounded-full px-2.5 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all text-xs font-black text-amber-600 dark:text-amber-400">
+                  <span>🪙</span>
+                  <span>{points} <span className="text-[10px] text-muted-foreground font-normal">XP</span></span>
+                  <span className="hidden sm:inline bg-amber-100 dark:bg-amber-950/50 px-2 py-0.5 rounded-full text-[9px] font-black uppercase text-amber-800 dark:text-amber-300">Lvl {level}</span>
+                </Button>
+              </Link>
+            )}
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-300 relative">

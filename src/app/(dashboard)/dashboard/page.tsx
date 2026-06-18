@@ -8,6 +8,7 @@ import NewsWidget from '@/components/news/news-widget';
 import CropPriceWidget from '@/components/dashboard/crop-price-widget';
 import SchemeWidget from '@/components/schemes/scheme-widget';
 import CropPriceCalculator from '@/components/dashboard/CropPriceCalculator';
+import RewardsWidget from '@/components/dashboard/rewards-widget';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -34,7 +35,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="transition-all duration-300 hover:scale-[1.02]">
+          <RewardsWidget />
+        </div>
+
         <Card className="transition-all duration-300 hover:scale-[1.02]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Current Weather</CardTitle>

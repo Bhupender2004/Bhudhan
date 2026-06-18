@@ -313,7 +313,11 @@ const schemes = [
   }
 ];
 
-export default function SchemeDetailPage({ params }: { params: React.PropsWithChildren<{ id: string }>['params'] }) {
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function SchemeDetailPage({ params }: PageProps) {
   // Fix for React.use() or await params in Client Components
   const [scheme, setScheme] = React.useState<typeof schemes[0] | null>(null);
   const [loading, setLoading] = React.useState(true);
