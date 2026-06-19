@@ -170,9 +170,10 @@ export default function SchemesPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-5 relative flex justify-center items-center h-[300px] lg:h-[350px] w-full"
+              style={{ position: 'relative' }}
+              className="lg:col-span-5 flex justify-center items-center h-[300px] lg:h-[350px] w-full"
             >
-              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 shadow-emerald-500/10">
+              <div style={{ position: 'relative' }} className="w-full h-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 shadow-emerald-500/10">
                 <Image 
                   src="/images/farmer_with_cash.png" 
                   alt="Happy Indian farmer holding cash notes in crop field" 
@@ -260,7 +261,7 @@ function SchemeCard({ scheme }: { scheme: typeof schemes[0] }) {
 
   return (
     <Card className="group h-full flex flex-col overflow-hidden border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 card-hover-glow">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-4 relative z-10">
         <div className="flex justify-between items-start mb-3">
           <Badge className={`flex items-center gap-1.5 px-2.5 py-0.5 font-medium border ${getBadgeColor(scheme.category)}`}>
             {getCategoryIcon(scheme.category)}
@@ -278,7 +279,7 @@ function SchemeCard({ scheme }: { scheme: typeof schemes[0] }) {
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="flex-grow pb-6">
+      <CardContent className="flex-grow pb-6 relative z-10">
         <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
           <div className="flex items-center text-sm font-medium">
             <Calendar className="h-4 w-4 mr-2.5 text-primary" />
@@ -297,19 +298,19 @@ function SchemeCard({ scheme }: { scheme: typeof schemes[0] }) {
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0 pb-6 px-6 gap-3">
-        <Link href={`/schemes/${scheme.id}`} className="flex-1">
-          <Button variant="outline" className="w-full h-11 font-medium border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 group/btn">
+      <CardFooter className="pt-0 pb-6 px-6 gap-3 relative z-10">
+        <Button variant="outline" className="flex-1 h-11 font-medium border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 group/btn" asChild>
+          <Link href={`/schemes/${scheme.id}`}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all" />
-          </Button>
-        </Link>
-        <a href={scheme.link} target="_blank" rel="noopener noreferrer" className="flex-1">
-          <Button className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+          </Link>
+        </Button>
+        <Button className="flex-1 h-11 font-semibold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all active:scale-[0.98]" asChild>
+          <a href={scheme.link} target="_blank" rel="noopener noreferrer">
             Apply Now
             <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
-        </a>
+          </a>
+        </Button>
       </CardFooter>
     </Card>
   );
