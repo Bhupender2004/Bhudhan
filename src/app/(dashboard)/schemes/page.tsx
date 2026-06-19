@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 // Mock schemes data (in a real app, this would come from an API)
 const schemes = [
@@ -146,23 +147,42 @@ export default function SchemesPage() {
         </div>
         
         <div className="container relative z-10 mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <Badge className="mb-6 bg-primary text-white border-none px-4 py-1.5 text-sm font-semibold shadow-lg shadow-primary/20">
-              Official Government Initiatives
-            </Badge>
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8 text-slate-900 dark:text-white">
-              Empowering Indian <br />
-              <span className="text-primary">Agriculture</span>
-            </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-0 max-w-2xl font-medium">
-              Access curated government schemes, subsidies, and financial support designed to boost your farming productivity and secure your family's future.
-            </p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-7"
+            >
+              <Badge className="mb-6 bg-primary text-white border-none px-4 py-1.5 text-sm font-semibold shadow-lg shadow-primary/20">
+                Official Government Initiatives
+              </Badge>
+              <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8 text-slate-900 dark:text-white">
+                Empowering Indian <br />
+                <span className="text-primary">Agriculture</span>
+              </h1>
+              <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-0 max-w-2xl font-medium">
+                Access curated government schemes, subsidies, and financial support designed to boost your farming productivity and secure your family's future.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:col-span-5 relative flex justify-center items-center h-[300px] lg:h-[350px] w-full"
+            >
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 shadow-emerald-500/10">
+                <Image 
+                  src="/images/farmer_with_cash.png" 
+                  alt="Happy Indian farmer holding cash notes in crop field" 
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
 
