@@ -277,6 +277,18 @@ export default function SmartIrrigationPage() {
         theme: 'grid',
         headStyles: { fillColor: [0, 102, 204] },
       }); }
+
+      // Add footer
+      const pageCount = doc.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('BhuDhan Krishi - Your Digital AI Farmer', 105, doc.internal.pageSize.height - 10, { align: 'center' });
+      }
+
+      // Save the PDF
+      doc.save(`BhuDhan_Irrigation_Report_${cropType}_${currentDate.replace(/\//g, '-')}.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Failed to generate PDF. Please try again.');
