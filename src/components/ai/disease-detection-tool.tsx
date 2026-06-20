@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,7 +21,8 @@ import {
   Info,
   ShieldCheck,
   Zap,
-  Leaf
+  Leaf,
+  Download
 } from 'lucide-react';
 import { useToast } from '@/lib/utils/toast';
 
@@ -37,7 +38,299 @@ export default function DiseaseDetectionTool() {
   const [image, setImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<DetectionResult | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleDownloadPDF = async () => {
+    if (!result || !isClient) return;
+
+    try {
+      const jsPDFModule = await import('jspdf');
+      const jsPDF = jsPDFModule.jsPDF || jsPDFModule.default;
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      // Colors
+      const primaryColor = '#15803d'; // Forest Green
+      const secondaryColor = '#0f172a'; // Slate-900 (Dark Slate)
+      const lightBgColor = '#f8fafc'; // Slate-50
+      const accentColor = '#b91c1c'; // Red-700 for Critical
+
+      // Page dimensions
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 20;
+      const contentWidth = pageWidth - 2 * margin;
+
+      // Vertical cursor
+      let y = 25;
+
+      // Header Banner
+      doc.setFillColor(primaryColor);
+      doc.rect(0, 0, pageWidth, 40, 'F');
+
+      // Title
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.setTextColor('#ffffff');
+      doc.text('BHUDHAN CROP DIAGNOSIS REPORT', margin, 20);
+
+      // Subtitle / Date
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor('#e2e8f0');
+      const dateStr = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      doc.text(`Generated on: ${dateStr}`, margin, 30);
+
+      y = 55;
+
+      // Card for Main Result
+      doc.setFillColor(lightBgColor);
+      doc.roundedRect(margin, y, contentWidth, 32, 3, 3, 'F');
+      
+      // Analysis Complete badge
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(primaryColor);
+      doc.text('DIAGNOSIS RESULT:', margin + 8, y + 8);
+
+      // Disease Name
+      doc.setFontSize(18);
+      doc.setTextColor(secondaryColor);
+      doc.text(`${result.disease} Detected`, margin + 8, y + 18);
+
+      // Match / Confidence
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor('#1e293b');
+      doc.text(`Confidence Match: `, margin + 8, y + 26);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${result.confidence.toFixed(1)}%`, margin + 46, y + 26);
+
+      // Severity & Spread Risk
+      const severity = result.confidence > 80 ? 'CRITICAL' : 'MODERATE';
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Severity: `, margin + 95, y + 26);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(severity === 'CRITICAL' ? accentColor : '#d97706');
+      doc.text(severity, margin + 113, y + 26);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor('#1e293b');
+      doc.text(`Spread Risk: `, margin + 140, y + 26);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(accentColor);
+      doc.text('HIGH', margin + 165, y + 26);
+
+      // Add Uploaded Image if available
+      if (image) {
+        try {
+          const imgWidth = 60;
+          const imgHeight = 45;
+          const imgX = (pageWidth - imgWidth) / 2;
+          const imgY = y + 36;
+          
+          doc.addImage(image, 'JPEG', imgX, imgY, imgWidth, imgHeight);
+          
+          // Draw a border around the image
+          doc.setDrawColor('#cbd5e1');
+          doc.setLineWidth(0.5);
+          doc.rect(imgX, imgY, imgWidth, imgHeight);
+          
+          y += 55; // Adjust y to accommodate the image
+        } catch (imgError) {
+          console.warn('Could not add uploaded image to PDF:', imgError);
+          y += 36; // standard spacer if image fails
+        }
+      } else {
+        y += 36; // standard spacer if no image
+      }
+
+      y += 10;
+
+      // Section Helper
+      const addSectionHeader = (title: string) => {
+        if (y > pageHeight - 30) {
+          doc.addPage();
+          y = 25;
+        }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(primaryColor);
+        doc.text(title, margin, y);
+        y += 4;
+        doc.setDrawColor('#cbd5e1');
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 8;
+      };
+
+      // Wrap Text Helper
+      const addWrappedText = (text: string, fontSize: number, style: 'normal' | 'bold' | 'italic' = 'normal', color: string = '#334155') => {
+        doc.setFont('helvetica', style);
+        doc.setFontSize(fontSize);
+        doc.setTextColor(color);
+        const lines = doc.splitTextToSize(text, contentWidth);
+        lines.forEach((line: string) => {
+          if (y > pageHeight - 20) {
+            doc.addPage();
+            y = 25;
+          }
+          doc.text(line, margin, y);
+          y += 6;
+        });
+        y += 2; // extra spacing
+      };
+
+      // 1. Description
+      addSectionHeader('Disease Description');
+      addWrappedText(result.description, 11, 'normal', '#334155');
+
+      // 2. Treatment
+      addSectionHeader('Immediate Actions & Treatment');
+      addWrappedText(result.treatment, 11, 'italic', '#1e3a8a'); // Dark blue for treatment text
+      y += 2;
+
+      // Steps
+      const steps = [
+        "Remove and destroy all infected plant parts immediately.",
+        "Apply recommended fungicide containing copper or chlorothalonil according to package instructions.",
+        "Ensure proper ventilation and spacing around plants to reduce humidity.",
+        "Monitor plants regularly (especially early morning) for new symptoms.",
+        "Avoid overhead watering to prevent spore dispersal."
+      ];
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(secondaryColor);
+      doc.text('Step-by-step Treatment Protocol:', margin, y);
+      y += 8;
+
+      steps.forEach((step, i) => {
+        if (y > pageHeight - 20) {
+          doc.addPage();
+          y = 25;
+        }
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(primaryColor);
+        doc.text(`0${i + 1}`, margin, y);
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor('#334155');
+        const stepLines = doc.splitTextToSize(step, contentWidth - 12);
+        stepLines.forEach((line: string) => {
+          if (y > pageHeight - 20) {
+            doc.addPage();
+            y = 25;
+          }
+          doc.text(line, margin + 10, y);
+          y += 6;
+        });
+        y += 2;
+      });
+
+      y += 4;
+
+      // 3. Prevention
+      addSectionHeader('Long-term Prevention & Protection');
+      addWrappedText(result.prevention, 11, 'normal', '#334155');
+
+      const preventionItems = [
+        "Practice crop rotation (3-4 year cycle for solanaceous crops).",
+        "Use certified disease-resistant crop varieties.",
+        "Maintain proper plant spacing for air circulation.",
+        "Apply preventive fungicides before humid/rainy weather sets in.",
+        "Keep garden entirely clean of crop residue and plant debris.",
+        "Utilize drip irrigation instead of overhead watering systems."
+      ];
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(secondaryColor);
+      doc.text('Best Preventive Practices:', margin, y);
+      y += 8;
+
+      preventionItems.forEach((item) => {
+        if (y > pageHeight - 20) {
+          doc.addPage();
+          y = 25;
+        }
+        // Draw bullet point
+        doc.setFillColor(primaryColor);
+        doc.circle(margin + 2, y - 1.5, 1, 'F');
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor('#334155');
+        const itemLines = doc.splitTextToSize(item, contentWidth - 10);
+        itemLines.forEach((line: string) => {
+          if (y > pageHeight - 20) {
+            doc.addPage();
+            y = 25;
+          }
+          doc.text(line, margin + 8, y);
+          y += 6;
+        });
+        y += 2;
+      });
+
+      y += 6;
+
+      // Disclaimer
+      if (y > pageHeight - 35) {
+        doc.addPage();
+        y = 25;
+      }
+      doc.setFillColor('#fffbeb'); // Amber-50
+      doc.setDrawColor('#fef3c7'); // Amber-100
+      doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'FD');
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor('#92400e'); // Amber-800
+      doc.text('ADVISORY NOTICE:', margin + 6, y + 7);
+      
+      doc.setFont('helvetica', 'normal');
+      const disclaimerText = 'AI diagnosis is an advisory tool. For commercial operations, please cross-verify with a local agricultural extension officer or agronomist.';
+      const disclaimerLines = doc.splitTextToSize(disclaimerText, contentWidth - 12);
+      let disclaimerY = y + 12;
+      disclaimerLines.forEach((line: string) => {
+        doc.text(line, margin + 6, disclaimerY);
+        disclaimerY += 4.5;
+      });
+
+      // Footer
+      const totalPages = doc.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor('#94a3b8');
+        doc.text('BhuDhan - Where Intelligence Meets Agriculture', margin, pageHeight - 10);
+        doc.text(`Page ${i} of ${totalPages}`, pageWidth - margin - 15, pageHeight - 10);
+      }
+
+      // Save Document
+      doc.save(`BhuDhan_Diagnosis_Report_${result.disease.replace(/\s+/g, '_')}.pdf`);
+      toast.success('Report downloaded successfully as PDF');
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+      toast.error('Failed to generate PDF report');
+    }
+  };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
@@ -376,6 +669,15 @@ export default function DiseaseDetectionTool() {
                       </div>
                     </Tabs>
                   </CardContent>
+                  <CardFooter className="bg-muted/10 dark:bg-slate-900/30 flex justify-end gap-4 p-6 border-t border-slate-100 dark:border-slate-800/80">
+                    <Button 
+                      onClick={handleDownloadPDF}
+                      className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-green-200 dark:shadow-none transition-all flex items-center justify-center gap-2 h-11 px-6 rounded-xl font-semibold"
+                    >
+                      <Download className="h-5 w-5" />
+                      Download Report (PDF)
+                    </Button>
+                  </CardFooter>
                 </Card>
               </motion.div>
             )}
