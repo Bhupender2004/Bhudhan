@@ -121,153 +121,6 @@ export default function SmartIrrigationPage() {
     setShowResults(false);
   };
 
-  // Function to generate and download irrigation schedule PDF
-  const generateSchedulePDF = async () => {
-    if (!isClient) return; // Safety check for SSR
-
-    try {
-      // Dynamically import jsPDF and jspdf-autotable
-      const jsPDFModule = await import('jspdf');
-      const jsPDF = jsPDFModule.default;
-      const autoTableModule = await import('jspdf-autotable');
-      const autoTable = autoTableModule.default || autoTableModule;
-
-      // Create a new PDF document
-      const doc = new jsPDF();
-      const currentDate = new Date().toLocaleDateString();
-
-      // Add title and header
-      doc.setFontSize(20);
-      doc.setTextColor(0, 102, 204); // Blue color
-      doc.text('BhuDhan Krishi - Irrigation Schedule', 105, 15, { align: 'center' });
-
-      // Add date and farm info
-      doc.setFontSize(10);
-      doc.setTextColor(100);
-      doc.text(`Generated on: ${currentDate}`, 105, 22, { align: 'center' });
-
-      // Add farm information
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      doc.text('Farm Information', 14, 35);
-
-      // Farm details table
-
-      // Add irrigation schedule
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      doc.text('Irrigation Schedule', 14, docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 15 : 50); }
-
-      // Schedule table
-      const scheduleData = irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].schedule.map(item => [
-        item.day,
-        item.time,
-        item.duration > 0 ? `${item.duration} minutes` : '-',
-        item.status
-      ]);
-
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      autoTable(doc, {
-        startY: docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 20 : 70,
-        head: [['Day', 'Time', 'Duration', 'Status']],
-        body: scheduleData,
-        theme: 'grid',
-        headStyles: { fillColor: [0, 102, 204] },
-      }); }
-
-      // Add water usage analytics
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      doc.text('Water Usage Analytics', 14, docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 15 : 50); }
-
-      // Water usage table
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      autoTable(doc, {
-        startY: docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 20 : 90,
-        head: [['Metric', 'Value']],
-        body: [
-          ['Recommended Water', `${irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].waterUsage.recommended} mm/week`],
-          ['Current Usage', `${irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].waterUsage.current} mm/week`],
-          ['Water Savings', `${irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].waterUsage.savings}%`],
-          ['Soil Moisture', `${irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].soilMoisture.current}%`],
-          ['Optimal Range', irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].soilMoisture.optimal],
-          ['Moisture Status', irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].soilMoisture.status],
-        ],
-        theme: 'grid',
-        headStyles: { fillColor: [0, 102, 204] },
-      }); }
-
-      // Add recommendations
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      doc.text('Recommendations', 14, docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 15 : 50); }
-
-      // Recommendations table
-      const recommendationsData = irrigationRecommendations[cropType as keyof typeof irrigationRecommendations].recommendations.map(rec => [
-        rec
-      ]);
-
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      autoTable(doc, {
-        startY: docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 20 : 110,
-        head: [['Irrigation Recommendations']],
-        body: recommendationsData,
-        theme: 'grid',
-        headStyles: { fillColor: [0, 102, 204] },
-      }); }
-
-      // Add weather forecast
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      doc.text('Weather Forecast', 14, docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 15 : 50); }
-
-      // Weather forecast table
-      const forecastData = weatherData.forecast.map(day => [
-        day.day,
-        `${day.temp}°C`,
-        day.condition,
-        `${day.precipitation}%`
-      ]);
-
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      autoTable(doc, {
-        startY: docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 20 : 130,
-        head: [['Day', 'Temperature', 'Condition', 'Precipitation']],
-        body: forecastData,
-        theme: 'grid',
-        headStyles: { fillColor: [0, 102, 204] },
-      }); }
-
-      // Add water conservation tips
-      doc.setFontSize(14);
-      doc.setTextColor(0);
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      doc.text('Water Conservation Tips', 14, docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 15 : 50); }
-
-      // Water conservation tips table
-      { const docWithAutoTable = doc as unknown as { lastAutoTable?: { finalY?: number }; internal?: unknown };
-      autoTable(doc, {
-        startY: docWithAutoTable.lastAutoTable?.finalY ? docWithAutoTable.lastAutoTable.finalY + 20 : 150,
-        head: [['Tips for Water Conservation']],
-        body: [
-          ['Apply mulch around plants to reduce evaporation'],
-          ['Regularly check for leaks in your irrigation system'],
-          ['Consider installing soil moisture sensors for precise irrigation'],
-          ['Harvest rainwater to supplement your irrigation needs'],
-        ],
-        theme: 'grid',
-        headStyles: { fillColor: [0, 102, 204] },
-      }); }
-    } catch {
-      // Error generating PDF
-      alert('Failed to generate PDF. Please try again.');
-    }
-  };
-
   // Function to generate and download comprehensive irrigation report PDF
   const generateReportPDF = async () => {
     if (!isClient) return; // Safety check for SSR
@@ -275,7 +128,7 @@ export default function SmartIrrigationPage() {
     try {
       // Dynamically import jsPDF and jspdf-autotable
       const jsPDFModule = await import('jspdf');
-      const jsPDF = jsPDFModule.default;
+      const jsPDF = jsPDFModule.jsPDF || jsPDFModule.default;
       const autoTableModule = await import('jspdf-autotable');
       const autoTable = autoTableModule.default || autoTableModule;
 
@@ -789,17 +642,19 @@ export default function SmartIrrigationPage() {
                           </p>
                         </div>
 
-                        <div className="flex justify-end">
-                          <Button
-                            variant="outline"
-                            className="gap-2"
-                            onClick={generateSchedulePDF}
-                            disabled={!isClient}
-                          >
-                            <Download className="h-4 w-4" />
-                            <span>Download Schedule</span>
-                          </Button>
-                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                       </div>
                     </TabsContent>
 
@@ -926,15 +781,14 @@ export default function SmartIrrigationPage() {
                     </TabsContent>
                   </Tabs>
                 </CardContent>
-                <CardFooter className="flex justify-end">
+                <CardFooter className="flex justify-end p-6 border-t border-slate-100 dark:border-slate-800/80">
                   <Button
-                    variant="outline"
-                    className="gap-2"
                     onClick={generateReportPDF}
                     disabled={!isClient}
+                    className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-green-200 dark:shadow-none transition-all flex items-center justify-center gap-2 h-11 px-6 rounded-xl font-semibold border-none"
                   >
-                    <Download className="h-4 w-4" />
-                    <span>Download Report</span>
+                    <Download className="h-5 w-5" />
+                    <span>Download Report (PDF)</span>
                   </Button>
                 </CardFooter>
               </Card>
