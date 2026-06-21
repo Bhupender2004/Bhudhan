@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRewards, AVAILABLE_BADGES, Badge as BadgeType } from '@/lib/context/rewards-context';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -151,7 +151,7 @@ const QUIZZES: Quiz[] = [
   },
 ];
 
-export default function RewardsPage() {
+function RewardsPage() {
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') || 'overview';
 
@@ -832,5 +832,20 @@ export default function RewardsPage() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+export default function Rewards() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-[80vh] items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto" />
+          <p className="text-muted-foreground text-sm font-semibold animate-pulse">Loading Rewards Center...</p>
+        </div>
+      </div>
+    }>
+      <RewardsPage />
+    </Suspense>
   );
 }
