@@ -131,7 +131,7 @@ export default function Header() {
         <div className="flex flex-1 items-center justify-end gap-3">
           <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md rounded-full border border-white/60 dark:border-slate-700/60 shadow-sm">
             {mounted && (
-              <Link href="/rewards">
+              <Link href="/bhudhan-games">
                 <Button variant="ghost" className="h-8 gap-1.5 rounded-full px-2.5 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all text-xs font-black text-amber-600 dark:text-amber-400">
                   <span>🪙</span>
                   <span>{points} <span className="text-[10px] text-muted-foreground font-normal">XP</span></span>

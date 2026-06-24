@@ -8,7 +8,6 @@ import NewsWidget from '@/components/news/news-widget';
 import CropPriceWidget from '@/components/dashboard/crop-price-widget';
 import SchemeWidget from '@/components/schemes/scheme-widget';
 import CropPriceCalculator from '@/components/dashboard/CropPriceCalculator';
-import RewardsWidget from '@/components/dashboard/rewards-widget';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -52,13 +51,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 2. Row 1: Core Widgets (3-column layout to prevent narrow congestion) */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {/* Card 1: Farmer Rewards */}
-        <div className="transition-all duration-300 hover:scale-[1.01] hover:shadow-md rounded-2xl h-[420px]">
-          <RewardsWidget />
-        </div>
-
+      {/* 2. Row 1: Core Widgets */}
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {/* Card 2: Current Weather */}
         <Card className="transition-all duration-300 hover:scale-[1.01] shadow-sm hover:shadow-md border border-slate-100 dark:border-slate-800/50 rounded-2xl h-[420px] flex flex-col justify-between overflow-hidden bg-white/70 dark:bg-slate-900/40 backdrop-blur-sm">
           <CardHeader className="pb-3 border-b border-slate-50 dark:border-slate-800/40">

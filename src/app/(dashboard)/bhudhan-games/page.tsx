@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useRewards, AVAILABLE_BADGES, Badge as BadgeType } from '@/lib/context/rewards-context';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,9 +8,10 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
-import { Trophy, Award, BookOpen, ShoppingBag, Check, Copy, AlertTriangle, ChevronRight, Lock, Sparkles, Star } from 'lucide-react';
+import { Trophy, Award, BookOpen, Check, Copy, ChevronRight, Lock, Sparkles, Star } from 'lucide-react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend } from 'chart.js';
+import RewardsWidget from '@/components/dashboard/rewards-widget';
 
 ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
 
@@ -151,10 +151,7 @@ const QUIZZES: Quiz[] = [
   },
 ];
 
-function RewardsPage() {
-  const searchParams = useSearchParams();
-  const initialTab = searchParams.get('tab') || 'overview';
-
+function BhudhanGamesPage() {
   const {
     points,
     level,
@@ -166,7 +163,7 @@ function RewardsPage() {
   } = useRewards();
 
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [activeTab, setActiveTab] = useState('overview');
   
   // Quiz states
   const [activeQuiz, setActiveQuiz] = useState<Quiz | null>(null);
@@ -181,33 +178,26 @@ function RewardsPage() {
 
   useEffect(() => {
     setMounted(true);
-    // Load purchased coupons from localStorage
+    
+    // Load search params safely client-side
     if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab) {
+        setActiveTab(tab);
+      }
+
+      // Load purchased coupons from localStorage
       const savedCoupons = localStorage.getItem('rewards_purchased_coupons');
       if (savedCoupons) {
-        setPurchasedCoupons(JSON.parse(savedCoupons));
+        try {
+          setPurchasedCoupons(JSON.parse(savedCoupons));
+        } catch (e) {
+          console.error('Error parsing coupons:', e);
+        }
       }
     }
   }, []);
-
-  // Update active tab from URL if it changes
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab) {
-      setActiveTab(tab);
-    }
-  }, [searchParams]);
-
-  if (!mounted) {
-    return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto" />
-          <p className="text-muted-foreground text-sm font-semibold animate-pulse">Loading Rewards Center...</p>
-        </div>
-      </div>
-    );
-  }
 
   // Points details
   const pointsInCurrentLevel = points - (level - 1) * 150;
@@ -334,9 +324,9 @@ function RewardsPage() {
   return (
     <div className="space-y-6 px-4 md:px-10 max-w-[1400px] mx-auto pb-10">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Rewards & Learning Center</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-100">BhuDhan Games & Rewards</h1>
         <p className="text-muted-foreground">
-          Complete quizzes, unlock badges, and redeem farming coupons with your XP points.
+          Complete agricultural quizzes, unlock exclusive badges, and redeem farming coupons with your XP points.
         </p>
       </div>
 
@@ -396,42 +386,10 @@ function RewardsPage() {
               </CardContent>
             </Card>
 
-            {/* Streak & Badges Summary */}
-            <Card className="flex flex-col justify-between border border-slate-200 dark:border-slate-800 rounded-2xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-100">
-                  <Sparkles className="h-4.5 w-4.5 text-amber-500" />
-                  Your Stats
-                </CardTitle>
-                <CardDescription>A quick glance at your accomplishments.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 flex-1">
-                <div className="flex items-center gap-3 p-3 bg-amber-50/50 dark:bg-slate-900/50 rounded-2xl border border-amber-100/30 dark:border-slate-800">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/35 text-orange-600 dark:text-orange-400">
-                    <span className="text-xl">🔥</span>
-                  </div>
-                  <div>
-                    <h4 className="text-xs text-muted-foreground font-semibold">Active Streak</h4>
-                    <p className="text-base font-black text-slate-800 dark:text-slate-100">{streak} Days Consistent</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-3 bg-emerald-50/50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100/30 dark:border-slate-800">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/35 text-emerald-600 dark:text-emerald-400">
-                    <Trophy className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs text-muted-foreground font-semibold">Total Badges</h4>
-                    <p className="text-base font-black text-slate-800 dark:text-slate-100">{badges.length} Unlocked</p>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="pt-2">
-                <Button variant="outline" className="w-full font-bold border-slate-200 dark:border-slate-800 rounded-xl" onClick={() => setActiveTab('quizzes')}>
-                  Explore Quizzes
-                </Button>
-              </CardFooter>
-            </Card>
+            {/* Farmer Rewards Section */}
+            <div className="h-full">
+              <RewardsWidget />
+            </div>
           </div>
 
           {/* Points Breakdown Chart & Activities */}
@@ -442,9 +400,9 @@ function RewardsPage() {
                 <CardDescription>Visual chart representing how you have earned your farming experience.</CardDescription>
               </CardHeader>
               <CardContent className="h-64 flex items-center justify-center relative">
-                {points === 0 ? (
-                  <div className="text-center text-muted-foreground text-sm font-semibold py-8">
-                    No XP data available. Complete activities to populate the chart!
+                {(!mounted || points === 0) ? (
+                  <div className="text-center text-muted-foreground text-sm font-semibold py-8 animate-pulse">
+                    Loading XP data available...
                   </div>
                 ) : (
                   <div className="w-full h-full p-2">
@@ -745,89 +703,95 @@ function RewardsPage() {
           </Card>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {AVAILABLE_COUPONS.map((coupon) => {
-              const isPurchased = purchasedCoupons.includes(coupon.id);
-              const canAfford = points >= coupon.cost;
+            {(!mounted) ? (
+              <div className="col-span-2 text-center text-muted-foreground text-sm font-semibold py-8 animate-pulse">
+                Loading Coupons...
+              </div>
+            ) : (
+              AVAILABLE_COUPONS.map((coupon) => {
+                const isPurchased = purchasedCoupons.includes(coupon.id);
+                const canAfford = points >= coupon.cost;
 
-              return (
-                <Card 
-                  key={coupon.id} 
-                  className={`border rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 ${
-                    isPurchased 
-                      ? 'border-emerald-200 bg-emerald-500/5 dark:border-emerald-950/20' 
-                      : 'border-slate-200 hover:shadow-md'
-                  }`}
-                >
-                  <CardHeader className="pb-3 flex-row gap-4 items-start">
-                    <div className="w-12 h-12 bg-amber-100 dark:bg-amber-950/40 rounded-xl flex items-center justify-center text-2xl shrink-0 border shadow-sm">
-                      {coupon.icon}
-                    </div>
-                    <div className="space-y-1 min-w-0">
-                      <CardTitle className="text-base font-bold text-slate-800 dark:text-slate-100 truncate">{coupon.title}</CardTitle>
-                      <CardDescription className="text-xs leading-relaxed text-slate-500 dark:text-slate-400 mt-1 h-12 overflow-hidden">
-                        {coupon.description}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
+                return (
+                  <Card 
+                    key={coupon.id} 
+                    className={`border rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 ${
+                      isPurchased 
+                        ? 'border-emerald-200 bg-emerald-500/5 dark:border-emerald-950/20' 
+                        : 'border-slate-200 hover:shadow-md'
+                    }`}
+                  >
+                    <CardHeader className="pb-3 flex-row gap-4 items-start">
+                      <div className="w-12 h-12 bg-amber-100 dark:bg-amber-950/40 rounded-xl flex items-center justify-center text-2xl shrink-0 border shadow-sm">
+                        {coupon.icon}
+                      </div>
+                      <div className="space-y-1 min-w-0">
+                        <CardTitle className="text-base font-bold text-slate-800 dark:text-slate-100 truncate">{coupon.title}</CardTitle>
+                        <CardDescription className="text-xs leading-relaxed text-slate-500 dark:text-slate-400 mt-1 h-12 overflow-hidden">
+                          {coupon.description}
+                        </CardDescription>
+                      </div>
+                    </CardHeader>
 
-                  <CardContent className="pb-4">
-                    {isPurchased ? (
-                      /* Display active code once bought */
-                      <div className="bg-white dark:bg-slate-900 border border-dashed border-emerald-500 rounded-xl p-3 flex items-center justify-between shadow-sm animate-fade-in">
-                        <div className="min-w-0">
-                          <p className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Coupon Active</p>
-                          <p className="text-base font-black text-slate-800 dark:text-slate-100 mt-1 font-mono tracking-wider">{coupon.code}</p>
+                    <CardContent className="pb-4">
+                      {isPurchased ? (
+                        /* Display active code once bought */
+                        <div className="bg-white dark:bg-slate-900 border border-dashed border-emerald-500 rounded-xl p-3 flex items-center justify-between shadow-sm animate-fade-in">
+                          <div className="min-w-0">
+                            <p className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Coupon Active</p>
+                            <p className="text-base font-black text-slate-800 dark:text-slate-100 mt-1 font-mono tracking-wider">{coupon.code}</p>
+                          </div>
+                          <Button 
+                            size="sm" 
+                            onClick={() => copyToClipboard(coupon.id, coupon.code)}
+                            className="font-bold bg-emerald-600 hover:bg-emerald-700 h-9 rounded-lg"
+                          >
+                            {copiedCouponId === coupon.id ? (
+                              <>
+                                <Check className="h-4 w-4 mr-1" />
+                                Copied
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-3.5 w-3.5 mr-1" />
+                                Copy Code
+                              </>
+                            )}
+                          </Button>
                         </div>
-                        <Button 
-                          size="sm" 
-                          onClick={() => copyToClipboard(coupon.id, coupon.code)}
-                          className="font-bold bg-emerald-600 hover:bg-emerald-700 h-9 rounded-lg"
-                        >
-                          {copiedCouponId === coupon.id ? (
-                            <>
-                              <Check className="h-4 w-4 mr-1" />
-                              Copied
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="h-3.5 w-3.5 mr-1" />
-                              Copy Code
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    ) : (
-                      /* Price display */
-                      <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 text-sm font-semibold">
-                        <span>Cost:</span>
-                        <span className="text-amber-600 dark:text-amber-400 font-black">🪙 {coupon.cost} XP</span>
-                      </div>
-                    )}
-                  </CardContent>
+                      ) : (
+                        /* Price display */
+                        <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 text-sm font-semibold">
+                          <span>Cost:</span>
+                          <span className="text-amber-600 dark:text-amber-400 font-black">🪙 {coupon.cost} XP</span>
+                        </div>
+                      )}
+                    </CardContent>
 
-                  <CardFooter className="pt-2 border-t bg-slate-50/50 dark:bg-slate-900/10 p-3.5 flex justify-end">
-                    {!isPurchased && (
-                      <Button
-                        disabled={!canAfford}
-                        onClick={() => buyCoupon(coupon)}
-                        className={`font-bold rounded-xl h-9 px-5 transition-all ${
-                          canAfford 
-                            ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-sm' 
-                            : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed dark:bg-slate-800 dark:text-slate-500 dark:border-slate-800'
-                        }`}
-                      >
-                        {!canAfford ? 'Need More XP' : 'Redeem Voucher'}
-                      </Button>
-                    )}
-                    {isPurchased && (
-                      <Badge className="bg-emerald-500 text-white font-bold text-[9px] px-2.5 py-1 uppercase rounded-md shadow-sm">
-                        Purchased
-                      </Badge>
-                    )}
-                  </CardFooter>
-                </Card>
-              );
-            })}
+                    <CardFooter className="pt-2 border-t bg-slate-50/50 dark:bg-slate-900/10 p-3.5 flex justify-end">
+                      {!isPurchased && (
+                        <Button
+                          disabled={!canAfford}
+                          onClick={() => buyCoupon(coupon)}
+                          className={`font-bold rounded-xl h-9 px-5 transition-all ${
+                            canAfford 
+                              ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-sm' 
+                              : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed dark:bg-slate-800 dark:text-slate-500 dark:border-slate-800'
+                          }`}
+                        >
+                          {!canAfford ? 'Need More XP' : 'Redeem Voucher'}
+                        </Button>
+                      )}
+                      {isPurchased && (
+                        <Badge className="bg-emerald-500 text-white font-bold text-[9px] px-2.5 py-1 uppercase rounded-md shadow-sm">
+                          Purchased
+                        </Badge>
+                      )}
+                    </CardFooter>
+                  </Card>
+                );
+              })
+            )}
           </div>
         </TabsContent>
       </Tabs>
@@ -835,17 +799,17 @@ function RewardsPage() {
   );
 }
 
-export default function Rewards() {
+export default function BhudhanGames() {
   return (
     <Suspense fallback={
       <div className="flex h-[80vh] items-center justify-center">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto" />
-          <p className="text-muted-foreground text-sm font-semibold animate-pulse">Loading Rewards Center...</p>
+          <p className="text-muted-foreground text-sm font-semibold animate-pulse">Loading Games Center (Suspense)...</p>
         </div>
       </div>
     }>
-      <RewardsPage />
+      <BhudhanGamesPage />
     </Suspense>
   );
 }

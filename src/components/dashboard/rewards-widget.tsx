@@ -132,12 +132,12 @@ export default function RewardsWidget() {
 
       {/* Widget Footer shortcut links */}
       <div className="border-t border-slate-100 dark:border-slate-800 p-3 bg-white/30 dark:bg-slate-900/50 flex justify-between items-center relative z-10">
-        <Link href="/rewards?tab=quizzes" className="inline-flex items-center text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors group/link">
+        <Link href="/bhudhan-games?tab=quizzes" className="inline-flex items-center text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors group/link">
           <BookOpen className="h-3.5 w-3.5 mr-1" />
           Take a Quiz
           <ArrowRight className="h-3 w-3 ml-0.5 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all" />
         </Link>
-        <Link href="/rewards" className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline">
+        <Link href="/bhudhan-games?tab=shop" className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline">
           Rewards Shop
         </Link>
       </div>

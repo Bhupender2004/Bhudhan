@@ -99,8 +99,8 @@ export default function Sidebar({ className, onRouteClick, ...props }: SidebarPr
     {
       label: t('rewards'),
       icon: Award,
-      href: '/rewards',
-      active: pathname === '/rewards' || pathname.startsWith('/rewards/'),
+      href: '/bhudhan-games',
+      active: pathname === '/bhudhan-games' || pathname.startsWith('/bhudhan-games/'),
     },
     {
       label: t('settings'),
