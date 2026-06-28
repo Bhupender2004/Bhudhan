@@ -8,7 +8,7 @@ import NewsWidget from '@/components/news/news-widget';
 import CropPriceWidget from '@/components/dashboard/crop-price-widget';
 import SchemeWidget from '@/components/schemes/scheme-widget';
 import CropPriceCalculator from '@/components/dashboard/CropPriceCalculator';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -19,31 +19,35 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto px-1 sm:px-4 pb-12">
       {/* 1. Welcome Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 md:p-8 text-white shadow-lg shadow-emerald-100 dark:shadow-none transition-all hover:shadow-xl hover:shadow-emerald-200/20 duration-500">
-        <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-1/3 bottom-0 translate-y-1/2 w-48 h-48 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl border border-slate-200/60 dark:border-slate-800/80 bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900/90 dark:to-slate-950/90 p-6 md:p-8 text-slate-800 dark:text-slate-100 shadow-sm hover:shadow-md transition-all duration-500">
+        {/* Soft, beautiful ambient glowing orbs */}
+        <div className="absolute right-0 top-0 -translate-y-12 translate-x-12 w-80 h-80 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute right-1/3 bottom-0 translate-y-12 w-64 h-64 bg-teal-500/10 dark:bg-teal-500/15 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute left-10 top-0 -translate-y-12 w-48 h-48 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-[60px] pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/10">
-              <span>🌾</span> Welcome to BhuDhan Krishi
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/40 dark:border-emerald-800/40 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm">
+              <span className="animate-pulse">🌾</span> Welcome to BhuDhan Krishi
             </div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight">
-              Hello, Bhupender Yadav! 👋
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Hello, <span className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">Bhupender Yadav!</span> 👋
             </h1>
-            <p className="text-emerald-50 text-sm md:text-base font-medium max-w-xl leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base font-medium max-w-xl leading-relaxed">
               Your digital AI farming assistant is active and synchronized. Here is your personalized agriculture overview for today.
             </p>
           </div>
           
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link href="/ai-tools">
-              <Button className="bg-white text-emerald-800 hover:bg-emerald-50 font-bold h-11 px-6 rounded-xl shadow-md transition-all active:scale-[0.98]">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400 font-bold h-11 px-6 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.98] flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
                 Launch AI Tools
               </Button>
             </Link>
             <Link href="/expert-connect">
-              <Button className="bg-emerald-800/40 text-white hover:bg-emerald-800/60 font-bold border border-white/20 h-11 px-6 rounded-xl transition-all active:scale-[0.98]">
+              <Button className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-800 font-bold h-11 px-6 rounded-xl transition-all active:scale-[0.98] flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Chat with Expert
               </Button>
             </Link>
